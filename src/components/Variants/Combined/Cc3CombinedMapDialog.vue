@@ -288,22 +288,7 @@ function onKeydown(event: KeyboardEvent) {
   color-scheme: light;
 
   @include cc3-light-tokens;
-
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-
-  display: flex;
-  flex-direction: column;
-
-  width: 100%;
-
-  @include mediaMinWidth('sm') {
-    max-width: 375px;
-  }
-
-  height: 100dvh;
-  margin: 0 auto;
+  @include cc3-combined-dialog-frame;
 
   background-color: var(--st-content-background-color-default-solid-normal);
   outline: none;
