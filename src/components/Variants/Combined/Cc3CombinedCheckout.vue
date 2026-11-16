@@ -178,11 +178,11 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
         <Cc3CombinedWallet />
         <Cc3CombinedPaymentMethods />
         <Cc3ModalFooterConsent ref="consentRef" :is-error-shown="isTermsErrorShown" />
+        <Cc3ModalFooterCta :is-disabled="false" @submit="submit" />
       </div>
 
       <div class="cc3-combined-checkout__aside">
         <Cc3ModalOrderSummary />
-        <Cc3ModalFooterCta :is-disabled="false" @submit="submit" />
       </div>
     </div>
 
@@ -317,7 +317,7 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     margin-top: var(--st-global-distance-space-inset-xs);
   }
 
-  &__aside > .cc3-modal-footer-cta {
+  &__main > .cc3-modal-footer-cta {
     order: 7;
 
     margin-top: calc(-1 * var(--st-global-distance-space-inset-xl));
@@ -332,23 +332,14 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     padding-top: 0;
   }
 
-  // Две колонки: кнопка под сводкой, галочки под способами оплаты. Рамка у
-  // сводки отделяет колонку от формы слева.
+  // Две колонки: галочки и кнопка под способами оплаты слева, сводка справа.
+  // Рамка у сводки отделяет колонку от формы.
   @include mediaMinWidth('lg') {
     &__aside > .cc3-modal-order-summary {
-      order: 1;
-
       padding-bottom: var(--st-global-distance-space-inset-xs);
 
       border: 1px solid var(--st-content-border-color-neutral-implicit);
       border-radius: var(--st-global-radius-md);
-    }
-
-    &__aside > .cc3-modal-footer-cta {
-      order: 2;
-
-      margin-top: 0;
-      padding: 0;
     }
 
     &__main > .cc3-modal-footer-consent {
