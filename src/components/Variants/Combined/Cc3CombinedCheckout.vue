@@ -332,23 +332,23 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     padding-top: 0;
   }
 
-  // Две колонки: кнопка над сводкой, как в макете десктопа, галочки под
-  // способами оплаты. Рамка у сводки отделяет колонку от формы слева.
+  // Две колонки: кнопка под сводкой, галочки под способами оплаты. Рамка у
+  // сводки отделяет колонку от формы слева.
   @include mediaMinWidth('lg') {
-    &__aside > .cc3-modal-footer-cta {
-      order: 1;
-
-      margin-top: 0;
-      padding: 0;
-    }
-
     &__aside > .cc3-modal-order-summary {
-      order: 2;
+      order: 1;
 
       padding-bottom: var(--st-global-distance-space-inset-xs);
 
       border: 1px solid var(--st-content-border-color-neutral-implicit);
       border-radius: var(--st-global-radius-md);
+    }
+
+    &__aside > .cc3-modal-footer-cta {
+      order: 2;
+
+      margin-top: 0;
+      padding: 0;
     }
 
     &__main > .cc3-modal-footer-consent {
