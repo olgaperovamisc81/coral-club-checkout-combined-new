@@ -525,6 +525,10 @@ const isSelectionMissing = computed(
 
 <style lang="scss">
 .cc3-combined-delivery {
+  > .cc3-modal-delivery-method-switch {
+    @include cc3-combined-method-switch-size;
+  }
+
   // Карточка адреса заканчивается без запаса, а форма — отступом последнего
   // поля. Те же 12 снизу, чтобы до заголовка следующего блока выходило как
   // после формы.
