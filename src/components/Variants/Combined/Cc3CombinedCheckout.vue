@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 import { useAddressGuard } from '@/composables/useAddressGuard'
 import { useCheckout } from '@/composables/useCheckout'
+import { useCheckoutSubmit } from '@/composables/useCheckoutSubmit'
 import { useCourierVariants } from '@/composables/useCourierVariants'
 import { useSlotConflict } from '@/composables/useSlotConflict'
 import { useStand } from '@/stand/composables/useStand'
@@ -12,7 +13,9 @@ import { hasDeliverySlots } from '@/stand/config/deliverySlots'
 // переиспользуем компоненты напрямую, а не копируем разметку. Своё у этой
 // версии — блок доставки, способ доставки и способ оплаты.
 import Cc3InlineDeliverySlots from '../Inline/Cc3InlineDeliverySlots.vue'
-import Cc3ModalFooter from '../Modal/Cc3ModalFooter.vue'
+import Cc3ModalFooterConsent from '../Modal/Cc3ModalFooterConsent.vue'
+import Cc3ModalFooterCta from '../Modal/Cc3ModalFooterCta.vue'
+import Cc3ModalFooterSite from '../Modal/Cc3ModalFooterSite.vue'
 import Cc3ModalHeader from '../Modal/Cc3ModalHeader.vue'
 import Cc3ModalOrderSummary from '../Modal/Cc3ModalOrderSummary.vue'
 import Cc3ModalSummaryBar from '../Modal/Cc3ModalSummaryBar.vue'
@@ -35,6 +38,13 @@ import Cc3CombinedWallet from './Cc3CombinedWallet.vue'
 const { summary, setDeliveryPrice } = useCheckout()
 const { t, country } = useStand()
 const { courierVariants, defaultVariantId, priceOf } = useCourierVariants()
+
+const consentRef = ref<InstanceType<typeof Cc3ModalFooterConsent>>()
+
+// Галочки и кнопка стоят в разных колонках, но ошибка про условия у них одна.
+const { isTermsErrorShown, submit } = useCheckoutSubmit(true, () =>
+  consentRef.value?.scrollToTerms(),
+)
 
 const text = computed(() => ({
   optionsTitle: t('delivery.variants'),
@@ -137,34 +147,46 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
 <template>
   <div class="cc3-combined-checkout">
     <Cc3ModalHeader :cart-count="summary.itemsCount" />
-    <Cc3ModalSummaryBar />
+
+    <!-- На широком экране сводка стоит справа, и полоса с суммой не нужна. -->
+    <div class="cc3-combined-checkout__bar">
+      <Cc3ModalSummaryBar />
+    </div>
 
     <div class="cc3-combined-checkout__body">
-      <Cc3CombinedDeliverySection @state="onState" />
+      <div class="cc3-combined-checkout__main">
+        <Cc3CombinedDeliverySection @state="onState" />
 
-      <section v-if="isOptionsVisible" class="cc3-combined-checkout__options">
-        <h2 class="cc3-combined-checkout__options-title">{{ text.optionsTitle }}</h2>
+        <section v-if="isOptionsVisible" class="cc3-combined-checkout__options">
+          <h2 class="cc3-combined-checkout__options-title">{{ text.optionsTitle }}</h2>
 
-        <Cc3CombinedDeliveryOptions v-model="courierVariant" :resolved="isResolved" />
+          <Cc3CombinedDeliveryOptions v-model="courierVariant" :resolved="isResolved" />
 
-        <div v-if="isSlotsVisible" ref="slotsRef" class="cc3-combined-checkout__slots">
-          <Cc3InlineDeliverySlots :variant-id="courierVariant" />
+          <div v-if="isSlotsVisible" ref="slotsRef" class="cc3-combined-checkout__slots">
+            <Cc3InlineDeliverySlots :variant-id="courierVariant" />
 
-          <Cc3CombinedNotice
-            v-if="isMessageVisible"
-            tone="warning"
-            class="cc3-combined-checkout__slot-notice"
-          >
-            {{ text.slotTaken }}
-          </Cc3CombinedNotice>
-        </div>
-      </section>
+            <Cc3CombinedNotice
+              v-if="isMessageVisible"
+              tone="warning"
+              class="cc3-combined-checkout__slot-notice"
+            >
+              {{ text.slotTaken }}
+            </Cc3CombinedNotice>
+          </div>
+        </section>
 
-      <Cc3CombinedWallet />
-      <Cc3CombinedPaymentMethods />
-      <Cc3ModalOrderSummary />
-      <Cc3ModalFooter explain-blocked />
+        <Cc3CombinedWallet />
+        <Cc3CombinedPaymentMethods />
+        <Cc3ModalFooterConsent ref="consentRef" :is-error-shown="isTermsErrorShown" />
+      </div>
+
+      <div class="cc3-combined-checkout__aside">
+        <Cc3ModalOrderSummary />
+        <Cc3ModalFooterCta :is-disabled="false" @submit="submit" />
+      </div>
     </div>
+
+    <Cc3ModalFooterSite />
   </div>
 </template>
 
@@ -178,15 +200,7 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
   flex-direction: column;
 
   margin: 0 auto;
-
-  // Макет собран под 375px, но телефон бывает шире: на телефоне блок тянется
-  // во всю ширину, а рамка в 375px остаётся только на десктопе, где стенд
-  // смотрят как превью мобильного экрана.
   width: 100%;
-
-  @include mediaMinWidth('sm') {
-    max-width: 375px;
-  }
 
   background-color: var(--st-content-background-color-default-solid-normal);
 
@@ -196,33 +210,149 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     border-bottom: none;
   }
 
+  // Полоса с суммой нужна, пока сводка уезжает вниз страницы. В две колонки
+  // сводка стоит справа на виду, и полоса только повторяла бы её.
+  &__bar {
+    @include mediaMinWidth('lg') {
+      display: none;
+    }
+  }
+
   // Разделителей между блоками нет, как в макете: блоки разделяют только
   // отступы.
+  //
+  // До планшета страница идёт одной колонкой в таком порядке: способы,
+  // сводка, галочки, кнопка. Колонки-обёртки там «растворены», а порядок
+  // задан в order у самих блоков. С 1024 обёртки становятся колонками.
   &__body {
     display: flex;
     flex-direction: column;
     gap: var(--st-global-distance-space-inset-xl);
 
+    margin: 0 auto;
     padding-top: var(--st-global-distance-space-inset-2xl);
+    width: 100%;
 
-    // Сводка и подвал общие с модальной версией и своих отступов не знают.
-    // Сводке нужны те же 12 сверху, что и остальным блокам с заголовком, а
-    // подвалу — 4, чтобы зазор между ними остался прежним, 16.
-    > .cc3-modal-order-summary {
-      padding-top: var(--st-global-distance-space-inset-xl);
+    // Одна колонка на планшете не должна растягиваться на всю ширину: поля
+    // и списки в 1000px читать неудобно.
+    @include mediaMinWidth('md') {
+      max-width: 720px;
     }
 
-    > .cc3-modal-footer {
-      margin-top: var(--st-global-distance-space-inset-xs);
+    @include mediaMinWidth('lg') {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 372px;
+      align-items: start;
+      column-gap: var(--st-global-distance-space-inset-6xl);
+
+      padding-right: var(--st-global-distance-space-inset-4xl);
+      padding-bottom: var(--st-global-distance-space-inset-6xl);
+      padding-left: var(--st-global-distance-space-inset-4xl);
+      max-width: 1100px;
     }
 
-    // В самовывозе вариантов доставки нет, и за блоком доставки сразу идёт
-    // кошелёк или оплата. Блок доставки уже держит снизу свои 12, поэтому
-    // собственный верхний отступ следующего блока лишний: без этой строки
-    // заголовок стоял бы на 12 дальше, чем у «Вариантов доставки».
-    > .cc3-combined-delivery + .cc3-combined-wallet,
-    > .cc3-combined-delivery + .cc3-combined-payment {
-      padding-top: 0;
+    @include mediaMinWidth('xl') {
+      grid-template-columns: minmax(0, 1fr) 413px;
+      column-gap: var(--st-global-distance-space-inset-8xl);
+
+      padding-right: var(--st-global-distance-space-inset-9xl);
+      padding-left: var(--st-global-distance-space-inset-9xl);
+      max-width: 1352px;
+    }
+  }
+
+  &__main,
+  &__aside {
+    display: contents;
+
+    @include mediaMinWidth('lg') {
+      display: flex;
+      flex-direction: column;
+      gap: var(--st-global-distance-space-inset-xl);
+
+      // Колонка может быть уже своего содержимого: без этого длинная строка
+      // растягивает сетку и выталкивает правую колонку за край.
+      min-width: 0;
+    }
+  }
+
+  // Сводка с кнопкой едет за страницей, пока человек заполняет форму слева.
+  &__aside {
+    @include mediaMinWidth('lg') {
+      position: sticky;
+      top: var(--st-global-distance-space-inset-2xl);
+    }
+  }
+
+  // Порядок одной колонки. Сводка общая с модальной версией и своих отступов
+  // не знает: ей нужны те же 12 сверху, что и остальным блокам с заголовком.
+  &__main > .cc3-combined-delivery {
+    order: 1;
+  }
+
+  &__main > .cc3-combined-checkout__options {
+    order: 2;
+  }
+
+  &__main > .cc3-combined-wallet {
+    order: 3;
+  }
+
+  &__main > .cc3-combined-payment {
+    order: 4;
+  }
+
+  &__aside > .cc3-modal-order-summary {
+    order: 5;
+
+    padding-top: var(--st-global-distance-space-inset-xl);
+  }
+
+  // Галочкам нужны те же 4 сверху, что подвал раньше добавлял к зазору, а
+  // кнопке, наоборот, на 12 меньше: она и галочки были одним блоком, и
+  // зазор между ними задавали сами, без отступа колонки.
+  &__main > .cc3-modal-footer-consent {
+    order: 6;
+
+    margin-top: var(--st-global-distance-space-inset-xs);
+  }
+
+  &__aside > .cc3-modal-footer-cta {
+    order: 7;
+
+    margin-top: calc(-1 * var(--st-global-distance-space-inset-xl));
+  }
+
+  // В самовывозе вариантов доставки нет, и за блоком доставки сразу идёт
+  // кошелёк или оплата. Блок доставки уже держит снизу свои 12, поэтому
+  // собственный верхний отступ следующего блока лишний: без этой строки
+  // заголовок стоял бы на 12 дальше, чем у «Вариантов доставки».
+  &__main > .cc3-combined-delivery + .cc3-combined-wallet,
+  &__main > .cc3-combined-delivery + .cc3-combined-payment {
+    padding-top: 0;
+  }
+
+  // Две колонки: кнопка над сводкой, как в макете десктопа, галочки под
+  // способами оплаты. Рамка у сводки отделяет колонку от формы слева.
+  @include mediaMinWidth('lg') {
+    &__aside > .cc3-modal-footer-cta {
+      order: 1;
+
+      margin-top: 0;
+      padding: 0;
+    }
+
+    &__aside > .cc3-modal-order-summary {
+      order: 2;
+
+      padding-bottom: var(--st-global-distance-space-inset-xs);
+
+      border: 1px solid var(--st-content-border-color-neutral-implicit);
+      border-radius: var(--st-global-radius-md);
+    }
+
+    &__main > .cc3-modal-footer-consent {
+      margin-top: 0;
     }
   }
 
