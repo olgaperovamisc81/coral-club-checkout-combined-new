@@ -198,6 +198,7 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
   color-scheme: light;
 
   @include cc3-light-tokens;
+  @include cc3-combined-fields;
 
   display: flex;
   flex-direction: column;

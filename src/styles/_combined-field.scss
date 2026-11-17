@@ -1,0 +1,18 @@
+// Поля комбинированной версии по новому образцу дизайн-системы: рамка
+// тоньше (1px вместо 2px) и крупнее скругление. Подключается к корню страницы
+// и к корням окон, а само оформление полей (Cc3InputField, селекты и
+// текстовые поля стенда) остаётся общим для всех версий и не меняется.
+@mixin cc3-combined-fields {
+  .cc3-input-field,
+  .cc3-stand-field__select,
+  .cc3-stand-field__textarea {
+    border-width: 1px;
+    border-radius: var(--st-global-radius-xl);
+  }
+
+  // Подпись внутри поля начинается там же, где потом начнётся введённый
+  // текст. Стенд считает это место от рамки в 2px, у нас рамка 1px.
+  .cc3-stand-field--floating .cc3-stand-field__label {
+    margin-inline-start: calc(var(--st-global-distance-space-inset-md) + 1px);
+  }
+}
