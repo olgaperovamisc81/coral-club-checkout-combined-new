@@ -235,31 +235,20 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     padding-top: var(--st-global-distance-space-inset-2xl);
     width: 100%;
 
-    // Одна колонка на планшете не должна растягиваться на всю ширину: поля
-    // и списки в 1000px читать неудобно.
-    @include mediaMinWidth('md') {
-      max-width: 720px;
-    }
+    // Сетка как у магазина друга клуба: одна колонка не шире 560 по центру,
+    // с 1024 — колонка формы 560 и колонка сводки 400 с зазором 64, всё вместе
+    // по центру страницы.
+    max-width: 560px;
 
     @include mediaMinWidth('lg') {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 372px;
+      grid-template-columns: minmax(0, 560px) 400px;
       align-items: start;
-      column-gap: var(--st-global-distance-space-inset-6xl);
+      justify-content: center;
+      column-gap: calc(var(--st-global-distance-space-inset-9xl) + var(--st-global-distance-space-inset-2xl));
 
-      padding-right: var(--st-global-distance-space-inset-4xl);
-      padding-bottom: var(--st-global-distance-space-inset-6xl);
-      padding-left: var(--st-global-distance-space-inset-4xl);
-      max-width: 1100px;
-    }
-
-    @include mediaMinWidth('xl') {
-      grid-template-columns: minmax(0, 1fr) 413px;
-      column-gap: var(--st-global-distance-space-inset-8xl);
-
-      padding-right: var(--st-global-distance-space-inset-9xl);
-      padding-left: var(--st-global-distance-space-inset-9xl);
-      max-width: 1352px;
+      padding: var(--st-global-distance-space-inset-6xl) var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-6xl) var(--st-global-distance-space-inset-2xl);
+      max-width: none;
     }
   }
 
@@ -282,7 +271,7 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
   &__aside {
     @include mediaMinWidth('lg') {
       position: sticky;
-      top: var(--st-global-distance-space-inset-2xl);
+      top: var(--st-global-distance-space-inset-4xl);
     }
   }
 
