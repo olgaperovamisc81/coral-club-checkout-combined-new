@@ -389,6 +389,16 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
 
   &__slots {
     padding-top: var(--st-global-distance-space-inset-2xl);
+
+    // Даты и время — таблетки: полностью скруглённые, с рамкой той же толщины,
+    // что у карточек способов выше. Чипы общие с инлайном, поэтому оформляем
+    // их здесь, а не в нём.
+    .cc3-inline-delivery-slots__chip {
+      padding: var(--st-global-distance-space-inset-md) var(--st-global-distance-space-inset-2xl);
+
+      border-width: 1.5px;
+      border-radius: var(--st-global-radius-pill);
+    }
   }
 
   &__options-title {
