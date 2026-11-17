@@ -33,7 +33,13 @@ import Cc3CombinedPickupDialog from './Pickup/Cc3CombinedPickupDialog.vue'
  */
 const emit = defineEmits<{
   state: [
-    payload: { method: DeliveryProfileMethod; profile?: DeliveryProfile; recipientReady: boolean },
+    payload: {
+      method: DeliveryProfileMethod
+      profile?: DeliveryProfile
+      recipientReady: boolean
+      /** Адрес взят из сохранённых, а не вводится заново. */
+      fromBook: boolean
+    },
   ]
 }>()
 
@@ -152,13 +158,17 @@ const isRecipientReady = computed(() =>
   mode.value === 'summary' ? Boolean(selectedEntry.value) : draft.value.complete,
 )
 
+/** Адрес выбран из книги — «второй заход», а не первое заполнение формы. */
+const isFromBook = computed(() => mode.value === 'summary' && Boolean(selectedEntry.value))
+
 watch(
-  [activeMethod, currentProfile, isRecipientReady],
+  [activeMethod, currentProfile, isRecipientReady, isFromBook],
   () =>
     emit('state', {
       method: activeMethod.value,
       profile: currentProfile.value,
       recipientReady: isRecipientReady.value,
+      fromBook: isFromBook.value,
     }),
   { immediate: true },
 )

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
 import {
   deliveryDatesFor,
@@ -32,9 +32,20 @@ const props = defineProps<{
   variantId?: string
   /** Ряды — карусели со стрелками (комбинированная версия), а не переносятся. */
   carousel?: boolean
+  /**
+   * Слот выбирают сами. Показывается один ряд с датами, ряд со временем
+   * появляется, когда дата выбрана, и ничего заранее не подставляется. Так
+   * у адреса, взятого из книги: человек возвращается и подтверждает слот, а
+   * не оплачивает тот, что подставила страница. Без флага слот ставится
+   * первым доступным.
+   */
+  explicit?: boolean
 }>()
 
 const { country, countryConfig, t } = useStand()
+
+// Ряд со временем: в своём слоте он появляется, когда выбрана дата.
+const isTimeRowVisible = computed(() => !props.explicit || Boolean(selectedDate.value))
 
 // Ряд — либо обычный блок с переносом, либо карусель.
 const rowTag = computed(() => (props.carousel ? Cc3CombinedCarousel : 'div'))
@@ -51,11 +62,14 @@ const dateChips = computed(() =>
 
 // Окна зависят от выбранной даты, а не только от способа: у экспресса на
 // сегодня отпадают ближайшие часы, на завтра набор полный.
-const { takenSlot, reportSelection } = useSlotConflict()
+const { takenSlot, reportSelection, setRequired } = useSlotConflict()
 
 // Занятое окно из ряда убирается: имитация «слот пропал к оплате».
 const timeChips = computed(() =>
-  deliveryTimesFor(props.variantId, selectedDate.value).filter(
+  (props.explicit && !selectedDate.value
+    ? []
+    : deliveryTimesFor(props.variantId, selectedDate.value)
+  ).filter(
     (chip) =>
       !(takenSlot.value?.date === selectedDate.value && takenSlot.value.time === chip.value),
   ),
@@ -71,7 +85,9 @@ const timeChips = computed(() =>
 watch(
   () => props.variantId,
   () => {
-    selectedDate.value = dateChips.value[0]?.value ?? ''
+    // Свой выбор после смены способа сбрасывается: у экспресса другие даты.
+    selectedDate.value = props.explicit ? '' : (dateChips.value[0]?.value ?? '')
+    selectedTime.value = ''
   },
   { immediate: true },
 )
@@ -81,8 +97,12 @@ watch(
  * трогаем, только если выбранного больше нет в ряду.
  */
 watch(dateChips, (chips) => {
+  if (props.explicit && !selectedDate.value) {
+    return
+  }
+
   if (!chips.some((chip) => chip.value === selectedDate.value)) {
-    selectedDate.value = chips[0]?.value ?? ''
+    selectedDate.value = props.explicit ? '' : (chips[0]?.value ?? '')
   }
 })
 
@@ -94,11 +114,34 @@ watch(
   timeChips,
   (chips) => {
     if (!chips.some((chip) => chip.value === selectedTime.value)) {
-      selectedTime.value = chips[0]?.value ?? ''
+      // Свой слот: время не подставляем, его выбирают после даты.
+      selectedTime.value = props.explicit ? '' : (chips[0]?.value ?? '')
     }
   },
   { immediate: true },
 )
+
+// Смена даты в своём слоте сбрасывает время: у новой даты свой набор окон.
+watch(selectedDate, () => {
+  if (props.explicit) {
+    selectedTime.value = ''
+  }
+})
+
+// Слот обязателен, пока его выбирают сами: оплата без него ведёт сюда.
+watch(() => props.explicit, (value) => setRequired(Boolean(value)), { immediate: true })
+
+// Адрес сменился на введённый заново (или обратно на книжный): выбор слота
+// начинается заново по правилам нового режима.
+watch(
+  () => props.explicit,
+  () => {
+    selectedDate.value = props.explicit ? '' : (dateChips.value[0]?.value ?? '')
+    selectedTime.value = ''
+  },
+)
+
+onBeforeUnmount(() => setRequired(false))
 
 watch(
   [selectedDate, selectedTime],
@@ -125,7 +168,7 @@ watch(
       </button>
     </component>
 
-    <component :is="rowTag" :class="rowClass">
+    <component :is="rowTag" v-if="isTimeRowVisible" :class="rowClass">
       <button
         v-for="chip in timeChips"
         :key="chip.value"

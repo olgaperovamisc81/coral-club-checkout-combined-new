@@ -56,9 +56,11 @@ const state = ref<{
   method: DeliveryProfileMethod
   profile?: DeliveryProfile
   recipientReady: boolean
+  fromBook: boolean
 }>({
   method: 'courier',
   recipientReady: false,
+  fromBook: false,
 })
 
 const { armGuard, disarmGuard, setAddressSaved } = useAddressGuard()
@@ -76,6 +78,7 @@ function onState(payload: {
   method: DeliveryProfileMethod
   profile?: DeliveryProfile
   recipientReady: boolean
+  fromBook: boolean
 }) {
   state.value = payload
   setAddressSaved(Boolean(payload.profile) && payload.recipientReady)
@@ -88,6 +91,10 @@ function onState(payload: {
 const isOptionsVisible = computed(() => state.value.method === 'courier')
 
 const isResolved = computed(() => Boolean(state.value.profile))
+
+// Адрес из книги — слот выбирают сами: сначала дату, потом время. У нового
+// адреса слот подставляется первым доступным, как раньше.
+const isSlotChoiceExplicit = computed(() => state.value.fromBook)
 
 const courierVariant = ref(defaultVariantId.value)
 
@@ -164,7 +171,11 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
           <Cc3CombinedDeliveryOptions v-model="courierVariant" :resolved="isResolved" />
 
           <div v-if="isSlotsVisible" ref="slotsRef" class="cc3-combined-checkout__slots">
-            <Cc3InlineDeliverySlots :variant-id="courierVariant" carousel />
+            <Cc3InlineDeliverySlots
+              :variant-id="courierVariant"
+              :explicit="isSlotChoiceExplicit"
+              carousel
+            />
 
             <Cc3CombinedNotice
               v-if="isMessageVisible"

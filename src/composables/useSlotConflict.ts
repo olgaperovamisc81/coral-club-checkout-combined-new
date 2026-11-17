@@ -15,6 +15,9 @@ import { computed, ref } from 'vue'
 type SlotSelection = { date: string; time: string }
 
 const isArmed = ref(false)
+
+/** Слот надо выбрать самому: без выбора оплату не пускаем, а ведём к слотам. */
+const isRequired = ref(false)
 const selection = ref<SlotSelection>()
 const taken = ref<SlotSelection>()
 const isMessageVisible = ref(false)
@@ -33,6 +36,10 @@ export function useSlotConflict() {
     }
   }
 
+  function setRequired(value: boolean) {
+    isRequired.value = value
+  }
+
   function reportSelection(value: SlotSelection | undefined) {
     selection.value = value
   }
@@ -44,6 +51,13 @@ export function useSlotConflict() {
   /** Можно ли оплачивать: если слот «пропал», возвращает к выбору. */
   function ensureSlotAvailable(): boolean {
     isMessageVisible.value = false
+
+    // Слот обязателен, но дата или время не выбраны: подводим к слотам.
+    if (isArmed.value && isRequired.value && !selection.value) {
+      anchor.value?.()
+
+      return false
+    }
 
     if (!isArmed.value || hasTriggered || !selection.value) {
       return true
@@ -61,6 +75,7 @@ export function useSlotConflict() {
     takenSlot: computed(() => taken.value),
     isMessageVisible: computed(() => isMessageVisible.value),
     arm,
+    setRequired,
     reportSelection,
     registerAnchor,
     ensureSlotAvailable,
