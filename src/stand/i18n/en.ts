@@ -286,6 +286,7 @@ export default {
   'consent.terms': 'Terms of Sale',
   'consent.required': 'To place the order, please accept the terms',
   'delivery.slotTaken': 'The time you chose has just been taken. Please pick another one and place the order again',
+  'delivery.slotRequired': 'Choose a delivery time',
   'submit.button': 'Proceed to payment',
   'submit.legal': 'By clicking “Proceed to payment” you agree to the Coral Club terms of service. Detailed delivery terms are available on the page',
   'submit.legalLink': 'delivery and payment',

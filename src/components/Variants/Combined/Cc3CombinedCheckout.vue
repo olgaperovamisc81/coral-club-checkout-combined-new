@@ -50,6 +50,7 @@ const { isTermsErrorShown, submit } = useCheckoutSubmit(true, () =>
 const text = computed(() => ({
   optionsTitle: t('delivery.variants'),
   slotTaken: t('delivery.slotTaken'),
+  slotRequired: t('delivery.slotRequired'),
 }))
 
 const state = ref<{
@@ -100,7 +101,7 @@ const courierVariant = ref(defaultVariantId.value)
 
 // Имитация «слот пропал к оплате»: проверка включена, только когда слоты
 // есть на экране — у курьера, с выбранным адресом и в стране со слотами.
-const { arm, registerAnchor, isMessageVisible } = useSlotConflict()
+const { arm, registerAnchor, isMessageVisible, isChoiceMissing } = useSlotConflict()
 const slotsRef = ref<HTMLElement>()
 
 // Слоты есть только на части рынков. Без них обёртка под списком способов
@@ -176,6 +177,10 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
               :explicit="isSlotChoiceExplicit"
               carousel
             />
+
+            <p v-if="isChoiceMissing" class="cc3-combined-checkout__slot-required" role="alert">
+              {{ text.slotRequired }}
+            </p>
 
             <Cc3CombinedNotice
               v-if="isMessageVisible"
@@ -402,6 +407,16 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
   // список способов стоит рамкой, и слотам нужен воздух под ней.
   &__slot-notice {
     margin-top: var(--st-global-distance-space-inset-xl);
+  }
+
+  // «Выберите время доставки» красным под рядами слотов, когда оплату нажали
+  // без слота.
+  &__slot-required {
+    margin: var(--st-global-distance-space-inset-md) 0 0;
+
+    @include font('body-sm');
+
+    color: var(--st-content-foreground-color-negative-primary);
   }
 
   &__slots {

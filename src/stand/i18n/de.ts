@@ -284,6 +284,7 @@ export default {
   'consent.terms': 'Verkaufsbedingungen',
   'consent.required': 'Um die Bestellung aufzugeben, akzeptieren Sie bitte die Bedingungen',
   'delivery.slotTaken': 'Das gewählte Zeitfenster ist soeben vergeben worden. Wählen Sie ein anderes und bestellen Sie erneut',
+  'delivery.slotRequired': 'Wählen Sie eine Lieferzeit',
   'submit.button': 'Zur Zahlung',
   'submit.legal': 'Mit Klick auf „Zur Zahlung“ stimmen Sie den Nutzungsbedingungen von Coral Club zu. Ausführliche Lieferbedingungen finden Sie auf der Seite',
   'submit.legalLink': 'Lieferung und Zahlung',

@@ -284,6 +284,7 @@ export default {
   'consent.terms': 'Obchodní podmínky',
   'consent.required': 'Pro dokončení objednávky přijměte prosím podmínky',
   'delivery.slotTaken': 'Vybraný čas už je obsazený. Vyberte jiný a objednávku odešlete znovu',
+  'delivery.slotRequired': 'Vyberte čas doručení',
   'submit.button': 'Přejít k platbě',
   'submit.legal': 'Kliknutím na „Přejít k platbě“ souhlasíte s podmínkami služby Coral Club. Podrobné podmínky doručení najdete na stránce',
   'submit.legalLink': 'doručení a platby',

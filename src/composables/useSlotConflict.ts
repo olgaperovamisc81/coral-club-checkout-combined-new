@@ -21,6 +21,9 @@ const isRequired = ref(false)
 const selection = ref<SlotSelection>()
 const taken = ref<SlotSelection>()
 const isMessageVisible = ref(false)
+
+/** Оплату нажали без слота: над рядом слотов показывается «Выберите время». */
+const isChoiceMissing = ref(false)
 let hasTriggered = false
 
 /** Прокрутка к ряду слотов: её регистрирует страница. */
@@ -32,16 +35,26 @@ export function useSlotConflict() {
 
     if (!value) {
       isMessageVisible.value = false
+      isChoiceMissing.value = false
       anchor.value = undefined
     }
   }
 
   function setRequired(value: boolean) {
     isRequired.value = value
+
+    if (!value) {
+      isChoiceMissing.value = false
+    }
   }
 
   function reportSelection(value: SlotSelection | undefined) {
     selection.value = value
+
+    // Слот выбран — напоминание про выбор больше не нужно.
+    if (value) {
+      isChoiceMissing.value = false
+    }
   }
 
   function registerAnchor(value: (() => void) | undefined) {
@@ -51,9 +64,11 @@ export function useSlotConflict() {
   /** Можно ли оплачивать: если слот «пропал», возвращает к выбору. */
   function ensureSlotAvailable(): boolean {
     isMessageVisible.value = false
+    isChoiceMissing.value = false
 
     // Слот обязателен, но дата или время не выбраны: подводим к слотам.
     if (isArmed.value && isRequired.value && !selection.value) {
+      isChoiceMissing.value = true
       anchor.value?.()
 
       return false
@@ -74,6 +89,7 @@ export function useSlotConflict() {
   return {
     takenSlot: computed(() => taken.value),
     isMessageVisible: computed(() => isMessageVisible.value),
+    isChoiceMissing: computed(() => isChoiceMissing.value),
     arm,
     setRequired,
     reportSelection,
