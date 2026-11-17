@@ -7,7 +7,10 @@
   padding: calc(var(--st-global-distance-space-inset-4xl) - var(--st-global-distance-space-inset-sm))
     var(--st-global-distance-space-inset-md) var(--st-global-distance-space-inset-md);
 
-  background-color: var(--st-content-background-color-neutral-subtle);
+  // Серый как у магазина друга клуба. Токен neutral-subtle голубоватый, а
+  // чисто серого в списке нет, поэтому значение прямое. Это песочница: если
+  // дизайн приживётся, серый нужно завести токеном.
+  background-color: #f6f6f6;
   border-radius: var(--st-global-distance-space-inset-6xl);
 
   .cc3-modal-order-summary-body__row--total {
