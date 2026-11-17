@@ -309,6 +309,11 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     @include cc3-combined-summary-card;
 
     display: none;
+
+    // Справа карточка без заголовка: товары и суммы понятны и без него.
+    .cc3-modal-order-summary__title {
+      display: none;
+    }
   }
 
   // Галочкам нужны те же 4 сверху, что подвал раньше добавлял к зазору, а
