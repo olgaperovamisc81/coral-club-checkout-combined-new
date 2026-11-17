@@ -86,19 +86,29 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
 
 <style lang="scss">
 .cc3-combined-delivery-options {
-  @include cc3-combined-choice-list;
+  @include cc3-combined-carousel;
 
+  // Карточка: текст сверху, радио в правом нижнем углу.
   &__row {
-    @include cc3-combined-choice-row;
+    @include cc3-combined-carousel-card;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--st-global-distance-space-inset-xl);
+
+    min-height: 140px;
+    width: 210px;
   }
 
   &__content {
     display: flex;
     flex-direction: column;
+    gap: var(--st-global-distance-space-inset-xs);
   }
 
   &__title {
-    @include font('body-md');
+    @include font('heading-xxs');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
@@ -111,6 +121,8 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
 
   &__radio {
     @include cc3-modal-radio-control;
+
+    align-self: flex-end;
   }
 
   &__placeholder {

@@ -67,20 +67,20 @@ watch(methods, (list) => {
         <span class="cc3-combined-payment__method">
           <img :src="method.icon" alt="" class="cc3-combined-payment__icon" />
 
-          <span class="cc3-combined-payment__name">{{ method.name }}</span>
+          <span class="cc3-combined-payment__label">
+            <span class="cc3-combined-payment__name">{{ method.name }}</span>
+
+            <Cc3PaymentMarks v-if="method.marks" :marks="method.marks" />
+          </span>
         </span>
 
-        <span class="cc3-combined-payment__side">
-          <Cc3PaymentMarks v-if="method.marks" :marks="method.marks" />
-
-          <input
-            v-model="selected"
-            type="radio"
-            name="cc3-combined-payment"
-            :value="method.id"
-            class="cc3-combined-payment__radio"
-          />
-        </span>
+        <input
+          v-model="selected"
+          type="radio"
+          name="cc3-combined-payment"
+          :value="method.id"
+          class="cc3-combined-payment__radio"
+        />
       </label>
     </div>
   </section>
@@ -103,11 +103,25 @@ watch(methods, (list) => {
   }
 
   &__list {
-    @include cc3-combined-choice-list;
+    @include cc3-combined-carousel;
   }
 
   &__row {
-    @include cc3-combined-choice-row;
+    @include cc3-combined-carousel-card;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--st-global-distance-space-inset-xl);
+
+    min-width: 200px;
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--st-global-distance-space-inset-md);
   }
 
   &__method {
@@ -132,12 +146,6 @@ watch(methods, (list) => {
     @include font('body-lg');
 
     color: var(--st-content-foreground-color-neutral-primary);
-  }
-
-  &__side {
-    display: flex;
-    align-items: center;
-    gap: var(--st-global-distance-space-inset-md);
   }
 
   &__radio {

@@ -1,0 +1,43 @@
+// Карусель карточек выбора: способы доставки и оплаты комбинированной версии.
+//
+// Карточки стоят в один ряд и прокручиваются вбок, каждая прилипает к левому
+// краю. Ряд выходит за поля блока и возвращает их внутренним отступом: первая
+// карточка стоит на линии остальных блоков, а при прокрутке карточки уходят
+// под самый край экрана, а не обрезаются по полю.
+//
+// Выбранную карточку находит :has(:checked), поэтому классов состояния в
+// разметке нет, как и у списка.
+@mixin cc3-combined-carousel {
+  display: flex;
+  gap: var(--st-global-distance-space-inset-md);
+
+  margin-right: calc(-1 * var(--st-global-distance-space-inset-2xl));
+  margin-left: calc(-1 * var(--st-global-distance-space-inset-2xl));
+  padding: var(--st-global-distance-space-inset-x) var(--st-global-distance-space-inset-2xl);
+
+  overflow-x: auto;
+  scroll-padding-inline: var(--st-global-distance-space-inset-2xl);
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@mixin cc3-combined-carousel-card {
+  flex: 0 0 auto;
+
+  padding: var(--st-global-distance-space-inset-2xl);
+
+  background-color: var(--st-content-background-color-default-solid-normal);
+  border: 1.5px solid var(--st-content-border-color-neutral-implicit);
+  border-radius: var(--st-global-radius-2xl);
+  cursor: pointer;
+  scroll-snap-align: start;
+
+  &:has(:checked) {
+    background-color: var(--st-content-background-color-neutral-subtle);
+    border-color: var(--st-action-background-color-positive-normal);
+  }
+}
