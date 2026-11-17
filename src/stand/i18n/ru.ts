@@ -247,7 +247,6 @@ export default {
   'payment.creditCard': 'Оплата картой',
   'payment.paypal': 'PayPal',
   'summary.title': 'Состав заказа',
-  'summary.yourItems': 'Ваши товары',
   'summary.items': 'Товары ({count})',
   'summary.delivery': 'Доставка',
   'summary.pickupPoint': 'Пункт выдачи ({code})',
