@@ -251,23 +251,20 @@ const addressText = computed(() =>
 const selectedContact = computed(() => selectedEntry.value?.name ?? '')
 
 /**
- * Строки карточки: сначала адрес, потом получатель с подписью «Получатель:».
- * Порядок одинаков у курьера и у пункта самовывоза.
+ * Строки карточки: «Адрес: …», потом «Получатель: …». Порядок одинаков у
+ * курьера и у пункта самовывоза. Адрес читается как предложение: в данных
+ * стенда он начинается со строчной («проспект Берёзовой Рощи»).
  */
 const cardLines = computed(() => {
-  // Адрес читается как предложение: с большой буквы, а в данных стенда он
-  // начинается со строчной («проспект Берёзовой Рощи»).
   const addressLine = addressText.value
   const address = {
     key: 'address',
-    label: '',
-    text: addressLine.charAt(0).toUpperCase() + addressLine.slice(1),
+    text: `${t('address.title')}: ${addressLine.charAt(0).toUpperCase()}${addressLine.slice(1)}`,
     className: 'cc3-combined-delivery__address',
   }
   const name = {
     key: 'name',
-    label: `${t('group.recipient.title')}:`,
-    text: selectedContact.value,
+    text: `${t('group.recipient.title')}: ${selectedContact.value}`,
     className: 'cc3-combined-delivery__name',
   }
 
@@ -485,10 +482,7 @@ const isSelectionMissing = computed(
       </div>
 
       <div class="cc3-combined-delivery__lines">
-        <p v-for="line in cardLines" :key="line.key" :class="line.className">
-          <span v-if="line.label" class="cc3-combined-delivery__name-label">{{ line.label }}</span>
-          {{ line.text }}
-        </p>
+        <p v-for="line in cardLines" :key="line.key" :class="line.className">{{ line.text }}</p>
       </div>
 
       <p v-if="isPriceVisible" class="cc3-combined-delivery__price">
@@ -616,6 +610,7 @@ const isSelectionMissing = computed(
   &__lines {
     display: flex;
     flex-direction: column;
+    gap: var(--st-global-distance-space-inset-sm);
 
     padding-top: var(--st-global-distance-space-inset-md);
   }
@@ -660,18 +655,13 @@ const isSelectionMissing = computed(
     color: var(--st-content-foreground-color-neutral-secondary);
   }
 
-  // Имя получателя — зелёным, как в макете, и без жирного. Подпись перед ним
-  // обычным цветом текста.
+  // Получатель тем же цветом и шрифтом, что адрес.
   &__name {
     margin: 0;
     padding: 0 var(--st-global-distance-space-inset-2xl);
 
     @include font('body-md');
 
-    color: var(--st-content-foreground-color-positive-primary);
-  }
-
-  &__name-label {
     color: var(--st-content-foreground-color-neutral-primary);
   }
 }
