@@ -251,6 +251,7 @@ export default {
   'summary.delivery': 'Доставка',
   'summary.pickupPoint': 'Пункт выдачи ({code})',
   'summary.itemsPoints': '{count} товаров, {points} баллов',
+  'summary.itemsPointsCompact': 'Товаров: {count}. Баллов: {points}.',
   'summary.total': 'Итого:',
   'summary.promoPlaceholder': 'Промокод',
   'summary.promoRow': 'Промокод',

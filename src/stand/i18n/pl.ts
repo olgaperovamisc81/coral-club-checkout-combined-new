@@ -251,6 +251,7 @@ export default {
   'summary.delivery': 'Dostawa',
   'summary.pickupPoint': 'Punkt odbioru ({code})',
   'summary.itemsPoints': '{count} produktów, {points} punktów',
+  'summary.itemsPointsCompact': 'Produkty: {count}. Punkty: {points}.',
   'summary.total': 'Razem:',
   'summary.promoPlaceholder': 'Kod promocyjny',
   'summary.promoRow': 'Kod promocyjny',

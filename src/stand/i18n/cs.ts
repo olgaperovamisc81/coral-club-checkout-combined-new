@@ -251,6 +251,7 @@ export default {
   'summary.delivery': 'Doprava',
   'summary.pickupPoint': 'Výdejní místo ({code})',
   'summary.itemsPoints': '{count} produktů, {points} bodů',
+  'summary.itemsPointsCompact': 'Produkty: {count}. Body: {points}.',
   'summary.total': 'Celkem:',
   'summary.promoPlaceholder': 'Slevový kód',
   'summary.promoRow': 'Promokód',

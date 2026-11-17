@@ -253,6 +253,7 @@ export default {
   'summary.delivery': 'Shipping',
   'summary.pickupPoint': 'Pickup point ({code})',
   'summary.itemsPoints': '{count} products, {points} points',
+  'summary.itemsPointsCompact': 'Products: {count}. Points: {points}.',
   'summary.total': 'Total:',
   'summary.promoPlaceholder': 'Promo code',
   'summary.promoRow': 'Promo code',

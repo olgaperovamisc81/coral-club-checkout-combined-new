@@ -20,6 +20,8 @@ defineProps<{
    * стоят ближе, чем у блока в конце страницы.
    */
   compact?: boolean
+  /** Без миниатюр и числа товаров: комбинированная версия рисует их своим блоком. */
+  hideItems?: boolean
   /** Без поля промокода: комбинированная версия ставит его в отдельную карточку. */
   hidePromo?: boolean
 }>()
@@ -49,7 +51,7 @@ const text = computed(() => ({
       обработчика у неё не было: человек жал и ничего не происходило. Состав
       заказа теперь виден целиком — три позиции, — и раскрывать нечего.
     -->
-    <div class="cc3-modal-order-summary-body__preview">
+    <div v-if="!hideItems" class="cc3-modal-order-summary-body__preview">
       <span class="cc3-modal-order-summary-body__thumbs">
         <span
           v-for="product in orderProductsPreview"
@@ -66,7 +68,7 @@ const text = computed(() => ({
       </span>
     </div>
 
-    <p class="cc3-modal-order-summary-body__count">
+    <p v-if="!hideItems" class="cc3-modal-order-summary-body__count">
       {{ text.itemsPoints }}
     </p>
 

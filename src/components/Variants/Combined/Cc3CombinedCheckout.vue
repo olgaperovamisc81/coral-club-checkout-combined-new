@@ -17,7 +17,6 @@ import Cc3ModalFooterConsent from '../Modal/Cc3ModalFooterConsent.vue'
 import Cc3ModalFooterCta from '../Modal/Cc3ModalFooterCta.vue'
 import Cc3ModalFooterSite from '../Modal/Cc3ModalFooterSite.vue'
 import Cc3ModalHeader from '../Modal/Cc3ModalHeader.vue'
-import Cc3ModalOrderSummary from '../Modal/Cc3ModalOrderSummary.vue'
 import Cc3ModalSummaryBar from '../Modal/Cc3ModalSummaryBar.vue'
 import type { DeliveryProfile, DeliveryProfileMethod } from '../Modal/deliveryProfile'
 import Cc3CombinedDeliveryOptions from './Cc3CombinedDeliveryOptions.vue'
@@ -200,7 +199,7 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
       </div>
 
       <div class="cc3-combined-checkout__aside">
-        <Cc3ModalOrderSummary hide-promo />
+        <Cc3CombinedTotalCard />
         <Cc3CombinedExtrasCard />
       </div>
     </div>
@@ -339,17 +338,10 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     display: none;
   }
 
-  // Сводка с товарами нужна только в две колонки, справа: на телефоне товары
-  // лежат в раскрывающейся полосе вверху, а суммы — в карточке внизу.
-  &__aside > .cc3-modal-order-summary {
-    @include cc3-combined-summary-card;
-
+  // Карточка сводки справа нужна только в две колонки: на телефоне вместо неё
+  // стоит нижняя.
+  &__aside > .cc3-combined-total-card {
     display: none;
-
-    // Справа карточка без заголовка: товары и суммы понятны и без него.
-    .cc3-modal-order-summary__title {
-      display: none;
-    }
   }
 
   // Галочкам нужны те же 4 сверху, что подвал раньше добавлял к зазору, а
@@ -377,7 +369,7 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
 
   // Две колонки: галочки и кнопка под способами оплаты слева, сводка справа.
   @include mediaMinWidth('lg') {
-    &__aside > .cc3-modal-order-summary,
+    &__aside > .cc3-combined-total-card,
     &__aside > .cc3-combined-extras-card {
       display: block;
     }

@@ -251,6 +251,7 @@ export default {
   'summary.delivery': 'Versand',
   'summary.pickupPoint': 'Abholstelle ({code})',
   'summary.itemsPoints': '{count} Produkte, {points} Punkte',
+  'summary.itemsPointsCompact': 'Artikel: {count}. Punkte: {points}.',
   'summary.total': 'Gesamt:',
   'summary.promoPlaceholder': 'Gutscheincode',
   'summary.promoRow': 'Promocode',

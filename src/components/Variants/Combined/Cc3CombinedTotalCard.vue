@@ -1,16 +1,19 @@
 <script setup lang="ts">
 import Cc3ModalOrderSummaryBody from '../Modal/Cc3ModalOrderSummaryBody.vue'
+import Cc3CombinedOrderItems from './Cc3CombinedOrderItems.vue'
 
 /**
- * Карточка сводки внизу страницы на телефоне и планшете: миниатюры товаров,
- * их число и баллы, строки сумм и итог. Без кошелька и промокода — они стоят
- * в своей карточке ниже. С двух колонок её заменяет сводка справа.
+ * Серая карточка сводки: плитки товаров, строка с числом товаров и баллами,
+ * строки сумм и итог. Без кошелька и промокода — они стоят в своей карточке
+ * ниже. Стоит и внизу страницы на телефоне, и справа на десктопе.
  */
 </script>
 
 <template>
   <section class="cc3-combined-total-card">
-    <Cc3ModalOrderSummaryBody hide-promo />
+    <Cc3CombinedOrderItems />
+
+    <Cc3ModalOrderSummaryBody hide-items hide-promo />
   </section>
 </template>
 
