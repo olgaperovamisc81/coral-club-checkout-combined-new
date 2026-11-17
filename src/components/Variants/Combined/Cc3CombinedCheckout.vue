@@ -302,10 +302,26 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     order: 4;
   }
 
+  // Сводка — серая карточка с большим скруглением. Внутри блоки несут свои
+  // поля по 16, поэтому у карточки поля меньше: вместе выходит 24 от края.
+  // Радиуса в 32 в списке радиусов нет, берём тот же размер из отступов.
   &__aside > .cc3-modal-order-summary {
     order: 5;
 
-    padding-top: var(--st-global-distance-space-inset-xl);
+    margin: 0 var(--st-global-distance-space-inset-2xl);
+    padding: calc(var(--st-global-distance-space-inset-4xl) - var(--st-global-distance-space-inset-sm))
+      var(--st-global-distance-space-inset-md) var(--st-global-distance-space-inset-md);
+
+    background-color: var(--st-content-background-color-neutral-subtle);
+    border-radius: var(--st-global-distance-space-inset-6xl);
+
+    // Итог отделён чертой от строк над ним.
+    .cc3-modal-order-summary-body__row--total {
+      margin-top: var(--st-global-distance-space-inset-xs);
+      padding-top: var(--st-global-distance-space-inset-xl);
+
+      border-top: 1px solid var(--st-content-border-color-neutral-implicit);
+    }
   }
 
   // Галочкам нужны те же 4 сверху, что подвал раньше добавлял к зазору, а
@@ -333,13 +349,9 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
   }
 
   // Две колонки: галочки и кнопка под способами оплаты слева, сводка справа.
-  // Рамка у сводки отделяет колонку от формы.
   @include mediaMinWidth('lg') {
     &__aside > .cc3-modal-order-summary {
-      padding-bottom: var(--st-global-distance-space-inset-xs);
-
-      border: 1px solid var(--st-content-border-color-neutral-implicit);
-      border-radius: var(--st-global-radius-md);
+      margin: 0;
     }
 
     &__main > .cc3-modal-footer-consent {
