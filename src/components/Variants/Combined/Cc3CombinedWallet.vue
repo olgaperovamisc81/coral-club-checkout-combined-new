@@ -167,20 +167,8 @@ const text = computed(() => ({
     color: var(--st-content-foreground-color-neutral-primary);
   }
 
-  // Значок вопроса: без рамки и подложки, пока пояснение закрыто — приглушён.
   &__info-button {
-    display: flex;
-
-    padding: 0;
-
-    color: var(--st-content-foreground-color-neutral-secondary);
-    background: none;
-    border: none;
-    cursor: pointer;
-
-    &[aria-expanded='true'] {
-      color: var(--st-content-foreground-color-neutral-primary);
-    }
+    @include cc3-combined-info-button;
   }
 
   &__value {

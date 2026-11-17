@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, reactive } from 'vue'
 
+import Cc3Icon from '@/components/Icon/Cc3Icon.vue'
 import { useAddressGuard } from '@/composables/useAddressGuard'
 import { useCourierVariants } from '@/composables/useCourierVariants'
 import { useStand } from '@/stand/composables/useStand'
@@ -46,6 +47,14 @@ function goToAddress() {
   field?.focus({ preventScroll: true })
 }
 
+// Описание варианта («Доступно для заказов…») спрятано за значком «i» и
+// раскрывается по нажатию, у каждой карточки отдельно.
+const openCaptions = reactive<Record<string, boolean>>({})
+
+function toggleCaption(id: string) {
+  openCaptions[id] = !openCaptions[id]
+}
+
 const isWarning = computed(() => !props.resolved && isWarningVisible.value)
 </script>
 
@@ -57,8 +66,25 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
       class="cc3-combined-delivery-options__row"
     >
       <span class="cc3-combined-delivery-options__content">
-        <span class="cc3-combined-delivery-options__title">{{ variant.title }}</span>
-        <span v-if="variant.caption" class="cc3-combined-delivery-options__caption">
+        <span class="cc3-combined-delivery-options__title">
+          {{ variant.title }}
+
+          <!-- Кнопка внутри подписи не выбирает карточку: нажатие по ней только раскрывает описание. -->
+          <button
+            v-if="variant.caption"
+            type="button"
+            class="cc3-combined-delivery-options__info-button"
+            :aria-label="variant.title"
+            :aria-expanded="openCaptions[variant.id]"
+            @click.prevent="toggleCaption(variant.id)"
+          >
+            <Cc3Icon name="info-circle" :size="16" />
+          </button>
+        </span>
+        <span
+          v-if="variant.caption && openCaptions[variant.id]"
+          class="cc3-combined-delivery-options__caption"
+        >
           {{ variant.caption }}
         </span>
       </span>
@@ -97,7 +123,6 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
     align-items: stretch;
     gap: var(--st-global-distance-space-inset-xl);
 
-    min-height: 104px;
     width: 232px;
   }
 
@@ -115,6 +140,13 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
     @include font('body-md');
 
     color: var(--st-content-foreground-color-neutral-primary);
+  }
+
+  &__info-button {
+    @include cc3-combined-info-button;
+
+    // На строке с названием, по центру первой строки.
+    vertical-align: middle;
   }
 
   // Подписи-описания мельче названия: 14.
