@@ -137,13 +137,10 @@ const text = computed(() => ({
   flex-direction: column;
   gap: var(--st-global-distance-space-inset-xl);
 
-  // Блок стоит внутри сводки под итогом, отделён от него линией. Поля по
-  // бокам задаёт margin: линия идёт по ширине строк сводки.
-  margin: var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-2xl)
-    var(--st-global-distance-space-inset-2xl);
-  padding-top: var(--st-global-distance-space-inset-2xl);
-
-  border-top: 1px solid var(--st-content-border-color-neutral-implicit);
+  // Блок стоит внутри сводки под итогом, без разделителя. Поля по бокам
+  // задаёт margin, чтобы блок шёл по ширине строк сводки.
+  margin: calc(var(--st-global-distance-space-inset-xl) + var(--st-global-distance-space-inset-2xl))
+    var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-2xl);
 
   &__head {
     display: flex;
