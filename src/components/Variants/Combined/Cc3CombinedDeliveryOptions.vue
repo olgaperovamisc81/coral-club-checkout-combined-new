@@ -95,32 +95,32 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: var(--st-global-distance-space-inset-xl);
+    gap: var(--st-global-distance-space-inset-md);
 
-    min-height: 140px;
-    width: 210px;
+    min-height: 104px;
+    width: 168px;
   }
 
   &__content {
     display: flex;
     flex-direction: column;
-    gap: var(--st-global-distance-space-inset-xs);
+    gap: var(--st-global-distance-space-inset-x);
   }
 
   &__title {
-    @include font('heading-xxs');
+    @include font('label-sm');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
 
   &__caption {
-    @include font('body-sm');
+    @include font('body-xs');
 
     color: var(--st-content-foreground-color-neutral-secondary);
   }
 
   &__radio {
-    @include cc3-modal-radio-control;
+    @include cc3-combined-carousel-radio;
 
     align-self: flex-end;
   }

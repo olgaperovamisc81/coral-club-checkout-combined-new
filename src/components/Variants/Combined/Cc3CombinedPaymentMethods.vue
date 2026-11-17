@@ -113,8 +113,6 @@ watch(methods, (list) => {
     align-items: center;
     justify-content: space-between;
     gap: var(--st-global-distance-space-inset-xl);
-
-    min-width: 200px;
   }
 
   &__label {
@@ -135,21 +133,23 @@ watch(methods, (list) => {
   &__icon {
     flex-shrink: 0;
 
-    width: 32px;
-    height: 32px;
+    width: 28px;
+    height: 28px;
 
     border-radius: var(--st-global-radius-pill);
     object-fit: cover;
   }
 
   &__name {
-    @include font('body-lg');
+    white-space: nowrap;
+
+    @include font('label-sm');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
 
   &__radio {
-    @include cc3-modal-radio-control;
+    @include cc3-combined-carousel-radio;
   }
 }
 </style>
