@@ -184,7 +184,7 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
       </div>
 
       <div class="cc3-combined-checkout__aside">
-        <Cc3ModalOrderSummary hide-promo />
+        <Cc3ModalOrderSummary />
       </div>
     </div>
 
@@ -293,11 +293,17 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     order: 4;
   }
 
-  // Серая карточка с суммами внизу: на телефоне и десктопе одна и та же.
+  // Серая карточка с суммами внизу нужна на телефоне и планшете, где другой
+  // сводки в потоке нет. В две колонки суммы, товары и промокод собраны в
+  // карточке справа, и нижняя только повторяла бы её.
   &__main > .cc3-combined-total-card {
     order: 5;
 
     margin: 0 var(--st-global-distance-space-inset-2xl);
+
+    @include mediaMinWidth('lg') {
+      display: none;
+    }
   }
 
   // Сводка с товарами нужна только в две колонки, справа: на телефоне товары
@@ -306,11 +312,6 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     @include cc3-combined-summary-card;
 
     display: none;
-
-    // Заголовок карточки стоит у нижней сводки, здесь он повторял бы его.
-    .cc3-modal-order-summary__title {
-      display: none;
-    }
   }
 
   // Галочкам нужны те же 4 сверху, что подвал раньше добавлял к зазору, а
@@ -337,7 +338,7 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     padding-top: 0;
   }
 
-  // Две колонки: суммы, галочки и кнопка под способами оплаты слева, товары справа.
+  // Две колонки: галочки и кнопка под способами оплаты слева, сводка справа.
   @include mediaMinWidth('lg') {
     &__aside > .cc3-modal-order-summary {
       display: block;

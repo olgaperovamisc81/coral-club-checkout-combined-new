@@ -20,8 +20,6 @@ defineProps<{
   compact?: boolean
   /** Без миниатюр и счётчика товаров: остаются строки сумм. */
   hideItems?: boolean
-  /** Без поля промокода. */
-  hidePromo?: boolean
 }>()
 
 const { t } = useStand()
@@ -121,7 +119,7 @@ const text = computed(() => ({
       </div>
     </dl>
 
-    <div v-if="!hidePromo" class="cc3-modal-order-summary-body__promo">
+    <div class="cc3-modal-order-summary-body__promo">
       <div v-if="appliedPromo" class="cc3-modal-order-summary-body__promo-field">
         <span class="cc3-modal-order-summary-body__promo-applied">{{ text.promoApplied }}</span>
 

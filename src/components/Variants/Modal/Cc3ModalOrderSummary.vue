@@ -14,11 +14,6 @@ import Cc3ModalOrderSummaryBody from './Cc3ModalOrderSummaryBody.vue'
  * с двумя «Итого» на одном экране — это вопрос «а какая настоящая» прямо
  * внутри замера.
  */
-defineProps<{
-  /** Без поля промокода: его показывает другой блок страницы. */
-  hidePromo?: boolean
-}>()
-
 const { t } = useStand()
 const { trackSummaryBlock } = useSummarySticky()
 
@@ -42,7 +37,7 @@ onBeforeUnmount(() => stopTracking?.())
   <section ref="sectionRef" class="cc3-modal-order-summary">
     <h2 class="cc3-modal-order-summary__title">{{ text.title }}</h2>
 
-    <Cc3ModalOrderSummaryBody :hide-promo="hidePromo" />
+    <Cc3ModalOrderSummaryBody />
   </section>
 </template>
 
