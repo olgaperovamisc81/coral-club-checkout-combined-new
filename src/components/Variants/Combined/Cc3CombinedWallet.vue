@@ -190,8 +190,13 @@ function applyCustom() {
   flex-direction: column;
   gap: var(--st-global-distance-space-inset-xl);
 
-  // Те же 12 сверху, что у остальных блоков страницы.
-  padding: var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-2xl) 0;
+  // Блок стоит внутри сводки под итогом, отделён от него линией. Поля по
+  // бокам задаёт margin: линия идёт по ширине строк сводки.
+  margin: var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-2xl)
+    var(--st-global-distance-space-inset-2xl);
+  padding-top: var(--st-global-distance-space-inset-2xl);
+
+  border-top: 1px solid var(--st-content-border-color-neutral-implicit);
 
   &__head {
     display: flex;

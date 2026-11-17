@@ -176,7 +176,6 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
           </div>
         </section>
 
-        <Cc3CombinedWallet />
         <Cc3CombinedPaymentMethods />
         <Cc3CombinedTotalCard />
         <Cc3ModalFooterConsent ref="consentRef" :is-error-shown="isTermsErrorShown" />
@@ -184,7 +183,9 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
       </div>
 
       <div class="cc3-combined-checkout__aside">
-        <Cc3ModalOrderSummary />
+        <Cc3ModalOrderSummary>
+          <Cc3CombinedWallet />
+        </Cc3ModalOrderSummary>
       </div>
     </div>
 
@@ -285,10 +286,6 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     order: 2;
   }
 
-  &__main > .cc3-combined-wallet {
-    order: 3;
-  }
-
   &__main > .cc3-combined-payment {
     order: 4;
   }
@@ -330,10 +327,9 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
   }
 
   // В самовывозе вариантов доставки нет, и за блоком доставки сразу идёт
-  // кошелёк или оплата. Блок доставки уже держит снизу свои 12, поэтому
+  // оплата. Блок доставки уже держит снизу свои 12, поэтому
   // собственный верхний отступ следующего блока лишний: без этой строки
   // заголовок стоял бы на 12 дальше, чем у «Вариантов доставки».
-  &__main > .cc3-combined-delivery + .cc3-combined-wallet,
   &__main > .cc3-combined-delivery + .cc3-combined-payment {
     padding-top: 0;
   }

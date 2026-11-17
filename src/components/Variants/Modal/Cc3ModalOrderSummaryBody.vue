@@ -119,6 +119,9 @@ const text = computed(() => ({
       </div>
     </dl>
 
+    <!-- Место под блок между итогом и промокодом (кошелёк комбинированной версии). -->
+    <slot />
+
     <div class="cc3-modal-order-summary-body__promo">
       <div v-if="appliedPromo" class="cc3-modal-order-summary-body__promo-field">
         <span class="cc3-modal-order-summary-body__promo-applied">{{ text.promoApplied }}</span>
