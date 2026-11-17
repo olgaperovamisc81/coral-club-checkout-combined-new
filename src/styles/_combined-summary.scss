@@ -1,5 +1,3 @@
-@use 'typography' as *;
-
 // Серая карточка сводки: большое скругление, итог отделён чертой.
 //
 // Внутри блоки сводки несут свои поля по 16, поэтому у карточки поля меньше:
@@ -14,11 +12,6 @@
   // дизайн приживётся, серый нужно завести токеном.
   background-color: #f6f6f6;
   border-radius: var(--st-global-distance-space-inset-6xl);
-
-  // Описание под миниатюрами мельче строк сумм: 14, как остальные описания.
-  .cc3-modal-order-summary-body__count {
-    @include font('body-sm');
-  }
 
   // Строка скидки Coral Wallet обычным шрифтом: в общей сводке она жирная.
   .cc3-modal-order-summary-body__row--positive {

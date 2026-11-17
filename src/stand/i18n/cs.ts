@@ -247,6 +247,7 @@ export default {
   'payment.creditCard': 'Kreditní karta',
   'payment.paypal': 'PayPal',
   'summary.title': 'Souhrn objednávky',
+  'summary.yourItems': 'Vaše produkty',
   'summary.items': 'Zboží ({count})',
   'summary.delivery': 'Doprava',
   'summary.pickupPoint': 'Výdejní místo ({code})',

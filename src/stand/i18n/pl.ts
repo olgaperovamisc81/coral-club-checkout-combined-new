@@ -247,6 +247,7 @@ export default {
   'payment.creditCard': 'Karta kredytowa',
   'payment.paypal': 'PayPal',
   'summary.title': 'Podsumowanie zamówienia',
+  'summary.yourItems': 'Twoje produkty',
   'summary.items': 'Produkty ({count})',
   'summary.delivery': 'Dostawa',
   'summary.pickupPoint': 'Punkt odbioru ({code})',
