@@ -44,8 +44,9 @@ function toProfiles(): DeliveryProfile[] {
   return savedAddressBookEntries.value.map((entry) => ({
     id: entry.id,
     method: entry.method,
-    typeLabel:
-      entry.method === 'courier' ? t('concept.delivery.method.label') : entry.methodLabel,
+    // «Доставка курьером», а не «Курьер»: в книге это способ, а не имя —
+    // иначе карточка читалась бы так, будто получатель сам и есть курьер.
+    typeLabel: entry.method === 'courier' ? t('delivery.courier.title') : entry.methodLabel,
     fields: entry.fields,
     name: entry.fullName,
     // В книге адрес стоит одной строкой — список выбирают, а не читают как

@@ -291,7 +291,7 @@ const profileId = props.editProfile?.id ?? draftId
 const profile = computed<DeliveryProfile>(() => ({
   id: profileId,
   method: 'courier',
-  typeLabel: t('concept.delivery.method.label'),
+  typeLabel: t('delivery.courier.title'),
   name: recipientDisplayName.value,
   addressLine: composeAddressLine(country.value, values.value, t),
   priceLabel: courierVariants.value[0]?.summary ?? '',
