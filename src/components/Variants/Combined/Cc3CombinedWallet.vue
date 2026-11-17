@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 import Cc3Icon from '@/components/Icon/Cc3Icon.vue'
 import { useCheckout } from '@/composables/useCheckout'
@@ -7,7 +7,7 @@ import { useStand } from '@/stand/composables/useStand'
 
 /**
  * Блок Coral Wallet над способами оплаты: строка с иконкой, балансом и
- * переключателем и под ней мелкий текст с пояснением. Баланс меньше
+ * переключателем; пояснение спрятано за значком вопроса и раскрывается под строкой мелким текстом. Баланс меньше
  * заказа, поэтому сценарий один: списать весь доступный баланс скидкой, а
  * остаток оплатить обычным способом ниже. Блок виден только тому, у кого
  * есть кошелёк, — человеку с сохранёнными адресами; новый покупатель
@@ -43,11 +43,18 @@ const WALLET_NAME = 'Coral Wallet'
 
 const isApplied = computed(() => walletMode.value === 'applied')
 
+// Пояснение спрятано за значком вопроса и раскрывается по нажатию.
+const isInfoOpen = ref(false)
+
+function toggleInfo() {
+  isInfoOpen.value = !isInfoOpen.value
+}
+
 // Под названием стоит баланс, а после применения — сколько списано.
 const value = computed(() =>
   isApplied.value
-    ? `−${walletAppliedAmountFormat.value}`
-    : walletDisplayBalanceFormat.value,
+    ? `${t('wallet.appliedLabel')} ${walletAppliedAmountFormat.value}`
+    : `${t('wallet.available')} ${walletDisplayBalanceFormat.value}`,
 )
 
 function onToggle(event: Event) {
@@ -60,6 +67,7 @@ function onToggle(event: Event) {
 
 const text = computed(() => ({
   name: WALLET_NAME,
+  info: t('wallet.info'),
   payAll: t('wallet.payAll'),
   spendUpTo: t('wallet.spendUpTo', { amount: walletMaxUsableFormat.value }),
   applied: t('wallet.applied', { amount: walletAppliedAmountFormat.value }),
@@ -74,7 +82,19 @@ const text = computed(() => ({
       <Cc3Icon name="wallet-02" :size="24" class="cc3-combined-wallet__icon" />
 
       <span class="cc3-combined-wallet__info">
-        <span class="cc3-combined-wallet__name">{{ text.name }}</span>
+        <span class="cc3-combined-wallet__name">
+          {{ text.name }}
+
+          <button
+            type="button"
+            class="cc3-combined-wallet__info-button"
+            :aria-label="text.info"
+            :aria-expanded="isInfoOpen"
+            @click="toggleInfo"
+          >
+            <Cc3Icon name="info-circle" :size="16" />
+          </button>
+        </span>
         <span
           class="cc3-combined-wallet__value"
           :class="{ 'cc3-combined-wallet__value--applied': isApplied }"
@@ -96,7 +116,7 @@ const text = computed(() => ({
       </label>
     </div>
 
-    <div class="cc3-combined-wallet__note">
+    <div v-if="isInfoOpen" class="cc3-combined-wallet__note">
       <!-- Скидка ещё не применена: предлагаем списать доступный баланс. -->
       <p v-if="walletMode === 'idle'" class="cc3-combined-wallet__description">
         <template v-if="isWalletFullyCovering">{{ text.payAll }}</template>
@@ -148,9 +168,29 @@ const text = computed(() => ({
   }
 
   &__name {
+    display: flex;
+    align-items: center;
+    gap: var(--st-global-distance-space-inset-md);
+
     @include font('body-lg');
 
     color: var(--st-content-foreground-color-neutral-primary);
+  }
+
+  // Значок вопроса: без рамки и подложки, пока пояснение закрыто — приглушён.
+  &__info-button {
+    display: flex;
+
+    padding: 0;
+
+    color: var(--st-content-foreground-color-neutral-secondary);
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &[aria-expanded='true'] {
+      color: var(--st-content-foreground-color-neutral-primary);
+    }
   }
 
   &__value {
