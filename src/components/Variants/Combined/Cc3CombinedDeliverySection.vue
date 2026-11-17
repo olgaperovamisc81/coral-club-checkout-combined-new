@@ -240,22 +240,24 @@ const addressText = computed(() =>
 const selectedContact = computed(() => selectedEntry.value?.name ?? '')
 
 /**
- * Строки карточки. У курьера первым стоит получатель, а потом адрес; у
- * пункта самовывоза наоборот — там адрес пункта главнее, чем имя забирающего.
+ * Строки карточки: сначала адрес, потом получатель с подписью «Получатель:».
+ * Порядок одинаков у курьера и у пункта самовывоза.
  */
 const cardLines = computed(() => {
-  const name = {
-    key: 'name',
-    text: selectedContact.value,
-    className: 'cc3-combined-delivery__name',
-  }
   const address = {
     key: 'address',
+    label: '',
     text: addressText.value,
     className: 'cc3-combined-delivery__address',
   }
+  const name = {
+    key: 'name',
+    label: `${t('group.recipient.title')}:`,
+    text: selectedContact.value,
+    className: 'cc3-combined-delivery__name',
+  }
 
-  return selectedEntry.value?.method === 'courier' ? [name, address] : [address, name]
+  return [address, name]
 })
 
 /** Попап пункта самовывоза получает editProfile, только если это его профиль. */
@@ -469,7 +471,10 @@ const isSelectionMissing = computed(
       </div>
 
       <div class="cc3-combined-delivery__lines">
-        <p v-for="line in cardLines" :key="line.key" :class="line.className">{{ line.text }}</p>
+        <p v-for="line in cardLines" :key="line.key" :class="line.className">
+          <span v-if="line.label" class="cc3-combined-delivery__name-label">{{ line.label }}</span>
+          {{ line.text }}
+        </p>
       </div>
 
       <p v-if="isPriceVisible" class="cc3-combined-delivery__price">
@@ -641,7 +646,8 @@ const isSelectionMissing = computed(
     color: var(--st-content-foreground-color-neutral-secondary);
   }
 
-  // Имя получателя — зелёным, как в макете, и без жирного.
+  // Имя получателя — зелёным, как в макете, и без жирного. Подпись перед ним
+  // обычным цветом текста.
   &__name {
     margin: 0;
     padding: 0 var(--st-global-distance-space-inset-2xl);
@@ -649,6 +655,10 @@ const isSelectionMissing = computed(
     @include font('body-md');
 
     color: var(--st-content-foreground-color-positive-primary);
+  }
+
+  &__name-label {
+    color: var(--st-content-foreground-color-neutral-primary);
   }
 }
 </style>
