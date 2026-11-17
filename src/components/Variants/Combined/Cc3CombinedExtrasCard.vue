@@ -26,6 +26,11 @@ import Cc3CombinedWallet from './Cc3CombinedWallet.vue'
 
   &__promo {
     padding: 0 var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-2xl);
+
+    // На сером фоне карточки поле промокода белое, чтобы читалось как поле.
+    .cc3-modal-order-summary-promo__field {
+      background-color: var(--st-content-background-color-default-solid-normal);
+    }
   }
 }
 </style>
