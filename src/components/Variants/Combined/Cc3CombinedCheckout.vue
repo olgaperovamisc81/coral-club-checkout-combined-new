@@ -347,6 +347,15 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
 
     &__main > .cc3-modal-footer-consent {
       margin-top: 0;
+
+      // Галочка слева от текста, как в магазине друга клуба. Порядок в разметке
+      // общий с остальными версиями (текст, потом галочка), поэтому меняем его
+      // только здесь, а выравниваем по первой строке: текст бывает в две-три.
+      .cc3-modal-footer-consent__cell {
+        flex-direction: row-reverse;
+        align-items: flex-start;
+        justify-content: flex-end;
+      }
     }
   }
 
