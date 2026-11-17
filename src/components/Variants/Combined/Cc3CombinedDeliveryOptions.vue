@@ -5,6 +5,8 @@ import { useAddressGuard } from '@/composables/useAddressGuard'
 import { useCourierVariants } from '@/composables/useCourierVariants'
 import { useStand } from '@/stand/composables/useStand'
 
+import Cc3CombinedCarousel from './Cc3CombinedCarousel.vue'
+
 /**
  * Способ доставки курьера в комбинированной версии: сгруппированный список
  * вместо отдельных карточек. Пока адрес не заполнен, вместо цен стоит
@@ -48,7 +50,7 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
 </script>
 
 <template>
-  <div v-if="resolved" class="cc3-combined-delivery-options">
+  <Cc3CombinedCarousel v-if="resolved">
     <label
       v-for="variant in courierVariants"
       :key="variant.id"
@@ -69,7 +71,7 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
         class="cc3-combined-delivery-options__radio"
       />
     </label>
-  </div>
+  </Cc3CombinedCarousel>
 
   <div v-else class="cc3-combined-delivery-options__placeholder">
     <p v-if="isWarning" class="cc3-combined-delivery-options__warning" role="alert">
@@ -86,8 +88,6 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
 
 <style lang="scss">
 .cc3-combined-delivery-options {
-  @include cc3-combined-carousel;
-
   // Карточка в две колонки: блок текста слева на всю высоту, радио справа
   // внизу. Между ними зазор, чтобы длинная подпись не упиралась в радио.
   &__row {

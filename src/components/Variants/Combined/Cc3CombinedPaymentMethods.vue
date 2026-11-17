@@ -11,6 +11,8 @@ import { useStand } from '@/stand/composables/useStand'
 import { conceptPaymentMethodsFor } from '@/stand/config/payments'
 import type { PaymentMark } from '@/stand/config/payments'
 
+import Cc3CombinedCarousel from './Cc3CombinedCarousel.vue'
+
 /**
  * Способы оплаты комбинированной версии: тот же набор, что у остальных
  * концептов (он зависит от рынка), но сгруппированным списком, как и способ
@@ -62,7 +64,7 @@ watch(methods, (list) => {
   <section class="cc3-combined-payment">
     <h2 class="cc3-combined-payment__title">{{ text.title }}</h2>
 
-    <div class="cc3-combined-payment__list">
+    <Cc3CombinedCarousel>
       <label v-for="method in methods" :key="method.id" class="cc3-combined-payment__row">
         <span class="cc3-combined-payment__method">
           <img :src="method.icon" alt="" class="cc3-combined-payment__icon" />
@@ -82,7 +84,7 @@ watch(methods, (list) => {
           class="cc3-combined-payment__radio"
         />
       </label>
-    </div>
+    </Cc3CombinedCarousel>
   </section>
 </template>
 
@@ -100,10 +102,6 @@ watch(methods, (list) => {
     @include font('heading-xxs');
 
     color: var(--st-content-foreground-color-neutral-primary);
-  }
-
-  &__list {
-    @include cc3-combined-carousel;
   }
 
   &__row {

@@ -9,6 +9,8 @@ import {
 import { useSlotConflict } from '@/composables/useSlotConflict'
 import { useStand } from '@/stand/composables/useStand'
 
+import Cc3CombinedCarousel from '../Combined/Cc3CombinedCarousel.vue'
+
 /**
  * Дата и время доставки — два ряда чипсов.
  *
@@ -28,9 +30,15 @@ import { useStand } from '@/stand/composables/useStand'
 const props = defineProps<{
   /** Выбранный способ доставки: у экспресса свои даты и окна. */
   variantId?: string
+  /** Ряды — карусели со стрелками (комбинированная версия), а не переносятся. */
+  carousel?: boolean
 }>()
 
 const { country, countryConfig, t } = useStand()
+
+// Ряд — либо обычный блок с переносом, либо карусель.
+const rowTag = computed(() => (props.carousel ? Cc3CombinedCarousel : 'div'))
+const rowClass = computed(() => (props.carousel ? undefined : 'cc3-inline-delivery-slots__row'))
 
 const hasSlots = computed(() => hasDeliverySlots(country.value))
 
@@ -104,7 +112,7 @@ watch(
 
 <template>
   <div v-if="hasSlots" class="cc3-inline-delivery-slots">
-    <div class="cc3-inline-delivery-slots__row">
+    <component :is="rowTag" :class="rowClass">
       <button
         v-for="chip in dateChips"
         :key="chip.value"
@@ -115,9 +123,9 @@ watch(
       >
         {{ chip.label }}
       </button>
-    </div>
+    </component>
 
-    <div class="cc3-inline-delivery-slots__row">
+    <component :is="rowTag" :class="rowClass">
       <button
         v-for="chip in timeChips"
         :key="chip.value"
@@ -128,7 +136,7 @@ watch(
       >
         {{ chip.label }}
       </button>
-    </div>
+    </component>
   </div>
 </template>
 
