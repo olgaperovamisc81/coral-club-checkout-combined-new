@@ -6,9 +6,9 @@ import { useStand } from '@/stand/composables/useStand'
 import Cc3ModalOrderSummaryBody from '../Modal/Cc3ModalOrderSummaryBody.vue'
 
 /**
- * Серая карточка с суммами внизу страницы, перед галочками: строки, итог и
- * без миниатюр, кошелька и промокода: те стоят в своей карточке ниже. На телефоне это единственная сводка в потоке, на
- * десктопе она стоит под способами оплаты, а товары лежат в правой колонке.
+ * Карточка сводки внизу страницы на телефоне и планшете: миниатюры товаров,
+ * их число и баллы, строки сумм и итог. Без кошелька и промокода — они стоят
+ * в своей карточке ниже. С двух колонок её заменяет сводка справа.
  */
 const { t } = useStand()
 
@@ -21,7 +21,7 @@ const text = computed(() => ({
   <section class="cc3-combined-total-card">
     <h2 class="cc3-combined-total-card__title">{{ text.title }}</h2>
 
-    <Cc3ModalOrderSummaryBody hide-items hide-promo />
+    <Cc3ModalOrderSummaryBody hide-promo />
   </section>
 </template>
 
