@@ -244,10 +244,13 @@ const selectedContact = computed(() => selectedEntry.value?.name ?? '')
  * Порядок одинаков у курьера и у пункта самовывоза.
  */
 const cardLines = computed(() => {
+  // Адрес читается как предложение: с большой буквы, а в данных стенда он
+  // начинается со строчной («проспект Берёзовой Рощи»).
+  const addressLine = addressText.value
   const address = {
     key: 'address',
     label: '',
-    text: addressText.value,
+    text: addressLine.charAt(0).toUpperCase() + addressLine.slice(1),
     className: 'cc3-combined-delivery__address',
   }
   const name = {
