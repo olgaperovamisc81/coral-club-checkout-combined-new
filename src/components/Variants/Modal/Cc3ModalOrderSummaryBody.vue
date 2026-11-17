@@ -4,6 +4,8 @@ import { computed } from 'vue'
 import { useCheckout } from '@/composables/useCheckout'
 import { useStand } from '@/stand/composables/useStand'
 
+import Cc3ModalOrderSummaryPromo from './Cc3ModalOrderSummaryPromo.vue'
+
 /**
  * Тело сводки заказа: миниатюры, счётчик, суммы и промокод.
  *
@@ -20,19 +22,12 @@ defineProps<{
   compact?: boolean
   /** Без миниатюр и счётчика товаров: остаются строки сумм. */
   hideItems?: boolean
+  /** Без поля промокода: комбинированная версия ставит его в отдельную карточку. */
+  hidePromo?: boolean
 }>()
 
 const { t } = useStand()
-const {
-  summary,
-  orderProductsPreview,
-  promoCode,
-  appliedPromo,
-  promoError,
-  applyPromo,
-  removePromo,
-  clearPromoError,
-} = useCheckout()
+const { summary, orderProductsPreview } = useCheckout()
 
 const text = computed(() => ({
   subtotal: t('summary.items', { count: summary.value.itemsCount }),
@@ -42,14 +37,7 @@ const text = computed(() => ({
     count: summary.value.itemsCount,
     points: summary.value.points,
   }),
-  promoPlaceholder: t('summary.promoPlaceholder'),
-  apply: t('common.apply'),
   promoRow: t('summary.promoRow'),
-  promoApplied: appliedPromo.value
-    ? t('summary.promoApplied', { code: appliedPromo.value.code })
-    : '',
-  promoRemove: t('summary.promoRemove'),
-  promoError: promoError.value === 'expired' ? t('summary.promoExpired') : t('summary.promoInvalid'),
 }))
 </script>
 
@@ -119,50 +107,8 @@ const text = computed(() => ({
       </div>
     </dl>
 
-    <!-- Место под блок между итогом и промокодом (кошелёк комбинированной версии). -->
-    <slot />
-
-    <div class="cc3-modal-order-summary-body__promo">
-      <div v-if="appliedPromo" class="cc3-modal-order-summary-body__promo-field">
-        <span class="cc3-modal-order-summary-body__promo-applied">{{ text.promoApplied }}</span>
-
-        <button
-          type="button"
-          class="cc3-modal-order-summary-body__promo-apply"
-          @click="removePromo"
-        >
-          {{ text.promoRemove }}
-        </button>
-      </div>
-
-      <template v-else>
-        <div
-          class="cc3-modal-order-summary-body__promo-field"
-          :class="{ 'cc3-modal-order-summary-body__promo-field--invalid': promoError }"
-        >
-          <input
-            v-model="promoCode"
-            type="text"
-            :placeholder="text.promoPlaceholder"
-            class="cc3-modal-order-summary-body__promo-input"
-            @input="clearPromoError"
-            @keydown.enter="applyPromo"
-          />
-
-          <button
-            type="button"
-            class="cc3-modal-order-summary-body__promo-apply"
-            :disabled="!promoCode"
-            @click="applyPromo"
-          >
-            {{ text.apply }}
-          </button>
-        </div>
-
-        <p v-if="promoError" class="cc3-modal-order-summary-body__promo-error" role="alert">
-          {{ text.promoError }}
-        </p>
-      </template>
+    <div v-if="!hidePromo" class="cc3-modal-order-summary-body__promo">
+      <Cc3ModalOrderSummaryPromo />
     </div>
   </div>
 </template>
@@ -283,91 +229,6 @@ const text = computed(() => ({
 
   &__promo {
     padding: 0 var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-2xl);
-  }
-
-  // Рамка у обёртки, а не у input: кнопка «Применить» лежит внутри поля.
-  &__promo-field {
-    display: flex;
-    align-items: center;
-    gap: var(--st-global-distance-space-inset-md);
-
-    padding: 0 var(--st-global-distance-space-inset-xl);
-    height: 44px;
-
-    background-color: var(--st-interaction-background-color-ghost-normal);
-    border: 2px solid var(--st-interaction-border-color-neutral-normal);
-    border-radius: var(--st-global-radius-sm);
-
-    &:focus-within {
-      border-color: var(--st-action-background-color-positive-normal);
-    }
-  }
-
-  &__promo-field--invalid,
-  &__promo-field--invalid:focus-within {
-    border-color: var(--st-content-border-color-negative-explicit);
-  }
-
-  &__promo-applied {
-    flex: 1;
-    min-width: 0;
-
-    @include font('label-sm');
-
-    color: var(--st-content-foreground-color-neutral-primary);
-  }
-
-  &__promo-error {
-    margin: var(--st-global-distance-space-inset-sm) 0 0;
-
-    @include font('body-sm');
-
-    color: var(--st-content-foreground-color-negative-primary);
-  }
-
-  &__promo-input {
-    flex: 1;
-    min-width: 0;
-
-    padding: 0;
-    height: 100%;
-
-    font-family: inherit;
-
-    @include font('body-sm');
-
-    color: var(--st-content-foreground-color-neutral-primary);
-    background: none;
-    border: none;
-
-    &::placeholder {
-      color: var(--st-content-foreground-color-neutral-tetriary);
-    }
-
-    &:focus {
-      outline: none;
-    }
-  }
-
-  &__promo-apply {
-    flex-shrink: 0;
-
-    padding: 0;
-
-    font-family: inherit;
-
-    @include font('label-sm');
-
-    color: var(--st-action-foreground-color-neutral-normal);
-    text-decoration: underline;
-    background: none;
-    border: none;
-    cursor: pointer;
-
-    &:disabled {
-      color: var(--st-content-foreground-color-neutral-tetriary);
-      cursor: not-allowed;
-    }
   }
 }
 </style>
