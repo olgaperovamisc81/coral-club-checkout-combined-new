@@ -11,8 +11,8 @@
 // Серая карточка сводки: большое скругление, итог отделён чертой.
 //
 // Внутри блоки сводки несут свои поля по 16, поэтому у карточки поля меньше:
-// вместе выходит 24 от края. Радиуса в 32 в списке радиусов нет, берём тот же
-// размер из отступов.
+// вместе выходит 24 от края. Радиуса в 24 в списке радиусов нет (он
+// заканчивается на 16), берём тот же размер из отступов.
 @mixin cc3-combined-summary-card {
   padding: calc(var(--st-global-distance-space-inset-4xl) - var(--st-global-distance-space-inset-sm))
     var(--st-global-distance-space-inset-md) var(--st-global-distance-space-inset-md);
@@ -21,7 +21,7 @@
   // чисто серого в списке нет, поэтому значение прямое. Это песочница: если
   // дизайн приживётся, серый нужно завести токеном.
   background-color: #f6f6f6;
-  border-radius: var(--st-global-distance-space-inset-6xl);
+  border-radius: var(--st-global-distance-space-inset-4xl);
 
   @include cc3-combined-summary-wallet-row;
 
