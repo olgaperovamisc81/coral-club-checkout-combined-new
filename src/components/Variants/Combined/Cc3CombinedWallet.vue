@@ -272,7 +272,7 @@ const text = computed(() => ({
   &__description {
     margin: 0;
 
-    @include font('body-sm');
+    @include font('body-md');
 
     color: var(--st-content-foreground-color-neutral-secondary);
 
