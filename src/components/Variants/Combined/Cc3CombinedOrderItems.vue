@@ -90,7 +90,7 @@ const text = computed(() => ({
 
     background-color: var(--st-content-background-color-default-solid-normal);
     border: 1px solid var(--st-content-border-color-neutral-implicit);
-    border-radius: var(--st-global-radius-xl);
+    border-radius: var(--st-global-radius-md);
 
     // Плитка «+N» без картинки: число крупно и приглушённо, как подпись.
     &--more {
@@ -107,7 +107,7 @@ const text = computed(() => ({
     width: 100%;
     height: 100%;
 
-    border-radius: var(--st-global-radius-xl);
+    border-radius: var(--st-global-radius-md);
     filter: brightness(1.04);
     object-fit: contain;
   }
@@ -130,7 +130,7 @@ const text = computed(() => ({
 
     color: var(--st-action-foreground-color-onprimary-normal);
     background-color: var(--st-action-background-color-positive-normal);
-    border-radius: var(--st-global-radius-xl);
+    border-radius: var(--st-global-radius-md);
   }
 
   &__count {
