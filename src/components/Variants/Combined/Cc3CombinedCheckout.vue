@@ -24,6 +24,7 @@ import Cc3CombinedDeliveryOptions from './Cc3CombinedDeliveryOptions.vue'
 import Cc3CombinedDeliverySection from './Cc3CombinedDeliverySection.vue'
 import Cc3CombinedNotice from './Cc3CombinedNotice.vue'
 import Cc3CombinedPaymentMethods from './Cc3CombinedPaymentMethods.vue'
+import Cc3CombinedTotalCard from './Cc3CombinedTotalCard.vue'
 import Cc3CombinedWallet from './Cc3CombinedWallet.vue'
 
 /**
@@ -177,12 +178,13 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
 
         <Cc3CombinedWallet />
         <Cc3CombinedPaymentMethods />
+        <Cc3CombinedTotalCard />
         <Cc3ModalFooterConsent ref="consentRef" :is-error-shown="isTermsErrorShown" />
         <Cc3ModalFooterCta :is-disabled="false" @submit="submit" />
       </div>
 
       <div class="cc3-combined-checkout__aside">
-        <Cc3ModalOrderSummary />
+        <Cc3ModalOrderSummary hide-promo />
       </div>
     </div>
 
@@ -302,25 +304,23 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     order: 4;
   }
 
-  // Сводка — серая карточка с большим скруглением. Внутри блоки несут свои
-  // поля по 16, поэтому у карточки поля меньше: вместе выходит 24 от края.
-  // Радиуса в 32 в списке радиусов нет, берём тот же размер из отступов.
-  &__aside > .cc3-modal-order-summary {
+  // Серая карточка с суммами внизу: на телефоне и десктопе одна и та же.
+  &__main > .cc3-combined-total-card {
     order: 5;
 
     margin: 0 var(--st-global-distance-space-inset-2xl);
-    padding: calc(var(--st-global-distance-space-inset-4xl) - var(--st-global-distance-space-inset-sm))
-      var(--st-global-distance-space-inset-md) var(--st-global-distance-space-inset-md);
+  }
 
-    background-color: var(--st-content-background-color-neutral-subtle);
-    border-radius: var(--st-global-distance-space-inset-6xl);
+  // Сводка с товарами нужна только в две колонки, справа: на телефоне товары
+  // лежат в раскрывающейся полосе вверху, а суммы — в карточке внизу.
+  &__aside > .cc3-modal-order-summary {
+    @include cc3-combined-summary-card;
 
-    // Итог отделён чертой от строк над ним.
-    .cc3-modal-order-summary-body__row--total {
-      margin-top: var(--st-global-distance-space-inset-xs);
-      padding-top: var(--st-global-distance-space-inset-xl);
+    display: none;
 
-      border-top: 1px solid var(--st-content-border-color-neutral-implicit);
+    // Заголовок карточки стоит у нижней сводки, здесь он повторял бы его.
+    .cc3-modal-order-summary__title {
+      display: none;
     }
   }
 
@@ -348,10 +348,10 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     padding-top: 0;
   }
 
-  // Две колонки: галочки и кнопка под способами оплаты слева, сводка справа.
+  // Две колонки: суммы, галочки и кнопка под способами оплаты слева, товары справа.
   @include mediaMinWidth('lg') {
     &__aside > .cc3-modal-order-summary {
-      margin: 0;
+      display: block;
     }
 
     &__main > .cc3-modal-footer-consent {
