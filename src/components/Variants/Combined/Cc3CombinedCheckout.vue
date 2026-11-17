@@ -166,7 +166,7 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
           <div class="cc3-combined-checkout__panel">
             <Cc3CombinedOrderItems />
 
-            <Cc3ModalOrderSummaryBody compact hide-items />
+            <Cc3ModalOrderSummaryBody compact hide-items floating-promo />
           </div>
         </template>
       </Cc3ModalSummaryBar>

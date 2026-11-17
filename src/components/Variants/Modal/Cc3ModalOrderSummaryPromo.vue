@@ -4,13 +4,22 @@ import { computed } from 'vue'
 import { useCheckout } from '@/composables/useCheckout'
 import { useStand } from '@/stand/composables/useStand'
 
+import Cc3CombinedInput from '../Combined/Cc3CombinedInput.vue'
+
 /**
  * Поле промокода: ввод и «Применить», а после применения — код и «Удалить».
  *
  * Вынесено из тела сводки, потому что в комбинированной версии промокод
  * стоит не в самой сводке, а в отдельной карточке под ней. Состояние общее
  * для всех мест (useCheckout), так что два поля на странице показывают одно.
+ *
+ * Флаг `floating` рисует поле с подписью внутри, как остальные поля
+ * комбинированной версии; без него — прежнее поле с подсказкой.
  */
+defineProps<{
+  floating?: boolean
+}>()
+
 const { t } = useStand()
 const { promoCode, appliedPromo, promoError, applyPromo, removePromo, clearPromoError } =
   useCheckout()
@@ -22,45 +31,89 @@ const text = computed(() => ({
   remove: t('summary.promoRemove'),
   error: promoError.value === 'expired' ? t('summary.promoExpired') : t('summary.promoInvalid'),
 }))
+
+const isInvalid = computed(() => Boolean(promoError.value))
 </script>
 
 <template>
   <div class="cc3-modal-order-summary-promo">
-    <div v-if="appliedPromo" class="cc3-modal-order-summary-promo__field">
-      <span class="cc3-modal-order-summary-promo__applied">{{ text.applied }}</span>
+    <!-- Поле с подписью внутри: код применён — показываем сообщение и «Удалить». -->
+    <template v-if="floating">
+      <Cc3CombinedInput
+        v-if="appliedPromo"
+        :model-value="text.applied"
+        :label="text.placeholder"
+        readonly
+      >
+        <template #action>
+          <button type="button" class="cc3-modal-order-summary-promo__apply" @click="removePromo">
+            {{ text.remove }}
+          </button>
+        </template>
+      </Cc3CombinedInput>
 
-      <button type="button" class="cc3-modal-order-summary-promo__apply" @click="removePromo">
-        {{ text.remove }}
-      </button>
-    </div>
+      <Cc3CombinedInput
+        v-else
+        v-model="promoCode"
+        :label="text.placeholder"
+        :invalid="isInvalid"
+        @input="clearPromoError"
+        @keydown.enter="applyPromo"
+      >
+        <template #action>
+          <button
+            type="button"
+            class="cc3-modal-order-summary-promo__apply"
+            :disabled="!promoCode"
+            @click="applyPromo"
+          >
+            {{ text.apply }}
+          </button>
+        </template>
+      </Cc3CombinedInput>
+
+      <p v-if="promoError && !appliedPromo" class="cc3-modal-order-summary-promo__error" role="alert">
+        {{ text.error }}
+      </p>
+    </template>
 
     <template v-else>
-      <div
-        class="cc3-modal-order-summary-promo__field"
-        :class="{ 'cc3-modal-order-summary-promo__field--invalid': promoError }"
-      >
-        <input
-          v-model="promoCode"
-          type="text"
-          :placeholder="text.placeholder"
-          class="cc3-modal-order-summary-promo__input"
-          @input="clearPromoError"
-          @keydown.enter="applyPromo"
-        />
+      <div v-if="appliedPromo" class="cc3-modal-order-summary-promo__field">
+        <span class="cc3-modal-order-summary-promo__applied">{{ text.applied }}</span>
 
-        <button
-          type="button"
-          class="cc3-modal-order-summary-promo__apply"
-          :disabled="!promoCode"
-          @click="applyPromo"
-        >
-          {{ text.apply }}
+        <button type="button" class="cc3-modal-order-summary-promo__apply" @click="removePromo">
+          {{ text.remove }}
         </button>
       </div>
 
-      <p v-if="promoError" class="cc3-modal-order-summary-promo__error" role="alert">
-        {{ text.error }}
-      </p>
+      <template v-else>
+        <div
+          class="cc3-modal-order-summary-promo__field"
+          :class="{ 'cc3-modal-order-summary-promo__field--invalid': promoError }"
+        >
+          <input
+            v-model="promoCode"
+            type="text"
+            :placeholder="text.placeholder"
+            class="cc3-modal-order-summary-promo__input"
+            @input="clearPromoError"
+            @keydown.enter="applyPromo"
+          />
+
+          <button
+            type="button"
+            class="cc3-modal-order-summary-promo__apply"
+            :disabled="!promoCode"
+            @click="applyPromo"
+          >
+            {{ text.apply }}
+          </button>
+        </div>
+
+        <p v-if="promoError" class="cc3-modal-order-summary-promo__error" role="alert">
+          {{ text.error }}
+        </p>
+      </template>
     </template>
   </div>
 </template>

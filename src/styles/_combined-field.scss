@@ -16,13 +16,6 @@
     margin-inline-start: calc(var(--st-global-distance-space-inset-md) + 1px);
   }
 
-  // Поле промокода (в карточке кошелька и в раскрытой полосе сводки) по тому
-  // же образцу: рамка 1px, скругление крупнее.
-  .cc3-modal-order-summary-promo__field {
-    border-width: 1px;
-    border-radius: var(--st-global-radius-xl);
-  }
-
   // «Применить» ярче: цвет действий версии и пунктир под текстом, вместо
   // серого подчёркивания. Пока код не введён, кнопка бледнее, но не серая.
   .cc3-modal-order-summary-promo__apply {

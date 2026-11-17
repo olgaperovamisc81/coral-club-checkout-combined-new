@@ -15,7 +15,7 @@ import Cc3CombinedWallet from './Cc3CombinedWallet.vue'
     <Cc3CombinedWallet />
 
     <div class="cc3-combined-extras-card__promo">
-      <Cc3ModalOrderSummaryPromo />
+      <Cc3ModalOrderSummaryPromo floating />
     </div>
   </section>
 </template>

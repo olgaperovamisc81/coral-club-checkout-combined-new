@@ -24,6 +24,8 @@ defineProps<{
   hideItems?: boolean
   /** Без поля промокода: комбинированная версия ставит его в отдельную карточку. */
   hidePromo?: boolean
+  /** Поле промокода с подписью внутри (комбинированная версия). */
+  floatingPromo?: boolean
 }>()
 
 const { t } = useStand()
@@ -108,7 +110,7 @@ const text = computed(() => ({
     </dl>
 
     <div v-if="!hidePromo" class="cc3-modal-order-summary-body__promo">
-      <Cc3ModalOrderSummaryPromo />
+      <Cc3ModalOrderSummaryPromo :floating="floatingPromo" />
     </div>
   </div>
 </template>
