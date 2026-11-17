@@ -549,21 +549,7 @@ const isSelectionMissing = computed(
   }
 
   &__change {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--st-global-distance-space-inline-xs);
-
-    padding: var(--st-global-distance-space-inset-lg);
-
-    font-family: inherit;
-
-    @include font('label-sm');
-
-    color: var(--st-action-foreground-color-positive-normal);
-    background: none;
-    border: none;
-    cursor: pointer;
-    transform: translateX(var(--st-global-distance-space-inset-md));
+    @include cc3-combined-change-button;
   }
 
   // Адреса есть, но ни один не выбран: информер и кнопка, которая открывает

@@ -1,0 +1,23 @@
+@use 'typography' as *;
+
+// Кнопка «Изменить» справа от заголовка блока: значок карандаша и подпись.
+// Так выглядит строка «Куда доставить», и так же — строка выбранного способа
+// оплаты. Сдвиг вправо возвращает значок на линию правого края блока: у
+// кнопки свои внутренние поля.
+@mixin cc3-combined-change-button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--st-global-distance-space-inline-xs);
+
+  padding: var(--st-global-distance-space-inset-lg);
+
+  font-family: inherit;
+
+  @include font('label-sm');
+
+  color: var(--st-action-foreground-color-positive-normal);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transform: translateX(var(--st-global-distance-space-inset-md));
+}
