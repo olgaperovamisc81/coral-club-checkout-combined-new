@@ -17,6 +17,8 @@ import Cc3ModalOrderSummaryBody from './Cc3ModalOrderSummaryBody.vue'
 defineProps<{
   /** Без поля промокода: комбинированная версия ставит его в отдельную карточку. */
   hidePromo?: boolean
+  /** Без миниатюр и числа товаров: комбинированная версия ставит их отдельным блоком. */
+  hideItems?: boolean
 }>()
 
 const { t } = useStand()
@@ -42,7 +44,7 @@ onBeforeUnmount(() => stopTracking?.())
   <section ref="sectionRef" class="cc3-modal-order-summary">
     <h2 class="cc3-modal-order-summary__title">{{ text.title }}</h2>
 
-    <Cc3ModalOrderSummaryBody :hide-promo="hidePromo" />
+    <Cc3ModalOrderSummaryBody :hide-promo="hidePromo" :hide-items="hideItems" />
   </section>
 </template>
 
