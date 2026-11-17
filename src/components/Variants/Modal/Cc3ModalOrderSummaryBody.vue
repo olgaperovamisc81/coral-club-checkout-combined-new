@@ -22,6 +22,8 @@ defineProps<{
   compact?: boolean
   /** Без миниатюр и числа товаров: комбинированная версия рисует их своим блоком. */
   hideItems?: boolean
+  /** Без строки «Итого»: комбинированная версия ставит её отдельно, в конце карточки. */
+  hideTotal?: boolean
   /** Без поля промокода: комбинированная версия ставит его в отдельную карточку. */
   hidePromo?: boolean
   /** Поле промокода с подписью внутри (комбинированная версия). */
@@ -102,6 +104,7 @@ const text = computed(() => ({
       </div>
 
       <div
+        v-if="!hideTotal"
         class="cc3-modal-order-summary-body__row cc3-modal-order-summary-body__row--total"
       >
         <dt>{{ text.total }}</dt>
