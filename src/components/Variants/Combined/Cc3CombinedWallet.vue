@@ -8,14 +8,14 @@ import { useStand } from '@/stand/composables/useStand'
 
 /**
  * Блок Coral Wallet над способами оплаты: строка с иконкой, балансом и
- * переключателем и под ней зелёная плашка с пояснением. Баланс меньше
+ * переключателем и под ней мелкий текст с пояснением. Баланс меньше
  * заказа, поэтому сценарий один: списать баланс скидкой (всё доступное или
  * свою сумму), а остаток оплатить обычным способом ниже. Блок виден только
  * тому, у кого есть кошелёк, — человеку с сохранёнными адресами; новый
  * покупатель кошелька ещё не имеет.
  *
  * Переключатель включает скидку на всё доступное и выключает её. Свою
- * сумму вводят в плашке: пока она не применена, переключатель выключен.
+ * сумму вводят под строкой: пока она не применена, переключатель выключен.
  * Состояния: до применения, ввод своей суммы и после применения (сколько
  * списано и сколько осталось оплатить). Скидка пересчитывается сама: цена
  * товаров, доставка и промокод меняют итог, а сообщение и сводка берут
@@ -300,30 +300,27 @@ function applyCustom() {
     outline-offset: 2px;
   }
 
-  // Зелёная плашка с пояснением под строкой. Внутри — одно из трёх
-  // состояний блока.
+  // Пояснение под строкой мелким текстом, без плашки: отдельная рамка внутри
+  // серой карточки выделяла бы его сильнее, чем сам блок. Внутри — одно из
+  // трёх состояний блока.
   &__note {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: var(--st-global-distance-space-inset-xl);
-
-    padding: var(--st-global-distance-space-inset-2xl);
-
-    background-color: var(--st-content-background-color-positive-subtle);
-    border: 1px solid var(--st-content-border-color-positive-implicit);
-    border-radius: var(--st-global-radius-xl);
+    gap: var(--st-global-distance-space-inset-md);
   }
 
   &__description {
     margin: 0;
 
-    @include font('body-md');
+    @include font('body-sm');
 
-    color: var(--st-content-foreground-color-neutral-primary);
+    color: var(--st-content-foreground-color-neutral-secondary);
 
     strong {
-      font-weight: 700;
+      font-weight: 500;
+
+      color: var(--st-content-foreground-color-neutral-primary);
     }
   }
 
