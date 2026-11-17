@@ -8,16 +8,13 @@ import Cc3CombinedWallet from './Cc3CombinedWallet.vue'
  * карточка в чекаутах с бонусами и рассрочкой. Блок кошелька сам прячется,
  * когда кошелька у человека нет, и тогда в карточке остаётся один промокод.
  *
- * С флагом `outlined` карточка без серой заливки, только с обводкой: сводка
- * остаётся серой, а скидки лежат на белом и не спорят с ней по весу.
+ * Карточка без серой заливки, только с обводкой: сводка остаётся серой, а
+ * скидки лежат на белом и не спорят с ней по весу.
  */
-defineProps<{
-  outlined?: boolean
-}>()
 </script>
 
 <template>
-  <section class="cc3-combined-extras-card" :class="{ 'cc3-combined-extras-card--outlined': outlined }">
+  <section class="cc3-combined-extras-card">
     <Cc3CombinedWallet />
 
     <div class="cc3-combined-extras-card__promo">
@@ -31,10 +28,8 @@ defineProps<{
   @include cc3-combined-summary-card;
 
   // Без заливки, только обводка.
-  &--outlined {
-    background-color: transparent;
-    border: 1px solid var(--st-content-border-color-neutral-implicit);
-  }
+  background-color: transparent;
+  border: 1px solid var(--st-content-border-color-neutral-implicit);
 
   &__promo {
     padding: 0 var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-2xl);

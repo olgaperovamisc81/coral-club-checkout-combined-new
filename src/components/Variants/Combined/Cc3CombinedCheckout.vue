@@ -52,13 +52,6 @@ const text = computed(() => ({
   slotRequired: t('delivery.slotRequired'),
 }))
 
-/**
- * Два варианта сводки для сравнения, выбор — параметром адреса `?summary=`:
- * `one` (по умолчанию) — одна карточка, скидки внутри над итогом; `two` — две
- * карточки, вторая со скидками только с обводкой.
- */
-const isSummaryMerged = new URLSearchParams(window.location.search).get('summary') !== 'two'
-
 const state = ref<{
   method: DeliveryProfileMethod
   profile?: DeliveryProfile
@@ -206,15 +199,15 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
         </section>
 
         <Cc3CombinedPaymentMethods />
-        <Cc3CombinedTotalCard :merged="isSummaryMerged" />
-        <Cc3CombinedExtrasCard v-if="!isSummaryMerged" outlined />
+        <Cc3CombinedTotalCard />
+        <Cc3CombinedExtrasCard />
         <Cc3ModalFooterConsent ref="consentRef" :is-error-shown="isTermsErrorShown" />
         <Cc3ModalFooterCta :is-disabled="false" @submit="submit" />
       </div>
 
       <div class="cc3-combined-checkout__aside">
-        <Cc3CombinedTotalCard :merged="isSummaryMerged" />
-        <Cc3CombinedExtrasCard v-if="!isSummaryMerged" outlined />
+        <Cc3CombinedTotalCard />
+        <Cc3CombinedExtrasCard />
       </div>
     </div>
 
