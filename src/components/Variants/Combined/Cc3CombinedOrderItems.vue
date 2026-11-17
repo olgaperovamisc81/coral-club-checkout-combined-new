@@ -68,17 +68,16 @@ const text = computed(() => ({
 
 <style lang="scss">
 .cc3-combined-order-items {
+  // Плитки фиксированного размера, по левому краю: на широком экране они не
+  // растягиваются на всю ширину карточки.
   &__tiles {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    display: flex;
     gap: var(--st-global-distance-space-inset-xl);
 
     padding: var(--st-global-distance-space-inset-sm) var(--st-global-distance-space-inset-2xl);
   }
 
-  // Плитка тянется по ширине ряда, чуть шире, чем выше (как на референсе,
-  // примерно 296×256): на узком телефоне около 65×56, в правой колонке
-  // десктопа крупнее.
+  // Плитка чуть шире, чем выше (как на референсе, примерно 296×256): 64×55.
   &__tile {
     position: relative;
 
@@ -86,6 +85,9 @@ const text = computed(() => ({
     align-items: center;
     justify-content: center;
 
+    flex: 0 0 64px;
+
+    width: 64px;
     aspect-ratio: 7 / 6;
 
     background-color: var(--st-content-background-color-default-solid-normal);
