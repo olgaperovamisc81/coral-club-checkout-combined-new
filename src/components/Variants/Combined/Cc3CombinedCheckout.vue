@@ -304,8 +304,13 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     }
   }
 
+  // От способов оплаты до карточки сводки 32: к зазору колонки в 12 добавлено
+  // ещё 20, чтобы сводка читалась как следующий раздел, а не продолжение
+  // оплаты.
   &__main > .cc3-combined-total-card {
     order: 5;
+
+    margin-top: var(--st-global-distance-space-inset-3xl);
   }
 
   &__main > .cc3-combined-extras-card {
