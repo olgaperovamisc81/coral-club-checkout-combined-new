@@ -191,10 +191,12 @@ function onKeydown(event: KeyboardEvent) {
             <div v-if="matches(entry)" class="cc3-combined-address-book__row">
               <label class="cc3-combined-address-book__select">
                 <span class="cc3-combined-address-book__main">
-                  <span class="cc3-combined-address-book__type">{{ entry.typeLabel }}</span>
                   <span class="cc3-combined-address-book__name">{{ entry.name }}</span>
+                  <span class="cc3-combined-address-book__meta">
+                    <span class="cc3-combined-address-book__type">{{ entry.typeLabel }}</span>
+                    <span class="cc3-combined-address-book__price">{{ entry.priceLabel }}</span>
+                  </span>
                   <span class="cc3-combined-address-book__address">{{ entry.addressLine }}</span>
-                  <span class="cc3-combined-address-book__price">{{ entry.priceLabel }}</span>
                 </span>
 
                 <input
@@ -247,8 +249,6 @@ function onKeydown(event: KeyboardEvent) {
     justify-content: center;
 
     padding: var(--st-global-distance-space-inset-2xl);
-
-    border-bottom: 1px solid var(--st-content-border-color-neutral-onsubtle);
   }
 
   &__title {
@@ -290,8 +290,11 @@ function onKeydown(event: KeyboardEvent) {
     overscroll-behavior: contain;
   }
 
+  // Адреса — отдельные карточки с зазором, а не строки одного списка.
   &__list {
-    @include cc3-combined-choice-list;
+    display: flex;
+    flex-direction: column;
+    gap: var(--st-global-distance-space-inset-md);
   }
 
   // Информер пустой книги: серая плашка, а не пустой контейнер с рамкой.
@@ -327,18 +330,20 @@ function onKeydown(event: KeyboardEvent) {
     cursor: pointer;
   }
 
-  // Строка здесь — колонка: выбор и «Изменить адрес» друг под другом,
-  // поэтому подсветку и разделитель берём от общей строки, а раскладку
-  // переопределяем.
+  // Карточка адреса: выбор и «Изменить адрес» друг под другом. Выбранную
+  // подсвечивает фоном :has(:checked), как остальные списки версии.
   &__row {
-    @include cc3-combined-choice-row;
-
+    display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: var(--st-global-distance-space-inset-none);
 
-    padding: 0;
-    cursor: default;
+    background-color: var(--st-content-background-color-default-solid-normal);
+    border: 1px solid var(--st-content-border-color-neutral-implicit);
+    border-radius: var(--st-global-radius-xl);
+
+    &:has(:checked) {
+      background-color: var(--st-content-background-color-neutral-subtle);
+    }
   }
 
   &__select {
@@ -359,31 +364,36 @@ function onKeydown(event: KeyboardEvent) {
     min-width: 0;
   }
 
-  // Тип, имя, адрес и срок с ценой — по макету: тип и адрес обычным текстом,
-  // имя жирным и срок с ценой зелёным, как в блоке доставки на странице.
-  &__type {
+  // Имя получателя зелёным обычным шрифтом, под ним строка способа и цены
+  // тёмным, а адрес серым: от главного к второстепенному.
+  &__name {
     @include font('body-md');
 
-    color: var(--st-content-foreground-color-neutral-primary);
+    color: var(--st-content-foreground-color-positive-secondary);
   }
 
-  &__name {
-    @include font('label-lg');
-    font-weight: 700;
+  &__meta {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--st-global-distance-space-inset-md);
+  }
 
-    color: var(--st-content-foreground-color-positive-primary);
+  &__type,
+  &__price {
+    @include font('label-md');
+
+    color: var(--st-content-foreground-color-neutral-primary);
   }
 
   &__address {
     @include font('body-md');
 
-    color: var(--st-content-foreground-color-neutral-primary);
-  }
+    color: var(--st-content-foreground-color-neutral-secondary);
 
-  &__price {
-    @include font('body-md');
-
-    color: var(--st-content-foreground-color-positive-primary);
+    // Адрес читается как предложение: в данных он начинается со строчной.
+    &::first-letter {
+      text-transform: uppercase;
+    }
   }
 
   &__radio {
