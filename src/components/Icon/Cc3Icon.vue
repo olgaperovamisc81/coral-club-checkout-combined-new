@@ -28,7 +28,6 @@ type IconName =
   | 'menu-01'
   | 'bank'
   | 'shopping-cart-01'
-  | 'wallet-02'
 
 type Props = {
   name: IconName
@@ -102,12 +101,6 @@ withDefaults(defineProps<Props>(), {
     <template v-else-if="name === 'diamond-01'">
       <path d="M4 9h16l-8 12L4 9Z" />
       <path d="M8 4h8l3 5H5l3-5Z" />
-    </template>
-
-    <template v-else-if="name === 'wallet-02'">
-      <path d="M4 8V6.5A2.5 2.5 0 0 1 6.5 4H18" />
-      <rect x="3" y="8" width="18" height="12" rx="2.5" />
-      <circle cx="16.5" cy="14" r="1" />
     </template>
 
     <template v-else-if="name === 'credit-card'">

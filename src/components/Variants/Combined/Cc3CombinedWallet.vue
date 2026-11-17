@@ -6,7 +6,7 @@ import { useCheckout } from '@/composables/useCheckout'
 import { useStand } from '@/stand/composables/useStand'
 
 /**
- * Блок Coral Wallet над способами оплаты: строка с иконкой, балансом и
+ * Блок Coral Wallet над способами оплаты: строка с балансом и
  * переключателем; пояснение спрятано за значком вопроса и раскрывается под строкой мелким текстом. Баланс меньше
  * заказа, поэтому сценарий один: списать весь доступный баланс скидкой, а
  * остаток оплатить обычным способом ниже. Блок виден только тому, у кого
@@ -79,8 +79,6 @@ const text = computed(() => ({
 <template>
   <section v-if="isVisible" class="cc3-combined-wallet">
     <div class="cc3-combined-wallet__head">
-      <Cc3Icon name="wallet-02" :size="24" class="cc3-combined-wallet__icon" />
-
       <span class="cc3-combined-wallet__info">
         <span class="cc3-combined-wallet__name">
           {{ text.name }}
@@ -151,12 +149,6 @@ const text = computed(() => ({
     display: flex;
     align-items: center;
     gap: var(--st-global-distance-space-inset-xl);
-  }
-
-  &__icon {
-    flex-shrink: 0;
-
-    color: var(--st-content-foreground-color-neutral-primary);
   }
 
   &__info {
