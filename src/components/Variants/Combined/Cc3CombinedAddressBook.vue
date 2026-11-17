@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
-import Cc3InputField from '@/components/Field/Cc3InputField.vue'
 import Cc3Icon from '@/components/Icon/Cc3Icon.vue'
 import { useStand } from '@/stand/composables/useStand'
 
+import Cc3CombinedInput from './Cc3CombinedInput.vue'
 import Cc3CombinedNotice from './Cc3CombinedNotice.vue'
 import Cc3ModalDeliveryMethodSwitch from '../Modal/Cc3ModalDeliveryMethodSwitch.vue'
 import type { DeliveryProfile, DeliveryProfileMethod } from '../Modal/deliveryProfile'
@@ -168,7 +168,7 @@ function onKeydown(event: KeyboardEvent) {
       />
 
       <div class="cc3-combined-address-book__controls">
-        <Cc3InputField v-model="search" type="text" :placeholder="text.search" />
+        <Cc3CombinedInput v-model="search" :label="text.search" />
       </div>
 
       <div class="cc3-combined-address-book__body">

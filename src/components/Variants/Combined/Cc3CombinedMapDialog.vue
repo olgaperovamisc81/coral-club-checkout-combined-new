@@ -10,6 +10,7 @@ import { useStand } from '@/stand/composables/useStand'
 import { reverseAddress } from '@/stand/suggest'
 import type { AddressSuggestion } from '@/stand/suggest'
 
+import Cc3CombinedInput from './Cc3CombinedInput.vue'
 import Cc3CombinedSearchSheet from './Cc3CombinedSearchSheet.vue'
 
 /**
@@ -245,20 +246,18 @@ function onKeydown(event: KeyboardEvent) {
             {{ errorText }}
           </p>
 
-          <button
-            type="button"
-            class="cc3-combined-map-dialog__search"
-            @click="isSearchOpen = true"
+          <!-- Строка поиска как остальные поля: подпись внутри, печатать нельзя — нажатие открывает шторку. -->
+          <Cc3CombinedInput
+            :model-value="label"
+            :label="text.placeholder"
+            readonly
+            :aria-label="text.placeholder"
+            @focus="isSearchOpen = true"
           >
-            <Cc3Icon name="search-md" :size="20" />
-
-            <span
-              class="cc3-combined-map-dialog__search-text"
-              :class="{ 'cc3-combined-map-dialog__search-text--empty': !label }"
-            >
-              {{ label || text.placeholder }}
-            </span>
-          </button>
+            <template #prefix>
+              <Cc3Icon name="search-md" :size="20" />
+            </template>
+          </Cc3CombinedInput>
 
           <p v-if="fullAddress" class="cc3-combined-map-dialog__address">
             {{ fullAddress }}
@@ -401,42 +400,6 @@ function onKeydown(event: KeyboardEvent) {
     @include font('body-sm');
 
     color: var(--st-content-foreground-color-negative-primary);
-  }
-
-  &__search {
-    display: flex;
-    align-items: center;
-    gap: var(--st-global-distance-space-stack-sm);
-
-    padding: 0 var(--st-global-distance-space-inset-md);
-    width: 100%;
-    height: 44px;
-
-    font-family: inherit;
-    text-align: start;
-
-    color: var(--st-content-foreground-color-neutral-primary);
-    background-color: var(--st-content-background-color-neutral-primary);
-    border: 2px solid var(--st-content-border-color-neutral-implicit);
-    border-radius: var(--st-global-radius-sm);
-    cursor: pointer;
-  }
-
-  &__search-text {
-    flex: 1;
-
-    min-width: 0;
-
-    @include font('body-md');
-
-    color: var(--st-content-foreground-color-neutral-primary);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-
-    &--empty {
-      color: var(--st-content-foreground-color-neutral-tetriary);
-    }
   }
 
   &__address {

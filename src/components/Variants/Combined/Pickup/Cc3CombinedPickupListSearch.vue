@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from 'vue'
 
-import Cc3InputField from '@/components/Field/Cc3InputField.vue'
 import Cc3Icon from '@/components/Icon/Cc3Icon.vue'
 import { useAddressSuggest } from '@/stand/composables/useAddressSuggest'
 import { useStand } from '@/stand/composables/useStand'
 import type { AddressSuggestion } from '@/stand/suggest'
+
+import Cc3CombinedInput from '../Cc3CombinedInput.vue'
 
 /**
  * Поиск адреса на вкладке «Список»: поле остаётся на месте, а подсказки
@@ -34,7 +35,6 @@ const { items, status, ask, reset } = useAddressSuggest()
 
 const text = computed(() => ({
   label: t('common.findAddress'),
-  placeholder: t('concept.common.findAddress'),
   clear: t('combined.clearAddress'),
   loading: t('suggest.loading'),
   empty: t('suggest.empty'),
@@ -140,27 +140,22 @@ const isDropdownVisible = computed(() => isOpen.value && (rows.value.length > 0 
     @focusout="onFocusOut"
     @keydown.enter.prevent="onEnter"
   >
-    <span class="cc3-combined-pickup-list-search__label">{{ text.label }}</span>
-
-    <div class="cc3-combined-pickup-list-search__row">
-      <Cc3InputField
-        :model-value="query"
-        type="text"
-        :placeholder="text.placeholder"
-        autocomplete="off"
-        @update:model-value="onInput"
-      />
-
-      <button
-        v-if="isClearVisible"
-        type="button"
-        class="cc3-combined-pickup-list-search__clear"
-        :aria-label="text.clear"
-        @click="onClear"
-      >
-        <Cc3Icon name="x-md" :size="20" />
-      </button>
-    </div>
+    <Cc3CombinedInput
+      :model-value="query"
+      :label="text.label"
+      @update:model-value="onInput"
+    >
+      <template v-if="isClearVisible" #action>
+        <button
+          type="button"
+          class="cc3-combined-pickup-list-search__clear"
+          :aria-label="text.clear"
+          @click="onClear"
+        >
+          <Cc3Icon name="x-md" :size="20" />
+        </button>
+      </template>
+    </Cc3CombinedInput>
 
     <div v-if="isDropdownVisible" class="cc3-combined-pickup-list-search__dropdown">
       <ul v-if="rows.length > 0" class="cc3-combined-pickup-list-search__list">
@@ -191,18 +186,6 @@ const isDropdownVisible = computed(() => isOpen.value && (rows.value.length > 0 
   gap: var(--st-global-distance-space-inset-sm);
 
   padding: var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-2xl);
-
-  &__label {
-    @include font('label-sm');
-
-    color: var(--st-content-foreground-color-neutral-secondary);
-  }
-
-  &__row {
-    display: flex;
-    align-items: center;
-    gap: var(--st-global-distance-space-inset-md);
-  }
 
   &__clear {
     display: flex;

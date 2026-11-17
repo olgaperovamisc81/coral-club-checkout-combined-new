@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
-import Cc3InputField from '@/components/Field/Cc3InputField.vue'
 import { useAddressSuggest } from '@/stand/composables/useAddressSuggest'
 import { useStand } from '@/stand/composables/useStand'
 import type { AddressSuggestion } from '@/stand/suggest'
 
+import Cc3CombinedInput from './Cc3CombinedInput.vue'
 import Cc3CombinedSheetFrame from './Cc3CombinedSheetFrame.vue'
 
 /**
@@ -92,7 +92,7 @@ const note = computed(() => {
   <Cc3CombinedSheetFrame tall>
     <div ref="sheetRef" class="cc3-combined-search-sheet" @keydown.enter="onEnter">
       <div class="cc3-combined-search-sheet__field">
-        <Cc3InputField v-model="query" type="text" :placeholder="text.placeholder" />
+        <Cc3CombinedInput v-model="query" :label="text.placeholder" />
       </div>
 
       <div class="cc3-combined-search-sheet__results">
