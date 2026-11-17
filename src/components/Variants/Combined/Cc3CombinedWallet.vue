@@ -184,7 +184,7 @@ const text = computed(() => ({
   }
 
   &__value {
-    @include font('body-md');
+    @include font('body-sm');
 
     color: var(--st-content-foreground-color-neutral-secondary);
 
@@ -272,7 +272,7 @@ const text = computed(() => ({
   &__description {
     margin: 0;
 
-    @include font('body-md');
+    @include font('body-sm');
 
     color: var(--st-content-foreground-color-neutral-secondary);
 

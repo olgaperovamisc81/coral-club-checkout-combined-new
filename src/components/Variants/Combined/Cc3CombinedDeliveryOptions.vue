@@ -117,8 +117,9 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
     color: var(--st-content-foreground-color-neutral-primary);
   }
 
+  // Подписи-описания мельче названия: 14.
   &__caption {
-    @include font('body-md');
+    @include font('body-sm');
 
     color: var(--st-content-foreground-color-neutral-secondary);
   }
