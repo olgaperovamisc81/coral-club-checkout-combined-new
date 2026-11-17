@@ -98,7 +98,7 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
     gap: var(--st-global-distance-space-inset-xl);
 
     min-height: 104px;
-    width: 196px;
+    width: 232px;
   }
 
   &__content {
@@ -110,14 +110,15 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
     min-width: 0;
   }
 
+  // Текст карточки того же размера, что адрес выше: 16.
   &__title {
-    @include font('label-sm');
+    @include font('body-md');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
 
   &__caption {
-    @include font('body-xs');
+    @include font('body-md');
 
     color: var(--st-content-foreground-color-neutral-secondary);
   }
