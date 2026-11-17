@@ -365,6 +365,22 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
 
   &__slots {
     padding-top: var(--st-global-distance-space-inset-2xl);
+
+    // Даты и время — ряды-слайдеры, как карточки способов выше: в один ряд,
+    // листаются вбок и выходят за поля блока. Слоты — общий компонент с
+    // инлайном, поэтому оформляем их здесь, а не в нём.
+    .cc3-inline-delivery-slots__row {
+      @include cc3-combined-carousel;
+
+      // В компоненте слотов ряд переносится на следующую строку.
+      flex-wrap: nowrap;
+    }
+
+    .cc3-inline-delivery-slots__chip {
+      flex: 0 0 auto;
+
+      scroll-snap-align: start;
+    }
   }
 
   &__options-title {
