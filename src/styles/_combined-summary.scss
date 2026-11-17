@@ -26,11 +26,11 @@
   // прозрачным фоном, и тогда фильтр не нужен.
   .cc3-modal-order-summary-body__thumb {
     background-color: var(--st-content-background-color-default-solid-normal);
-    border-radius: var(--st-global-radius-sm);
+    border-radius: var(--st-global-radius-xl);
   }
 
   .cc3-modal-order-summary-body__thumb-img {
-    border-radius: var(--st-global-radius-sm);
+    border-radius: var(--st-global-radius-xl);
     filter: brightness(1.04);
   }
 
