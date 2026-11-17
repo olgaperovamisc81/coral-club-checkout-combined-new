@@ -13,6 +13,14 @@
   background-color: #f6f6f6;
   border-radius: var(--st-global-distance-space-inset-6xl);
 
+  // Строка скидки Coral Wallet обычным шрифтом: в общей сводке она жирная.
+  .cc3-modal-order-summary-body__row--positive {
+    dt,
+    dd {
+      font-weight: 400;
+    }
+  }
+
   .cc3-modal-order-summary-body__row--total {
     margin-top: var(--st-global-distance-space-inset-xs);
     padding-top: var(--st-global-distance-space-inset-xl);
