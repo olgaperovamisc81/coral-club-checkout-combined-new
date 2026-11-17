@@ -257,7 +257,7 @@ const text = computed(() => ({
   }
 
   &__switch-input:checked + &__switch-track {
-    background-color: var(--st-content-background-color-positive-explicit);
+    background-color: var(--st-action-background-color-positive-normal);
 
     &::after {
       transform: translateX(20px);
