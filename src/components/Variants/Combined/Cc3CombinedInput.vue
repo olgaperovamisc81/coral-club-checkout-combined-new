@@ -78,7 +78,7 @@ const isLifted = computed(() => isFocused.value || model.value !== '')
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
 
-  padding: 0 var(--st-global-distance-space-inset-md);
+  padding: 0 var(--st-global-distance-space-inset-2xl);
   width: 100%;
   height: 52px;
 
