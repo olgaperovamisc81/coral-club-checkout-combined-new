@@ -88,23 +88,26 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
 .cc3-combined-delivery-options {
   @include cc3-combined-carousel;
 
-  // Карточка: текст сверху, радио в правом нижнем углу.
+  // Карточка в две колонки: блок текста слева на всю высоту, радио справа
+  // внизу. Между ними зазор, чтобы длинная подпись не упиралась в радио.
   &__row {
     @include cc3-combined-carousel-card;
 
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: var(--st-global-distance-space-inset-md);
+    align-items: stretch;
+    gap: var(--st-global-distance-space-inset-xl);
 
     min-height: 104px;
-    width: 168px;
+    width: 196px;
   }
 
   &__content {
     display: flex;
+    flex: 1;
     flex-direction: column;
     gap: var(--st-global-distance-space-inset-x);
+
+    min-width: 0;
   }
 
   &__title {
