@@ -65,6 +65,19 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
       :key="variant.id"
       class="cc3-combined-delivery-options__row"
     >
+      <!--
+        Радио стоит в разметке первым: подпись связывает нажатие с первым
+        элементом внутри себя, и кнопка «i» перед радио забирала бы нажатие
+        по карточке. На экране радио уходит вправо через order.
+      -->
+      <input
+        v-model="selected"
+        type="radio"
+        name="cc3-combined-courier-variant"
+        :value="variant.id"
+        class="cc3-combined-delivery-options__radio"
+      />
+
       <span class="cc3-combined-delivery-options__content">
         <span class="cc3-combined-delivery-options__title">
           {{ variant.title }}
@@ -88,14 +101,6 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
           {{ variant.caption }}
         </span>
       </span>
-
-      <input
-        v-model="selected"
-        type="radio"
-        name="cc3-combined-courier-variant"
-        :value="variant.id"
-        class="cc3-combined-delivery-options__radio"
-      />
     </label>
   </Cc3CombinedCarousel>
 
@@ -159,6 +164,7 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
   &__radio {
     @include cc3-combined-carousel-radio;
 
+    order: 1;
     align-self: flex-end;
   }
 
