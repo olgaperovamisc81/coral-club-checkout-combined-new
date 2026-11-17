@@ -239,10 +239,6 @@ function onKeydown(event: KeyboardEvent) {
 
   background-color: var(--st-content-background-color-default-solid-normal);
 
-  > .cc3-modal-delivery-method-switch {
-    @include cc3-combined-method-switch-size;
-  }
-
   &__header {
     position: relative;
 
