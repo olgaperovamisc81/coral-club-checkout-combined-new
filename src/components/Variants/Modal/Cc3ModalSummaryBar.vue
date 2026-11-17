@@ -58,7 +58,9 @@ onBeforeUnmount(resetSticky)
     содержимое и уезжает вверх вместе с ним, а не висит поверх.
   -->
   <div v-if="isExpanded" class="cc3-modal-summary-bar__panel">
-    <Cc3ModalOrderSummaryBody compact />
+    <slot name="panel">
+      <Cc3ModalOrderSummaryBody compact />
+    </slot>
   </div>
 </template>
 

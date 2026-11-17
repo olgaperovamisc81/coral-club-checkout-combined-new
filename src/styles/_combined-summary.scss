@@ -1,4 +1,12 @@
-@use 'typography' as *;
+// Строка скидки Coral Wallet обычным шрифтом: в общей сводке она жирная.
+@mixin cc3-combined-summary-wallet-row {
+  .cc3-modal-order-summary-body__row--positive {
+    dt,
+    dd {
+      font-weight: 400;
+    }
+  }
+}
 
 // Серая карточка сводки: большое скругление, итог отделён чертой.
 //
@@ -15,18 +23,7 @@
   background-color: #f6f6f6;
   border-radius: var(--st-global-distance-space-inset-6xl);
 
-  // Описание под миниатюрами мельче строк сумм: 14, как остальные описания.
-  .cc3-modal-order-summary-body__count {
-    @include font('body-sm');
-  }
-
-  // Строка скидки Coral Wallet обычным шрифтом: в общей сводке она жирная.
-  .cc3-modal-order-summary-body__row--positive {
-    dt,
-    dd {
-      font-weight: 400;
-    }
-  }
+  @include cc3-combined-summary-wallet-row;
 
   .cc3-modal-order-summary-body__row--total {
     margin-top: var(--st-global-distance-space-inset-xs);

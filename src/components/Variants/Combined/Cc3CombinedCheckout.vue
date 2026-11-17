@@ -17,6 +17,7 @@ import Cc3ModalFooterConsent from '../Modal/Cc3ModalFooterConsent.vue'
 import Cc3ModalFooterCta from '../Modal/Cc3ModalFooterCta.vue'
 import Cc3ModalFooterSite from '../Modal/Cc3ModalFooterSite.vue'
 import Cc3ModalHeader from '../Modal/Cc3ModalHeader.vue'
+import Cc3ModalOrderSummaryBody from '../Modal/Cc3ModalOrderSummaryBody.vue'
 import Cc3ModalSummaryBar from '../Modal/Cc3ModalSummaryBar.vue'
 import type { DeliveryProfile, DeliveryProfileMethod } from '../Modal/deliveryProfile'
 import Cc3CombinedDeliveryOptions from './Cc3CombinedDeliveryOptions.vue'
@@ -24,6 +25,7 @@ import Cc3CombinedDeliverySection from './Cc3CombinedDeliverySection.vue'
 import Cc3CombinedNotice from './Cc3CombinedNotice.vue'
 import Cc3CombinedPaymentMethods from './Cc3CombinedPaymentMethods.vue'
 import Cc3CombinedExtrasCard from './Cc3CombinedExtrasCard.vue'
+import Cc3CombinedOrderItems from './Cc3CombinedOrderItems.vue'
 import Cc3CombinedTotalCard from './Cc3CombinedTotalCard.vue'
 
 /**
@@ -158,7 +160,16 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
 
     <!-- На широком экране сводка стоит справа, и полоса с суммой не нужна. -->
     <div class="cc3-combined-checkout__bar">
-      <Cc3ModalSummaryBar />
+      <Cc3ModalSummaryBar>
+        <!-- Раскрытая полоса показывает ту же сводку, что и карточка внизу: плитки товаров, суммы и промокод. -->
+        <template #panel>
+          <div class="cc3-combined-checkout__panel">
+            <Cc3CombinedOrderItems />
+
+            <Cc3ModalOrderSummaryBody compact hide-items />
+          </div>
+        </template>
+      </Cc3ModalSummaryBar>
     </div>
 
     <div class="cc3-combined-checkout__body">
@@ -235,6 +246,14 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     @include mediaMinWidth('lg') {
       display: none;
     }
+  }
+
+  // Содержимое раскрытой полосы. Сверху 24 до плиток, как внутри серой
+  // карточки; строка скидки кошелька обычным шрифтом, как там же.
+  &__panel {
+    @include cc3-combined-summary-wallet-row;
+
+    padding-top: calc(var(--st-global-distance-space-inset-4xl) - var(--st-global-distance-space-inset-sm));
   }
 
   // Разделителей между блоками нет, как в макете: блоки разделяют только

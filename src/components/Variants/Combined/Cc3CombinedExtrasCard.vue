@@ -26,25 +26,6 @@ import Cc3CombinedWallet from './Cc3CombinedWallet.vue'
 
   &__promo {
     padding: 0 var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-2xl);
-
-    // Поле промокода по новому образцу: рамка 1px, скругление крупнее.
-    .cc3-modal-order-summary-promo__field {
-      border-width: 1px;
-      border-radius: var(--st-global-radius-xl);
-    }
-
-    // «Применить» ярче: цвет действий версии и пунктир под текстом, вместо
-    // серого подчёркивания. Пока код не введён, кнопка бледнее, но не серая.
-    .cc3-modal-order-summary-promo__apply {
-      color: var(--st-action-foreground-color-positive-normal);
-      text-decoration-style: dotted;
-      text-underline-offset: 4px;
-
-      &:disabled {
-        color: var(--st-action-foreground-color-positive-normal);
-        opacity: 0.56;
-      }
-    }
   }
 }
 </style>
