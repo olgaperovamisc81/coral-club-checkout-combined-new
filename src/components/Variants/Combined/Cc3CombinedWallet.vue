@@ -137,10 +137,11 @@ const text = computed(() => ({
   flex-direction: column;
   gap: var(--st-global-distance-space-inset-xl);
 
-  // Блок стоит внутри сводки под итогом, без разделителя. Поля по бокам
-  // задаёт margin, чтобы блок шёл по ширине строк сводки.
-  margin: calc(var(--st-global-distance-space-inset-xl) + var(--st-global-distance-space-inset-2xl))
-    var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-2xl);
+  // Блок стоит первым в карточке кошелька и промокода: сверху 6, чтобы вместе
+  // с полем карточки получилось 24 до текста. Поля по бокам задаёт margin,
+  // чтобы блок шёл по ширине строк карточки.
+  margin: var(--st-global-distance-space-inset-sm) var(--st-global-distance-space-inset-2xl)
+    var(--st-global-distance-space-inset-2xl);
 
   &__head {
     display: flex;

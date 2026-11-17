@@ -24,8 +24,8 @@ import Cc3CombinedDeliveryOptions from './Cc3CombinedDeliveryOptions.vue'
 import Cc3CombinedDeliverySection from './Cc3CombinedDeliverySection.vue'
 import Cc3CombinedNotice from './Cc3CombinedNotice.vue'
 import Cc3CombinedPaymentMethods from './Cc3CombinedPaymentMethods.vue'
+import Cc3CombinedExtrasCard from './Cc3CombinedExtrasCard.vue'
 import Cc3CombinedTotalCard from './Cc3CombinedTotalCard.vue'
-import Cc3CombinedWallet from './Cc3CombinedWallet.vue'
 
 /**
  * Комбинированная версия: берёт форму прямо на странице у инлайна, а адресную
@@ -178,14 +178,14 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
 
         <Cc3CombinedPaymentMethods />
         <Cc3CombinedTotalCard />
+        <Cc3CombinedExtrasCard />
         <Cc3ModalFooterConsent ref="consentRef" :is-error-shown="isTermsErrorShown" />
         <Cc3ModalFooterCta :is-disabled="false" @submit="submit" />
       </div>
 
       <div class="cc3-combined-checkout__aside">
-        <Cc3ModalOrderSummary>
-          <Cc3CombinedWallet />
-        </Cc3ModalOrderSummary>
+        <Cc3ModalOrderSummary hide-promo />
+        <Cc3CombinedExtrasCard />
       </div>
     </div>
 
@@ -290,17 +290,31 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     order: 4;
   }
 
-  // Серая карточка с суммами внизу нужна на телефоне и планшете, где другой
-  // сводки в потоке нет. В две колонки суммы, товары и промокод собраны в
-  // карточке справа, и нижняя только повторяла бы её.
-  &__main > .cc3-combined-total-card {
-    order: 5;
-
+  // Серые карточки внизу — суммы, а за ними кошелёк с промокодом — нужны на
+  // телефоне и планшете, где другой сводки в потоке нет. В две колонки суммы
+  // и товары стоят в карточке справа, а кошелёк с промокодом под ней, и
+  // нижние только повторяли бы их.
+  &__main > .cc3-combined-total-card,
+  &__main > .cc3-combined-extras-card {
     margin: 0 var(--st-global-distance-space-inset-2xl);
 
     @include mediaMinWidth('lg') {
       display: none;
     }
+  }
+
+  &__main > .cc3-combined-total-card {
+    order: 5;
+  }
+
+  &__main > .cc3-combined-extras-card {
+    order: 6;
+  }
+
+  // В колонке справа карточка кошелька и промокода появляется только с
+  // двумя колонками, под сводкой.
+  &__aside > .cc3-combined-extras-card {
+    display: none;
   }
 
   // Сводка с товарами нужна только в две колонки, справа: на телефоне товары
@@ -320,13 +334,13 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
   // кнопке, наоборот, на 12 меньше: она и галочки были одним блоком, и
   // зазор между ними задавали сами, без отступа колонки.
   &__main > .cc3-modal-footer-consent {
-    order: 6;
+    order: 7;
 
     margin-top: var(--st-global-distance-space-inset-xs);
   }
 
   &__main > .cc3-modal-footer-cta {
-    order: 7;
+    order: 8;
 
     margin-top: calc(-1 * var(--st-global-distance-space-inset-xl));
   }
@@ -341,7 +355,8 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
 
   // Две колонки: галочки и кнопка под способами оплаты слева, сводка справа.
   @include mediaMinWidth('lg') {
-    &__aside > .cc3-modal-order-summary {
+    &__aside > .cc3-modal-order-summary,
+    &__aside > .cc3-combined-extras-card {
       display: block;
     }
 
