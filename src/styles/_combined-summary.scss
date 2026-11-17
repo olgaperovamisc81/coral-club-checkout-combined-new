@@ -20,6 +20,18 @@
     @include font('body-sm');
   }
 
+  // Плитки товаров белые: на сером фоне карточки серая плитка сливалась бы с
+  // ним. У самих картинок серый фон (#f6f6f6) вшит в файл, поэтому их
+  // осветляем так, чтобы он стал белым. Нормально — отдать картинки с
+  // прозрачным фоном, и тогда фильтр не нужен.
+  .cc3-modal-order-summary-body__thumb {
+    background-color: var(--st-content-background-color-default-solid-normal);
+  }
+
+  .cc3-modal-order-summary-body__thumb-img {
+    filter: brightness(1.04);
+  }
+
   // Строка скидки Coral Wallet обычным шрифтом: в общей сводке она жирная.
   .cc3-modal-order-summary-body__row--positive {
     dt,
