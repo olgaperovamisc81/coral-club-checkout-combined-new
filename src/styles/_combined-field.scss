@@ -1,17 +1,17 @@
 // Поля комбинированной версии по новому образцу дизайн-системы: рамка
-// тоньше (1px вместо 2px) и крупнее скругление. Подключается к корню страницы
+// тоньше (1px вместо 2px), скругление 8 у всех полей. Подключается к корню страницы
 // и к корням окон, а само оформление полей (Cc3InputField, селекты и
 // текстовые поля стенда) остаётся общим для всех версий и не меняется.
 @mixin cc3-combined-fields {
-  // Рамка 1px, скругление крупнее и отступ внутри поля до текста по бокам 16,
-  // а не 8, как у общего поля.
+  // Рамка 1px, скругление 8 и отступ внутри поля до текста по бокам 16, а не 8,
+  // как у общего поля.
   .cc3-input-field,
   .cc3-stand-field__select,
   .cc3-stand-field__textarea {
     padding-inline: var(--st-global-distance-space-inset-2xl);
 
     border-width: 1px;
-    border-radius: var(--st-global-radius-xl);
+    border-radius: var(--st-global-radius-md);
   }
 
   // Подпись внутри поля начинается там же, где потом начнётся введённый
@@ -34,7 +34,7 @@
   // текст поля, и список скруглён так же, как поле.
   .cc3-stand-field-suggest__list,
   .cc3-stand-field-suggest__note {
-    border-radius: var(--st-global-radius-xl);
+    border-radius: var(--st-global-radius-md);
   }
 
   .cc3-stand-field-suggest__option,

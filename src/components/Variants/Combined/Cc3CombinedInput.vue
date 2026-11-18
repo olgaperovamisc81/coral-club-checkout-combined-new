@@ -84,7 +84,7 @@ const isLifted = computed(() => isFocused.value || model.value !== '')
 
   background-color: var(--st-content-background-color-neutral-primary);
   border: 1px solid var(--st-content-border-color-neutral-implicit);
-  border-radius: var(--st-global-radius-xl);
+  border-radius: var(--st-global-radius-md);
   cursor: text;
 
   &:hover {

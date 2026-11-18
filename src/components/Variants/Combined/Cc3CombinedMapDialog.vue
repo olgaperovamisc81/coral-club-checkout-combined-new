@@ -395,7 +395,7 @@ function onKeydown(event: KeyboardEvent) {
     inset-inline: var(--st-global-distance-space-inset-xl);
     z-index: 2;
 
-    border-radius: var(--st-global-radius-xl);
+    border-radius: var(--st-global-radius-md);
     box-shadow: 0 2px 8px 0 rgb(4 51 103 / 16%);
   }
 
