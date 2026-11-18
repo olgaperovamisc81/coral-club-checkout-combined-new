@@ -9,7 +9,9 @@ import Cc3ModalOrderSummaryPromo from '../Modal/Cc3ModalOrderSummaryPromo.vue'
 
 /**
  * Промокод: ссылка «У меня есть промокод» со значком процента слева, чёрная,
- * шрифтом как у названия Coral Wallet, с чертой под текстом. Нажатие заменяет ссылку полем ввода с кнопкой «Применить», и курсор сразу в нём.
+ * шрифтом как строки сумм («Товары», «Доставка»), с чертой под текстом.
+ * Нажатие заменяет ссылку полем ввода с кнопкой «Применить», и курсор сразу
+ * в нём.
  * Если из пустого поля вышли, поле снова становится ссылкой. Применили —
  * поле уходит, остаётся «Промокод» с зелёным «КОД применён!» под ним и
  * «Удалить» справа.
@@ -125,9 +127,9 @@ const text = computed(() => ({
     min-width: 0;
   }
 
-  // Название применённого кода тем же шрифтом, что у Coral Wallet.
+  // Название применённого кода тем же шрифтом, что строки сумм.
   &__name {
-    @include font('body-lg');
+    @include font('body-md');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
@@ -151,7 +153,7 @@ const text = computed(() => ({
   }
 
   &__link-text {
-    @include font('body-lg');
+    @include font('body-md');
 
     text-decoration: underline;
     text-underline-offset: 6px;
