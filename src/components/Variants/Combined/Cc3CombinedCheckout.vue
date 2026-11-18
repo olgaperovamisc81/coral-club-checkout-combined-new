@@ -372,9 +372,10 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
   &__main > .cc3-modal-footer-consent {
     order: 7;
 
-    // 4 прежних и ещё 8 свободного места перед галочками.
+    // 4 прежних и ещё 14 свободного места перед галочками (8 + 6).
     margin-top: calc(
-      var(--st-global-distance-space-inset-xs) + var(--st-global-distance-space-inset-md)
+      var(--st-global-distance-space-inset-xs) + var(--st-global-distance-space-inset-md) +
+        var(--st-global-distance-space-inset-sm)
     );
 
     // Согласия на размер мельче остального текста страницы: это справочная
@@ -415,8 +416,10 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     }
 
     &__main > .cc3-modal-footer-consent {
-      // Под способами оплаты слева сразу галочки: 8 свободного места между ними.
-      margin-top: var(--st-global-distance-space-inset-md);
+      // Под способами оплаты слева сразу галочки: 14 свободного места между ними.
+      margin-top: calc(
+        var(--st-global-distance-space-inset-md) + var(--st-global-distance-space-inset-sm)
+      );
 
       // Галочка слева от текста, как в магазине друга клуба. Порядок в разметке
       // общий с остальными версиями (текст, потом галочка), поэтому меняем его
