@@ -1,14 +1,15 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
 
+import Cc3Icon from '@/components/Icon/Cc3Icon.vue'
 import { useCheckout } from '@/composables/useCheckout'
 import { useStand } from '@/stand/composables/useStand'
 
 import Cc3ModalOrderSummaryPromo from '../Modal/Cc3ModalOrderSummaryPromo.vue'
 
 /**
- * Промокод: чёрная подчёркнутая ссылка «У меня есть промокод». Нажатие
- * заменяет ссылку полем ввода с кнопкой «Применить», и курсор сразу в нём.
+ * Промокод: ссылка «У меня есть промокод» со значком процента слева, чёрная,
+ * средним шрифтом, с пунктиром под текстом. Нажатие заменяет ссылку полем ввода с кнопкой «Применить», и курсор сразу в нём.
  * Если из пустого поля вышли, поле снова становится ссылкой. Применили —
  * поле уходит, остаётся «Промокод» с зелёным «КОД применён!» под ним и
  * «Удалить» справа.
@@ -67,6 +68,8 @@ const text = computed(() => ({
 <template>
   <section ref="rootRef" class="cc3-combined-promo" @focusout="onFocusOut">
     <div v-if="appliedPromo" class="cc3-combined-promo__head">
+      <Cc3Icon name="percent-square" :size="24" class="cc3-combined-promo__icon" />
+
       <span class="cc3-combined-promo__info">
         <span class="cc3-combined-promo__name">{{ text.name }}</span>
         <span class="cc3-combined-promo__applied">{{ text.applied }}</span>
@@ -80,7 +83,9 @@ const text = computed(() => ({
     <Cc3ModalOrderSummaryPromo v-else-if="isOpen" floating />
 
     <button v-else type="button" class="cc3-combined-promo__link" @click="open">
-      {{ text.have }}
+      <Cc3Icon name="percent-square" :size="24" />
+
+      <span class="cc3-combined-promo__link-text">{{ text.have }}</span>
     </button>
   </section>
 </template>
@@ -103,12 +108,18 @@ const text = computed(() => ({
   &__head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--st-global-distance-space-inset-xl);
+    gap: var(--st-global-distance-space-inset-md);
+  }
+
+  &__icon {
+    flex-shrink: 0;
+
+    color: var(--st-content-foreground-color-neutral-primary);
   }
 
   &__info {
     display: flex;
+    flex: 1;
     flex-direction: column;
 
     min-width: 0;
@@ -121,21 +132,29 @@ const text = computed(() => ({
     color: var(--st-content-foreground-color-neutral-primary);
   }
 
-  // Ссылка «У меня есть промокод»: чёрная, подчёркнутая.
+  // Ссылка «У меня есть промокод»: значок слева, текст чёрным средним
+  // шрифтом, под текстом пунктир (под значком его нет).
   &__link {
+    display: flex;
     align-self: flex-start;
+    align-items: center;
+    gap: var(--st-global-distance-space-inset-md);
 
     padding: 0;
 
     font-family: inherit;
 
-    @include font('body-md');
-
     color: var(--st-content-foreground-color-neutral-primary);
-    text-decoration: underline;
     background: none;
     border: none;
     cursor: pointer;
+  }
+
+  &__link-text {
+    @include font('label-lg');
+
+    text-decoration: underline dotted;
+    text-underline-offset: 6px;
   }
 
   &__applied {

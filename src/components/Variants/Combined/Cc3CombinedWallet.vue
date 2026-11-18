@@ -87,6 +87,10 @@ const text = computed(() => ({
       :is-active="isApplied"
       @update:model-value="onToggle"
     >
+      <template #leading>
+        <Cc3Icon name="wallet-02" :size="24" />
+      </template>
+
       <template #name-extra>
         <button
           type="button"
@@ -123,7 +127,7 @@ const text = computed(() => ({
   // с полем карточки получилось 24 до текста. Поля по бокам задаёт margin,
   // чтобы блок шёл по ширине строк карточки.
   margin: var(--st-global-distance-space-inset-sm) var(--st-global-distance-space-inset-2xl)
-    var(--st-global-distance-space-inset-2xl);
+    var(--st-global-distance-space-inset-3xl);
 
   &__info-button {
     @include cc3-combined-info-button;

@@ -7,7 +7,8 @@ import Cc3CombinedSwitch from './Cc3CombinedSwitch.vue'
  * переключатель, а под строкой — содержимое слота (пояснение, поле ввода).
  *
  * Так выглядят и Coral Wallet, и промокод: один шрифт, один переключатель,
- * одна раскладка. Слот `name-extra` — значок рядом с названием.
+ * одна раскладка. Слот `leading` — значок слева от названия, `name-extra` —
+ * значок рядом с названием.
  */
 defineProps<{
   name: string
@@ -23,6 +24,10 @@ const model = defineModel<boolean>({ default: false })
 <template>
   <div class="cc3-combined-toggle-row">
     <div class="cc3-combined-toggle-row__head">
+      <span v-if="$slots.leading" class="cc3-combined-toggle-row__leading">
+        <slot name="leading" />
+      </span>
+
       <span class="cc3-combined-toggle-row__info">
         <span class="cc3-combined-toggle-row__name">
           {{ name }}
@@ -56,6 +61,14 @@ const model = defineModel<boolean>({ default: false })
     display: flex;
     align-items: center;
     gap: var(--st-global-distance-space-inset-xl);
+  }
+
+  // Значок слева: 24px, цвет основного текста, ровно по центру строки.
+  &__leading {
+    display: flex;
+    flex-shrink: 0;
+
+    color: var(--st-content-foreground-color-neutral-primary);
   }
 
   &__info {
