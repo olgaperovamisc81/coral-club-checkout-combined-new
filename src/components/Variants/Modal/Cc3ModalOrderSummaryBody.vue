@@ -14,7 +14,7 @@ import Cc3ModalOrderSummaryPromo from './Cc3ModalOrderSummaryPromo.vue'
  * Вид в обоих местах обязан совпадать — это одна и та же сводка, и две
  * слегка разные её версии человек прочитает как два разных заказа.
  */
-defineProps<{
+const props = defineProps<{
   /**
    * Плотная раскладка раскрытой панели под шапкой: в макете у неё строки
    * стоят ближе, чем у блока в конце страницы.
@@ -26,10 +26,19 @@ defineProps<{
   hidePromo?: boolean
   /** Поле промокода с подписью внутри (комбинированная версия). */
   floatingPromo?: boolean
+  /** Способ доставки ещё не выбран: цены нет, в строке доставки прочерк вместо «Бесплатно». */
+  deliveryUnknown?: boolean
 }>()
 
 const { t } = useStand()
 const { summary, orderProductsPreview } = useCheckout()
+
+// Прочерк — знак, а не текст: перевода у него нет.
+const DELIVERY_UNKNOWN = '—'
+
+const deliveryValue = computed(() =>
+  props.deliveryUnknown ? DELIVERY_UNKNOWN : summary.value.deliveryFormatRounded,
+)
 
 const text = computed(() => ({
   subtotal: t('summary.items', { count: summary.value.itemsCount }),
@@ -82,7 +91,7 @@ const text = computed(() => ({
 
       <div class="cc3-modal-order-summary-body__row">
         <dt>{{ text.shipping }}</dt>
-        <dd>{{ summary.deliveryFormatRounded }}</dd>
+        <dd>{{ deliveryValue }}</dd>
       </div>
 
       <div

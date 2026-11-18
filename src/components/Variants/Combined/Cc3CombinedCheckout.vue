@@ -92,6 +92,9 @@ const isOptionsVisible = computed(() => state.value.method === 'courier')
 
 const isResolved = computed(() => Boolean(state.value.profile))
 
+// Пока адрес или пункт не выбран, цены доставки нет: в сводке прочерк, а не «Бесплатно».
+const isDeliveryUnknown = computed(() => !isResolved.value)
+
 // Адрес из книги — слот выбирают сами: сначала дату, потом время. У нового
 // адреса слот подставляется первым доступным, как раньше.
 const isSlotChoiceExplicit = computed(() => state.value.fromBook)
@@ -162,7 +165,7 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
         <!-- Раскрытая полоса показывает ту же серую карточку сводки, что и внизу страницы. -->
         <template #panel>
           <div class="cc3-combined-checkout__panel">
-            <Cc3CombinedTotalCard />
+            <Cc3CombinedTotalCard :delivery-unknown="isDeliveryUnknown" />
           </div>
         </template>
       </Cc3ModalSummaryBar>
@@ -199,14 +202,14 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
         </section>
 
         <Cc3CombinedPaymentMethods />
-        <Cc3CombinedTotalCard />
+        <Cc3CombinedTotalCard :delivery-unknown="isDeliveryUnknown" />
         <Cc3CombinedExtrasCard />
         <Cc3ModalFooterConsent ref="consentRef" :is-error-shown="isTermsErrorShown" />
         <Cc3ModalFooterCta :is-disabled="false" @submit="submit" />
       </div>
 
       <div class="cc3-combined-checkout__aside">
-        <Cc3CombinedTotalCard />
+        <Cc3CombinedTotalCard :delivery-unknown="isDeliveryUnknown" />
         <Cc3CombinedExtrasCard />
       </div>
     </div>

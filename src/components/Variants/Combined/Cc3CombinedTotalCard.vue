@@ -8,13 +8,17 @@ import Cc3CombinedOrderItems from './Cc3CombinedOrderItems.vue'
  * ниже, только с обводкой. Стоит и внизу страницы на телефоне, и справа на
  * десктопе.
  */
+defineProps<{
+  /** Способ доставки ещё не выбран: в строке доставки прочерк. */
+  deliveryUnknown?: boolean
+}>()
 </script>
 
 <template>
   <section class="cc3-combined-total-card">
     <Cc3CombinedOrderItems />
 
-    <Cc3ModalOrderSummaryBody hide-items hide-promo />
+    <Cc3ModalOrderSummaryBody hide-items hide-promo :delivery-unknown="deliveryUnknown" />
   </section>
 </template>
 
