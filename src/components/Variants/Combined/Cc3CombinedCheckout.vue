@@ -373,6 +373,21 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     order: 7;
 
     margin-top: var(--st-global-distance-space-inset-xs);
+
+    // Согласия на размер мельче остального текста страницы: это справочная
+    // строка, а не действие. Текст 14 вместо 16, галочка 20 вместо 24.
+    .cc3-modal-footer-consent__cell-text {
+      @include font('body-sm');
+    }
+
+    .cc3-modal-footer-consent__checkbox {
+      width: 20px;
+      height: 20px;
+
+      &:checked {
+        background-size: 14px 14px;
+      }
+    }
   }
 
   &__main > .cc3-modal-footer-cta {
