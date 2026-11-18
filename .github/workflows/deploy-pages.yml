@@ -38,7 +38,11 @@ jobs:
           # Комбинированный. Условие по имени репозитория, а не по ветке: тот же
           # файл лежит в основном репозитории, и там список должен остаться
           # полным, чтобы тест не потерял версии.
-          VITE_ONLY_VARIANT: ${{ github.repository == 'olgaperovamisc81/coral-club-checkout-combined' && 'combined' || '' }}
+          VITE_ONLY_VARIANT: ${{ (github.repository == 'olgaperovamisc81/coral-club-checkout-combined' || github.repository == 'olgaperovamisc81/coral-club-checkout-combined-new') && 'combined' || '' }}
+          # Новый дизайн Комбинированного выкладывается в свой репозиторий, и
+          # вход там получает синюю плашку с этой подписью, чтобы его не путали
+          # с прежней выкладкой.
+          VITE_STAND_EDITION: ${{ github.repository == 'olgaperovamisc81/coral-club-checkout-combined-new' && 'Комбинированный · новый дизайн' || '' }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

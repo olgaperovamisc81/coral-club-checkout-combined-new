@@ -113,6 +113,11 @@ const options = computed(() => {
 
 const isProfileStep = computed(() => step.value === 'profile')
 
+// Подпись редакции: при сборке для показа вход получает синюю плашку с
+// названием дизайна, чтобы выкладки с разным дизайном не путались.
+const editionLabel: string = import.meta.env.VITE_STAND_EDITION ?? ''
+const rootClass = editionLabel ? 'cc3-prototype-index--edition' : ''
+
 const standTitle = computed(() => t('stand.title'))
 const backLabel = computed(() => t('stand.back'))
 const title = computed(() => t(`stand.${step.value}.title`))
@@ -141,7 +146,9 @@ function onProfileSubmit() {
 </script>
 
 <template>
-  <div class="cc3-prototype-index">
+  <div class="cc3-prototype-index" :class="rootClass">
+    <p v-if="editionLabel" class="cc3-prototype-index__edition">{{ editionLabel }}</p>
+
     <header class="cc3-prototype-index__header">
       <p class="cc3-prototype-index__eyebrow">{{ standTitle }}</p>
 
@@ -196,6 +203,28 @@ function onProfileSubmit() {
     display: flex;
     flex-direction: column;
     gap: var(--st-global-distance-space-stack-sm);
+  }
+
+  // Плашка редакции стенда. Синий — служебный цвет входа, в дизайн-системе
+  // под него токена нет и в самом чекауте он не используется.
+  &__edition {
+    margin: 0;
+    padding: var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-2xl);
+
+    @include font('label-md');
+
+    color: #fff;
+    background-color: #1f5fd6;
+    border-radius: var(--st-global-radius-lg);
+  }
+
+  &--edition &__step-value,
+  &--edition &__option-title {
+    color: #1f5fd6;
+  }
+
+  &--edition &__option:hover {
+    border-color: #1f5fd6;
   }
 
   &__eyebrow {
