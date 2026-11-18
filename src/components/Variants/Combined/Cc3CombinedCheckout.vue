@@ -374,8 +374,9 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
 
     // 4 прежних и ещё 14 свободного места перед галочками (8 + 6).
     margin-top: calc(
-      var(--st-global-distance-space-inset-xs) + var(--st-global-distance-space-inset-md) +
-        var(--st-global-distance-space-inset-sm)
+      var(--st-global-distance-space-inset-xs) + var(--st-global-distance-space-inset-md) + var(
+          --st-global-distance-space-inset-sm
+        )
     );
 
     // Согласия на размер мельче остального текста страницы: это справочная
