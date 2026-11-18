@@ -239,6 +239,25 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
     border-bottom: none;
   }
 
+  // Рамка контента страницы: колонка 560 до планшета, а с 1024 — форма 560,
+  // зазор и сводка 400 (та же сетка, что у блока ниже). Шапка и подвал держат
+  // содержимое в этой рамке, а по краям остаются пустые поля, но не меньше 16.
+  // Фон у них на всю ширину, как был.
+  --cc3-combined-frame-width: 560px;
+
+  @include mediaMinWidth('lg') {
+    --cc3-combined-frame-width: calc(960px + var(--st-global-distance-space-inset-9xl) + var(--st-global-distance-space-inset-2xl));
+  }
+
+  .cc3-modal-header,
+  .cc3-modal-footer-site__legal,
+  .cc3-modal-footer-site__links {
+    padding-inline: max(
+      var(--st-global-distance-space-inset-2xl),
+      calc((100% - var(--cc3-combined-frame-width)) / 2)
+    );
+  }
+
   // Полоса с суммой нужна, пока сводка уезжает вниз страницы. В две колонки
   // сводка стоит справа на виду, и полоса только повторяла бы её.
   &__bar {
