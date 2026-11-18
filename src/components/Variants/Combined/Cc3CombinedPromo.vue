@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 
 import { useCheckout } from '@/composables/useCheckout'
 import { useStand } from '@/stand/composables/useStand'
@@ -7,18 +7,19 @@ import { useStand } from '@/stand/composables/useStand'
 import Cc3ModalOrderSummaryPromo from '../Modal/Cc3ModalOrderSummaryPromo.vue'
 
 /**
- * Промокод текстовой строкой: слово «Промокод» тем же шрифтом, что Coral
- * Wallet, но ссылкой — зелёным с пунктиром, как «Применить». Нажатие открывает
- * под ним поле ввода, повторное закрывает. Применили — поле уходит, на месте
- * ссылки обычное «Промокод» с зелёным «КОД применён!» под ним, а справа
- * «Удалить».
+ * Промокод: чёрная подчёркнутая ссылка «У меня есть промокод». Нажатие
+ * заменяет ссылку полем ввода с кнопкой «Применить», и курсор сразу в нём.
+ * Если из пустого поля вышли, поле снова становится ссылкой. Применили —
+ * поле уходит, остаётся «Промокод» с зелёным «КОД применён!» под ним и
+ * «Удалить» справа.
  *
- * Иконок нет: строка читается как текст-действие. Само поле с проверкой кода
- * — общее (Cc3ModalOrderSummaryPromo): здесь только раскрытие и снятие.
+ * Само поле с проверкой кода — общее (Cc3ModalOrderSummaryPromo): здесь только
+ * раскрытие и снятие.
  */
 const { t } = useStand()
 const { appliedPromo, promoCode, removePromo, clearPromoError } = useCheckout()
 
+const rootRef = ref<HTMLElement>()
 const isOpen = ref(false)
 
 // Код применили — поле закрывать незачем, строка покажет код.
@@ -28,51 +29,59 @@ watch(appliedPromo, (applied) => {
   }
 })
 
-function toggle() {
-  isOpen.value = !isOpen.value
+async function open() {
+  isOpen.value = true
 
-  if (!isOpen.value) {
-    promoCode.value = ''
+  await nextTick()
+
+  rootRef.value?.querySelector('input')?.focus()
+}
+
+// Вышли из поля, ничего не введя, — возвращаем ссылку. С введённым кодом поле
+// остаётся: человек мог пойти за кнопкой «Применить» или отвлечься.
+function onFocusOut(event: FocusEvent) {
+  // Только выход из самого поля: ссылка, которую заменило поле, тоже
+  // «теряет фокус», и без этой проверки поле закрывалось бы сразу после открытия.
+  if ((event.target as HTMLElement).tagName !== 'INPUT') {
+    return
+  }
+
+  if (rootRef.value?.contains(event.relatedTarget as Node | null)) {
+    return
+  }
+
+  if (isOpen.value && !promoCode.value.trim()) {
+    isOpen.value = false
     clearPromoError()
   }
 }
 
 const text = computed(() => ({
   name: t('summary.promoPlaceholder'),
+  have: t('summary.promoHave'),
   remove: t('summary.promoRemove'),
   applied: appliedPromo.value ? t('summary.promoApplied', { code: appliedPromo.value.code }) : '',
 }))
 </script>
 
 <template>
-  <section class="cc3-combined-promo">
-    <div class="cc3-combined-promo__head">
-      <span v-if="appliedPromo" class="cc3-combined-promo__info">
+  <section ref="rootRef" class="cc3-combined-promo" @focusout="onFocusOut">
+    <div v-if="appliedPromo" class="cc3-combined-promo__head">
+      <span class="cc3-combined-promo__info">
         <span class="cc3-combined-promo__name">{{ text.name }}</span>
         <span class="cc3-combined-promo__applied">{{ text.applied }}</span>
       </span>
 
-      <button
-        v-else
-        type="button"
-        class="cc3-combined-promo__link"
-        :aria-expanded="isOpen"
-        @click="toggle"
-      >
-        {{ text.name }}
-      </button>
-
-      <button
-        v-if="appliedPromo"
-        type="button"
-        class="cc3-combined-promo__remove"
-        @click="removePromo"
-      >
+      <button type="button" class="cc3-combined-promo__remove" @click="removePromo">
         {{ text.remove }}
       </button>
     </div>
 
-    <Cc3ModalOrderSummaryPromo v-if="isOpen && !appliedPromo" floating />
+    <Cc3ModalOrderSummaryPromo v-else-if="isOpen" floating />
+
+    <button v-else type="button" class="cc3-combined-promo__link" @click="open">
+      {{ text.have }}
+    </button>
   </section>
 </template>
 
@@ -105,23 +114,25 @@ const text = computed(() => ({
     min-width: 0;
   }
 
-  // Название тем же шрифтом, что у Coral Wallet.
-  &__name,
-  &__link {
+  // Название применённого кода тем же шрифтом, что у Coral Wallet.
+  &__name {
     @include font('body-lg');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
 
-  // Ссылка-действие: зелёная с пунктиром, как «Применить».
+  // Ссылка «У меня есть промокод»: чёрная, подчёркнутая.
   &__link {
+    align-self: flex-start;
+
     padding: 0;
 
     font-family: inherit;
 
-    color: var(--st-action-foreground-color-positive-normal);
-    text-decoration: underline dotted;
-    text-underline-offset: 4px;
+    @include font('body-md');
+
+    color: var(--st-content-foreground-color-neutral-primary);
+    text-decoration: underline;
     background: none;
     border: none;
     cursor: pointer;

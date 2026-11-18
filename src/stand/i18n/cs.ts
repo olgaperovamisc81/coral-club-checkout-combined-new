@@ -254,6 +254,7 @@ export default {
   'summary.itemsPointsCompact': 'Produkty: {count}. Body: {points}.',
   'summary.total': 'Celkem:',
   'summary.promoPlaceholder': 'Slevový kód',
+  'summary.promoHave': 'Mám promo kód',
   'summary.promoRow': 'Promokód',
   'summary.promoApplied': '{code} uplatněn!',
   'summary.promoRemove': 'Odebrat',

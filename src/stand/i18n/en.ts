@@ -256,6 +256,7 @@ export default {
   'summary.itemsPointsCompact': 'Products: {count}. Points: {points}.',
   'summary.total': 'Total:',
   'summary.promoPlaceholder': 'Promo code',
+  'summary.promoHave': 'I have a promo code',
   'summary.promoRow': 'Promo code',
   'summary.promoApplied': '{code} applied!',
   'summary.promoRemove': 'Remove',

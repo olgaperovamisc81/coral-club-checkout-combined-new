@@ -254,6 +254,7 @@ export default {
   'summary.itemsPointsCompact': 'Товаров: {count}. Баллов: {points}.',
   'summary.total': 'Итого:',
   'summary.promoPlaceholder': 'Промокод',
+  'summary.promoHave': 'У меня есть промокод',
   'summary.promoRow': 'Промокод',
   'summary.promoApplied': '{code} применён!',
   'summary.promoRemove': 'Удалить',

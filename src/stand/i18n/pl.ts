@@ -254,6 +254,7 @@ export default {
   'summary.itemsPointsCompact': 'Produkty: {count}. Punkty: {points}.',
   'summary.total': 'Razem:',
   'summary.promoPlaceholder': 'Kod promocyjny',
+  'summary.promoHave': 'Mam kod promocyjny',
   'summary.promoRow': 'Kod promocyjny',
   'summary.promoApplied': '{code} zastosowano!',
   'summary.promoRemove': 'Usuń',

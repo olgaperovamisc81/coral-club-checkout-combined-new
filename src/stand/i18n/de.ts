@@ -254,6 +254,7 @@ export default {
   'summary.itemsPointsCompact': 'Artikel: {count}. Punkte: {points}.',
   'summary.total': 'Gesamt:',
   'summary.promoPlaceholder': 'Gutscheincode',
+  'summary.promoHave': 'Ich habe einen Gutscheincode',
   'summary.promoRow': 'Promocode',
   'summary.promoApplied': '{code} angewendet!',
   'summary.promoRemove': 'Entfernen',
