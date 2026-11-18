@@ -317,17 +317,7 @@ function onKeydown(event: KeyboardEvent) {
   }
 
   &__clear {
-    padding: 0;
-
-    font-family: inherit;
-
-    @include font('label-sm');
-
-    color: var(--st-action-foreground-color-positive-normal);
-    text-decoration: underline;
-    background: none;
-    border: none;
-    cursor: pointer;
+    @include cc3-combined-link;
   }
 
   // Карточка адреса: выбор и «Изменить адрес» друг под другом. Выбранную
@@ -403,18 +393,10 @@ function onKeydown(event: KeyboardEvent) {
   &__edit {
     align-self: flex-start;
 
+    @include cc3-combined-link;
+
     padding: var(--st-global-distance-space-inset-sm) var(--st-global-distance-space-inset-2xl)
       var(--st-global-distance-space-inset-2xl);
-
-    font-family: inherit;
-
-    @include font('body-md');
-
-    color: var(--st-content-foreground-color-neutral-primary);
-    text-decoration: underline;
-    background: none;
-    border: none;
-    cursor: pointer;
   }
 
   // Кнопка лежит в прокручиваемом теле сразу под списком или информером: в

@@ -1,0 +1,20 @@
+@use 'typography' as *;
+
+// Текстовая ссылка комбинированной версии: один размер, один цвет, сплошное
+// подчёркивание. Так выглядят «Укажите адрес», «Выбрать на карте»,
+// «У меня есть промокод», «Удалить» и ссылки в книге адресов. Размер задан
+// самой ссылкой, а не окружением: в серой строке-подсказке и отдельной
+// строкой она выглядит одинаково.
+@mixin cc3-combined-link {
+  padding: 0;
+
+  font-family: inherit;
+
+  @include font('body-md');
+
+  color: var(--st-action-foreground-color-positive-normal);
+  text-decoration: underline;
+  background: none;
+  border: none;
+  cursor: pointer;
+}

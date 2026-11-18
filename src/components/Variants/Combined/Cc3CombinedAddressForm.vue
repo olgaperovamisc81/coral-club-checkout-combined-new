@@ -441,17 +441,8 @@ watch(
 
   &__map-link {
     margin: 0 0 var(--st-global-distance-space-inset-xl);
-    padding: 0;
 
-    font-family: inherit;
-
-    @include font('label-sm');
-
-    color: var(--st-action-foreground-color-positive-normal);
-    text-decoration: underline;
-    background: none;
-    border: none;
-    cursor: pointer;
+    @include cc3-combined-link;
   }
 }
 

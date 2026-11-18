@@ -187,15 +187,7 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
 
   // Ссылка внутри серой строки-подсказки: подчёркнутая, цвет ссылок версии.
   &__hint-link {
-    padding: 0;
-
-    font: inherit;
-
-    color: var(--st-action-foreground-color-positive-normal);
-    text-decoration: underline;
-    background: none;
-    border: none;
-    cursor: pointer;
+    @include cc3-combined-link;
   }
 
   // Без рамки и подложки: в рамке строка читается как ещё одна кнопка,

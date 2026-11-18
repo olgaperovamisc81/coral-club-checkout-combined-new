@@ -134,8 +134,8 @@ const text = computed(() => ({
     color: var(--st-content-foreground-color-neutral-primary);
   }
 
-  // Ссылка «У меня есть промокод»: значок слева, текст чёрным тем же шрифтом,
-  // что название Coral Wallet, под текстом сплошная черта (под значком её нет).
+  // Ссылка «У меня есть промокод»: значок слева, текст зелёным, как
+  // остальные ссылки версии; под текстом сплошная черта (под значком её нет).
   &__link {
     display: flex;
     align-self: flex-start;
@@ -146,17 +146,14 @@ const text = computed(() => ({
 
     font-family: inherit;
 
-    color: var(--st-content-foreground-color-neutral-primary);
+    color: var(--st-action-foreground-color-positive-normal);
     background: none;
     border: none;
     cursor: pointer;
   }
 
   &__link-text {
-    @include font('body-md');
-
-    text-decoration: underline;
-    text-underline-offset: 6px;
+    @include cc3-combined-link;
   }
 
   &__applied {
@@ -169,15 +166,7 @@ const text = computed(() => ({
   &__remove {
     flex-shrink: 0;
 
-    padding: 0;
-
-    @include font('label-sm');
-
-    color: var(--st-action-foreground-color-positive-normal);
-    text-decoration: underline;
-    background: none;
-    border: none;
-    cursor: pointer;
+    @include cc3-combined-link;
   }
 }
 </style>
