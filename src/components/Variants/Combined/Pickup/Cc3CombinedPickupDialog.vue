@@ -587,6 +587,15 @@ function onKeydown(event: KeyboardEvent) {
 
   background-color: var(--st-content-background-color-default-solid-normal);
 
+  // Окно с большим скруглением, как у окна карты курьера: карта доходит до
+  // его краёв, и острые углы рядом с ней читались бы как обрезанный экран.
+  @include mediaMinWidth('md') {
+    border-radius: var(--st-global-distance-space-inset-6xl);
+    overflow: hidden;
+  }
+
+  // Заголовок слева, круглая кнопка закрытия справа, без линии под шапкой:
+  // карта начинается сразу под ней. Тот же вид, что у окна карты курьера.
   &__header {
     position: relative;
     z-index: 4;
@@ -594,40 +603,43 @@ function onKeydown(event: KeyboardEvent) {
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    gap: var(--st-global-distance-space-inset-2xl);
 
-    // По бокам место под крестик: длинный заголовок не должен наезжать на него.
-    padding: var(--st-global-distance-space-inset-2xl)
-      calc(var(--st-global-distance-space-inset-2xl) + 24px + var(--st-global-distance-space-inset-md));
+    padding: var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-2xl)
+      var(--st-global-distance-space-inset-xl);
 
     background-color: var(--st-content-background-color-default-solid-normal);
-    border-bottom: 1px solid var(--st-content-border-color-neutral-onsubtle);
+
+    @include mediaMinWidth('md') {
+      padding: var(--st-global-distance-space-inset-4xl) var(--st-global-distance-space-inset-6xl)
+        var(--st-global-distance-space-inset-2xl);
+    }
   }
 
   &__title {
     margin: 0;
 
-    text-align: center;
-
-    @include font('label-md');
+    @include font('heading-xxs');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
 
   &__close {
-    position: absolute;
-    inset-inline-end: var(--st-global-distance-space-inset-2xl);
-    inset-block-start: 50%;
-
     display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
 
     padding: 0;
+    width: 40px;
+    height: 40px;
 
     color: var(--st-content-foreground-color-neutral-primary);
-    background: none;
+    background-color: var(--st-content-background-color-neutral-subtle);
     border: none;
+    border-radius: var(--st-global-radius-pill);
     cursor: pointer;
-    transform: translateY(-50%);
   }
 
   // Тело — граница для карты и шторок: они позиционируются внутри него.
@@ -666,6 +678,11 @@ function onKeydown(event: KeyboardEvent) {
     padding: var(--st-global-distance-space-inset-2xl);
 
     background-color: var(--st-content-background-color-default-solid-normal);
+
+    @include mediaMinWidth('md') {
+      padding: var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-6xl)
+        var(--st-global-distance-space-inset-4xl);
+    }
   }
 
   &__notice {
