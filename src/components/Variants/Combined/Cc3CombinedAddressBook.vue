@@ -321,18 +321,20 @@ function onKeydown(event: KeyboardEvent) {
   }
 
   // Карточка адреса: выбор и «Изменить адрес» друг под другом. Выбранную
-  // подсвечивает фоном :has(:checked), как остальные списки версии.
+  // подсвечивает фоном и тёмной обводкой :has(:checked), как карточки доставки
+  // и способов оплаты.
   &__row {
     display: flex;
     flex-direction: column;
     align-items: stretch;
 
     background-color: var(--st-content-background-color-default-solid-normal);
-    border: 1px solid var(--st-content-border-color-neutral-implicit);
+    border: 1.5px solid var(--st-content-border-color-neutral-implicit);
     border-radius: var(--st-global-radius-xl);
 
     &:has(:checked) {
       background-color: var(--st-content-background-color-neutral-subtle);
+      border-color: var(--st-action-background-color-positive-normal);
     }
   }
 
