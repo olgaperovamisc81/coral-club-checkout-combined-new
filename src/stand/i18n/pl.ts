@@ -71,6 +71,8 @@ export default {
   'suggest.error': 'Podpowiedzi są chwilowo niedostępne. Wpisz adres ręcznie',
   'map.geocodeError': 'Nie udało się ustalić adresu. Przesuń pinezkę lub wpisz adres ręcznie',
   'map.selectError': 'Wybierz adres na mapie lub znajdź go w wyszukiwarce',
+  'map.pinTitle': 'Przesuń mapę do swojego budynku',
+  'map.pinHint': 'Przybliż mapę i ustaw pinezkę na budynku: adres ustali się automatycznie.',
   'map.error': 'Mapa się nie załadowała. Sprawdź połączenie',
   'map.retry': 'Spróbuj ponownie',
   'error.street.required': 'Podaj adres dostawy',

@@ -41,6 +41,8 @@ const text = computed(() => ({
   continue: t('common.continue'),
   geocodeError: t('map.geocodeError'),
   selectError: t('map.selectError'),
+  pinTitle: t('map.pinTitle'),
+  pinHint: t('map.pinHint'),
 }))
 
 const label = ref(props.query)
@@ -70,6 +72,23 @@ const errorText = computed(() => {
 // человеку нужно прочитать его весь. Пока геокодер не определил адрес под
 // новой меткой, прежний адрес не показываем — он принадлежит другому месту.
 const fullAddress = computed(() => (isGeocodeFailed.value ? '' : label.value.trim()))
+
+// Под картой стоит одна строка пояснения: ошибка, найденный адрес или, пока
+// адреса нет, подсказка, как поставить метку.
+const info = computed(() => {
+  if (errorText.value) {
+    return { kind: 'error', text: errorText.value }
+  }
+
+  if (fullAddress.value) {
+    return { kind: 'address', text: fullAddress.value }
+  }
+
+  return { kind: 'hint', text: text.value.pinHint }
+})
+
+const infoClass = computed(() => `cc3-combined-map-dialog__info--${info.value.kind}`)
+const infoRole = computed(() => (info.value.kind === 'error' ? 'alert' : undefined))
 
 const center = computed<MapPoint>(() => point.value ?? mapCenter.value)
 
@@ -236,31 +255,31 @@ function onKeydown(event: KeyboardEvent) {
             @move="onMapMove"
           />
 
+          <!-- Строка поиска как остальные поля: подпись внутри, печатать нельзя — нажатие открывает шторку. -->
+          <div class="cc3-combined-map-dialog__search">
+            <Cc3CombinedInput
+              :model-value="label"
+              :label="text.placeholder"
+              readonly
+              :aria-label="text.placeholder"
+              @focus="isSearchOpen = true"
+            >
+              <template #prefix>
+                <Cc3Icon name="search-md" :size="20" />
+              </template>
+            </Cc3CombinedInput>
+          </div>
+
           <span class="cc3-combined-map-dialog__pin">
             <Cc3MapPin variant="positive" icon="delivery-truck" />
           </span>
         </div>
 
         <div class="cc3-combined-map-dialog__controls">
-          <p v-if="errorText" class="cc3-combined-map-dialog__error" role="alert">
-            {{ errorText }}
-          </p>
+          <h3 class="cc3-combined-map-dialog__pin-title">{{ text.pinTitle }}</h3>
 
-          <!-- Строка поиска как остальные поля: подпись внутри, печатать нельзя — нажатие открывает шторку. -->
-          <Cc3CombinedInput
-            :model-value="label"
-            :label="text.placeholder"
-            readonly
-            :aria-label="text.placeholder"
-            @focus="isSearchOpen = true"
-          >
-            <template #prefix>
-              <Cc3Icon name="search-md" :size="20" />
-            </template>
-          </Cc3CombinedInput>
-
-          <p v-if="fullAddress" class="cc3-combined-map-dialog__address">
-            {{ fullAddress }}
+          <p class="cc3-combined-map-dialog__info" :class="infoClass" :role="infoRole">
+            {{ info.text }}
           </p>
 
           <button type="button" class="cc3-combined-map-dialog__continue" @click="confirm">
@@ -292,18 +311,33 @@ function onKeydown(event: KeyboardEvent) {
   background-color: var(--st-content-background-color-default-solid-normal);
   outline: none;
 
+  // Окно карты с большим скруглением: карта доходит до его краёв, и острые
+  // углы рядом с ней читались бы как обрезанный экран.
+  @include mediaMinWidth('md') {
+    border-radius: var(--st-global-distance-space-inset-6xl);
+    overflow: hidden;
+  }
+
+  // Заголовок слева, круглая кнопка закрытия справа, без линии под шапкой:
+  // карта начинается сразу под ней.
   &__header {
     position: relative;
     z-index: 4;
 
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    gap: var(--st-global-distance-space-inset-2xl);
 
-    padding: var(--st-global-distance-space-inset-2xl);
+    padding: var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-2xl)
+      var(--st-global-distance-space-inset-xl);
 
     background-color: var(--st-content-background-color-default-solid-normal);
-    border-bottom: 1px solid var(--st-content-border-color-neutral-onsubtle);
+
+    @include mediaMinWidth('md') {
+      padding: var(--st-global-distance-space-inset-4xl) var(--st-global-distance-space-inset-6xl)
+        var(--st-global-distance-space-inset-2xl);
+    }
   }
 
   // Тело — остаток экрана под шапкой и граница для шторки поиска.
@@ -332,25 +366,37 @@ function onKeydown(event: KeyboardEvent) {
   &__title {
     margin: 0;
 
-    @include font('label-md');
+    @include font('heading-xxs');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
 
   &__close {
-    position: absolute;
-    inset-inline-end: var(--st-global-distance-space-inset-2xl);
-    inset-block-start: 50%;
-
     display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
 
     padding: 0;
+    width: 40px;
+    height: 40px;
 
     color: var(--st-content-foreground-color-neutral-primary);
-    background: none;
+    background-color: var(--st-content-background-color-neutral-subtle);
     border: none;
+    border-radius: var(--st-global-radius-pill);
     cursor: pointer;
-    transform: translateY(-50%);
+  }
+
+  // Строка поиска лежит на карте сверху: низ окна занят пояснением и кнопкой.
+  &__search {
+    position: absolute;
+    inset-block-start: var(--st-global-distance-space-inset-xl);
+    inset-inline: var(--st-global-distance-space-inset-xl);
+    z-index: 2;
+
+    border-radius: var(--st-global-radius-xl);
+    box-shadow: 0 2px 8px 0 rgb(4 51 103 / 16%);
   }
 
   // Контейнер растягивается на весь остаток экрана, карта лежит в нём
@@ -388,30 +434,41 @@ function onKeydown(event: KeyboardEvent) {
   &__controls {
     display: flex;
     flex-direction: column;
-    gap: var(--st-global-distance-space-inset-xl);
+    gap: var(--st-global-distance-space-inset-md);
 
-    padding: var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-2xl)
-      var(--st-global-distance-space-inset-2xl);
+    padding: var(--st-global-distance-space-inset-2xl);
+
+    @include mediaMinWidth('md') {
+      padding: var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-6xl)
+        var(--st-global-distance-space-inset-4xl);
+    }
   }
 
-  &__error {
+  // Как поставить метку: заголовок и пояснение под картой.
+  &__pin-title {
     margin: 0;
 
-    @include font('body-sm');
+    @include font('heading-xxs');
 
-    color: var(--st-content-foreground-color-negative-primary);
+    color: var(--st-content-foreground-color-neutral-primary);
   }
 
-  &__address {
-    margin: 0;
-    padding: var(--st-global-distance-space-inset-xl);
+  &__info {
+    margin: 0 0 var(--st-global-distance-space-inset-md);
 
     @include font('body-md');
 
-    color: var(--st-content-foreground-color-neutral-primary);
-    background-color: var(--st-content-background-color-neutral-subtle);
-    border-radius: var(--st-global-radius-md);
+    color: var(--st-content-foreground-color-neutral-secondary);
     overflow-wrap: anywhere;
+
+    // Найденный адрес читается основным цветом: он уже не подсказка.
+    &--address {
+      color: var(--st-content-foreground-color-neutral-primary);
+    }
+
+    &--error {
+      color: var(--st-content-foreground-color-negative-primary);
+    }
   }
 
   &__continue {
@@ -421,11 +478,11 @@ function onKeydown(event: KeyboardEvent) {
 
     padding: var(--st-global-distance-space-inset-lg);
     width: 100%;
-    height: 44px;
+    height: 52px;
 
     font-family: inherit;
 
-    @include font('label-md');
+    @include font('label-lg');
 
     color: var(--st-action-foreground-color-onprimary-normal);
     background-color: var(--st-action-background-color-positive-normal);

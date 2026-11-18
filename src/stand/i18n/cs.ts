@@ -71,6 +71,8 @@ export default {
   'suggest.error': 'Návrhy jsou dočasně nedostupné. Zadejte adresu ručně',
   'map.geocodeError': 'Adresu se nepodařilo určit. Posuňte značku nebo zadejte adresu ručně',
   'map.selectError': 'Vyberte adresu na mapě nebo ji najděte ve vyhledávání',
+  'map.pinTitle': 'Posuňte mapu k vaší budově',
+  'map.pinHint': 'Přibližte mapu a umístěte značku na budovu: adresa se určí sama.',
   'map.error': 'Mapa se nenačetla. Zkontrolujte připojení',
   'map.retry': 'Zkusit znovu',
   'error.street.required': 'Zadejte doručovací adresu',

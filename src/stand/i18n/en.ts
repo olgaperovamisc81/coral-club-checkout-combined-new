@@ -71,6 +71,8 @@ export default {
   'suggest.error': 'Suggestions are temporarily unavailable. Enter the address manually',
   'map.geocodeError': 'Could not find this address. Move the pin or enter the address manually',
   'map.selectError': 'Choose an address on the map or find it with search',
+  'map.pinTitle': 'Move the map to your building',
+  'map.pinHint': 'Zoom in and put the pin on a building: the address will be filled in automatically.',
   'map.error': 'The map did not load. Check your connection',
   'map.retry': 'Try again',
   'error.street.required': 'Enter a delivery address',

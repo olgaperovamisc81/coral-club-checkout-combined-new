@@ -71,6 +71,8 @@ export default {
   'suggest.error': 'Vorschläge sind vorübergehend nicht verfügbar. Geben Sie die Adresse manuell ein',
   'map.geocodeError': 'Die Adresse konnte nicht ermittelt werden. Verschieben Sie die Markierung oder geben Sie die Adresse manuell ein',
   'map.selectError': 'Wählen Sie eine Adresse auf der Karte oder suchen Sie sie',
+  'map.pinTitle': 'Verschieben Sie die Karte zu Ihrem Haus',
+  'map.pinHint': 'Zoomen Sie hinein und setzen Sie die Markierung auf ein Gebäude: Die Adresse wird automatisch ermittelt.',
   'map.error': 'Die Karte konnte nicht geladen werden. Prüfen Sie Ihre Verbindung',
   'map.retry': 'Erneut versuchen',
   'error.street.required': 'Geben Sie eine Lieferadresse ein',
