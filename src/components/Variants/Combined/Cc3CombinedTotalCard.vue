@@ -29,5 +29,14 @@ defineProps<{
 <style lang="scss">
 .cc3-combined-total-card {
   @include cc3-combined-summary-card;
+
+  // Строки сумм, итог и блок под ним стоят на 2px теснее, чем в общей сводке.
+  .cc3-modal-order-summary-body__rows {
+    gap: calc(var(--st-global-distance-space-inset-2xl) - 2px);
+  }
+}
+
+.cc3-combined-total-card .cc3-combined-extras {
+  gap: calc(var(--st-global-distance-space-inset-2xl) - 2px);
 }
 </style>
