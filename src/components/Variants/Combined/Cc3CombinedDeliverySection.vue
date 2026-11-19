@@ -613,6 +613,12 @@ const isSelectionMissing = computed(
     gap: var(--st-global-distance-space-inset-sm);
 
     padding-top: var(--st-global-distance-space-inset-md);
+
+    // На широком экране текст занимает две трети блока: во всю ширину строка
+    // растягивается, и «Изменить» над ней теряется.
+    @include mediaMinWidth('lg') {
+      max-width: calc(100% * 2 / 3);
+    }
   }
 
   &__address {
