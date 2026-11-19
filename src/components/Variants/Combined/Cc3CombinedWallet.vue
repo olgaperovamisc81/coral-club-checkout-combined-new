@@ -123,11 +123,8 @@ const text = computed(() => ({
 
 <style lang="scss">
 .cc3-combined-wallet {
-  // Блок стоит первым в карточке кошелька и промокода: сверху 6, чтобы вместе
-  // с полем карточки получилось 24 до текста. Поля по бокам задаёт margin,
-  // чтобы блок шёл по ширине строк карточки.
-  margin: var(--st-global-distance-space-inset-sm) var(--st-global-distance-space-inset-2xl)
-    var(--st-global-distance-space-inset-3xl);
+  // Поля и промежутки задаёт блок скидок, в который кошелёк входит.
+  margin: 0;
 
   &__info-button {
     @include cc3-combined-info-button;

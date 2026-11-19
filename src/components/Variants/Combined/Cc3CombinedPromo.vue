@@ -98,14 +98,8 @@ const text = computed(() => ({
   flex-direction: column;
   gap: var(--st-global-distance-space-inset-xl);
 
-  // Поля по бокам, как у блока кошелька: строки идут по ширине строк карточки.
-  margin: var(--st-global-distance-space-inset-sm) var(--st-global-distance-space-inset-2xl)
-    var(--st-global-distance-space-inset-2xl);
-
-  // Следом за кошельком отступ сверху уже есть: он держит снизу свои 16.
-  .cc3-combined-wallet + & {
-    margin-top: 0;
-  }
+  // Поля и промежутки задаёт блок скидок, в который промокод входит.
+  margin: 0;
 
   &__head {
     display: flex;

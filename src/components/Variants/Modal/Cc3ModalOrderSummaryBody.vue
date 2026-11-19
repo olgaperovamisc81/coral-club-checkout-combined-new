@@ -110,6 +110,9 @@ const text = computed(() => ({
         <dd>-{{ summary.promoDiscountFormatRounded }}</dd>
       </div>
 
+      <!-- Место для блока между скидками и итогом (комбинированная версия ставит сюда кошелёк и промокод). -->
+      <slot name="extras" />
+
       <div
         class="cc3-modal-order-summary-body__row cc3-modal-order-summary-body__row--total"
       >
