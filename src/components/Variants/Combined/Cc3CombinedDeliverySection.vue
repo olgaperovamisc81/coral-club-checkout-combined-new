@@ -619,7 +619,7 @@ const isSelectionMissing = computed(
     margin: 0;
     padding: 0 var(--st-global-distance-space-inset-2xl);
 
-    @include font('body-md');
+    @include font('body-sm');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
@@ -660,7 +660,7 @@ const isSelectionMissing = computed(
     margin: 0;
     padding: 0 var(--st-global-distance-space-inset-2xl);
 
-    @include font('body-md');
+    @include font('body-sm');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
