@@ -460,7 +460,7 @@ watch([deliveryCost, courierVariants], () => setDeliveryPrice(deliveryCost.value
   }
 
   &__slots {
-    padding-top: var(--st-global-distance-space-inset-2xl);
+    padding-top: var(--st-global-distance-space-inset-lg);
 
     // Даты и время — маленькие таблетки (размер sm): полностью скруглённые,
     // шрифт 14, с рамкой той же толщины, что у карточек способов выше. Цвета
