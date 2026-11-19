@@ -636,7 +636,7 @@ const isSelectionMissing = computed(
     margin: 0;
     padding: var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-2xl) 0;
 
-    @include font('body-md');
+    @include font('body-sm');
 
     color: var(--st-content-foreground-color-positive-primary);
   }
@@ -648,7 +648,7 @@ const isSelectionMissing = computed(
   &__hours-title {
     margin: 0;
 
-    @include font('body-md');
+    @include font('body-sm');
 
     color: var(--st-content-foreground-color-neutral-secondary);
   }
