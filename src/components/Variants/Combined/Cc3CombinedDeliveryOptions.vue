@@ -140,9 +140,9 @@ const isWarning = computed(() => !props.resolved && isWarningVisible.value)
     min-width: 0;
   }
 
-  // Текст карточки того же размера, что адрес выше: 16.
+  // Название карточки того же шрифта, что название способа оплаты ниже.
   &__title {
-    @include font('body-md');
+    @include font('label-sm');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
