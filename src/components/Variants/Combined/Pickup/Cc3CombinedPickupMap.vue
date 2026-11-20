@@ -108,5 +108,32 @@ onBeforeUnmount(() => observer?.disconnect())
   .cc3-map__attribution {
     inset-block-end: 80px;
   }
+
+  // На десктопе под рядом фильтров ещё плашка поиска: кнопки и подпись выше
+  // обоих. Тайлы приглушены, как в окне карты курьера, чтобы метки и
+  // зелёный цвет версии были единственным акцентом.
+  @include mediaMinWidth('md') {
+    .cc3-map__tile {
+      filter: saturate(0.4) brightness(1.04);
+    }
+
+    .cc3-map__zoom,
+    .cc3-map__attribution {
+      inset-block-end: var(--cc3-combined-pickup-zoom-offset);
+    }
+
+    .cc3-map__zoom {
+      gap: var(--st-global-distance-space-inset-sm);
+
+      inset-inline-end: var(--st-global-distance-space-inset-xl);
+    }
+
+    .cc3-map__zoom-button {
+      width: 32px;
+      height: 32px;
+
+      border-radius: var(--st-global-radius-md);
+    }
+  }
 }
 </style>

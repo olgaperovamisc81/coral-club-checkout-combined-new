@@ -64,6 +64,11 @@ const emit = defineEmits<{
 
     background: none;
 
+    // На десктопе ряд стоит над плашкой поиска, которая лежит на карте внизу.
+    @include mediaMinWidth('md') {
+      padding: 0 var(--st-global-distance-space-inset-xl) var(--cc3-combined-pickup-chips-offset);
+    }
+
     .cc3-combined-pickup-filters__chip {
       border-color: transparent;
       box-shadow: 0 1px 4px 0 rgb(4 8 13 / 14%);

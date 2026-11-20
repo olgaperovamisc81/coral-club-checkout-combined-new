@@ -662,9 +662,19 @@ function onKeydown(event: KeyboardEvent) {
     flex: 1;
 
     min-height: 0;
+
+    // На десктопе карта лежит в окне закруглённой плиткой с полями, как в окне
+    // карты курьера.
+    @include mediaMinWidth('md') {
+      margin: 0 var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-xl);
+
+      border-radius: var(--st-global-radius-2xl);
+      overflow: hidden;
+    }
   }
 
   // Строка поиска под картой на белой полосе: карта до неё, а не под ней.
+  // На десктопе она лежит на карте внизу белой плашкой, над ней ряд фильтров.
   &__searchbar {
     flex-shrink: 0;
 
@@ -673,13 +683,42 @@ function onKeydown(event: KeyboardEvent) {
     background-color: var(--st-content-background-color-default-solid-normal);
 
     @include mediaMinWidth('md') {
-      padding: var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-6xl)
-        var(--st-global-distance-space-inset-4xl);
+      position: absolute;
+      inset-block-end: calc(var(--st-global-distance-space-inset-xl) * 2);
+      inset-inline: calc(var(--st-global-distance-space-inset-xl) * 2);
+      z-index: 3;
+
+      padding: 0;
+
+      background: none;
+
+      .cc3-input-field {
+        box-shadow: 0 2px 8px 0 rgb(4 51 103 / 16%);
+      }
     }
   }
 
+  // Предупреждение выше ряда фильтров, а не между ним и полем поиска.
   &__notice {
     margin-block-end: var(--st-global-distance-space-inset-xl);
+
+    @include mediaMinWidth('md') {
+      position: absolute;
+      inset-block-end: calc(100% + var(--cc3-combined-pickup-chips-height) + var(--st-global-distance-space-inset-md));
+      inset-inline: 0;
+
+      margin-block-end: 0;
+    }
+  }
+
+  // Высота поля поиска и ряда фильтров над ним (чип 34 и зазор 8) и готовые
+  // отступы от низа карты: под ряд фильтров и под кнопки масштаба с подписью,
+  // чтобы ничего не ложилось под плашки.
+  @include mediaMinWidth('md') {
+    --cc3-combined-pickup-search-height: 52px;
+    --cc3-combined-pickup-chips-height: 42px;
+    --cc3-combined-pickup-chips-offset: calc(var(--st-global-distance-space-inset-xl) + var(--cc3-combined-pickup-search-height) + var(--st-global-distance-space-inset-md));
+    --cc3-combined-pickup-zoom-offset: calc(var(--cc3-combined-pickup-chips-offset) + var(--cc3-combined-pickup-chips-height));
   }
 
   // В списке ряд «Карта / Список» стоит обычной строкой над полем адреса.
@@ -691,6 +730,11 @@ function onKeydown(event: KeyboardEvent) {
       inset-block-start: 0;
       inset-inline: 0;
       z-index: 2;
+
+      // В рамке карты поля у ряда те же, что у плашки поиска.
+      @include mediaMinWidth('md') {
+        padding: var(--st-global-distance-space-inset-xl);
+      }
     }
   }
 
