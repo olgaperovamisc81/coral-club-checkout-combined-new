@@ -311,26 +311,22 @@ function onKeydown(event: KeyboardEvent) {
   background-color: var(--st-content-background-color-default-solid-normal);
   outline: none;
 
-  // Заголовок слева, круглая кнопка закрытия справа, без линии под шапкой:
-  // карта начинается сразу под ней.
+  // Шапка как в адресной книге: заголовок по центру, крестик справа. Лежит
+  // над картой и закрывает её край, поэтому с собственной подложкой.
   &__header {
-    position: relative;
+    @include cc3-combined-dialog-header;
+
     z-index: 4;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--st-global-distance-space-inset-2xl);
-
-    padding: var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-2xl)
-      var(--st-global-distance-space-inset-xl);
-
     background-color: var(--st-content-background-color-default-solid-normal);
+  }
 
-    @include mediaMinWidth('md') {
-      padding: var(--st-global-distance-space-inset-4xl) var(--st-global-distance-space-inset-6xl)
-        var(--st-global-distance-space-inset-2xl);
-    }
+  &__title {
+    @include cc3-combined-dialog-title;
+  }
+
+  &__close {
+    @include cc3-combined-dialog-close;
   }
 
   // Тело — остаток экрана под шапкой и граница для шторки поиска.
@@ -354,31 +350,6 @@ function onKeydown(event: KeyboardEvent) {
     z-index: 2;
 
     background-color: var(--st-content-background-color-neutral-mute);
-  }
-
-  &__title {
-    margin: 0;
-
-    @include font('heading-xxs');
-
-    color: var(--st-content-foreground-color-neutral-primary);
-  }
-
-  &__close {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0;
-    width: 40px;
-    height: 40px;
-
-    color: var(--st-content-foreground-color-neutral-primary);
-    background-color: var(--st-content-background-color-neutral-subtle);
-    border: none;
-    border-radius: var(--st-global-radius-pill);
-    cursor: pointer;
   }
 
   // Строка поиска лежит на карте сверху: низ окна занят пояснением и кнопкой.
