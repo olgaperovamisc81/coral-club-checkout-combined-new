@@ -428,7 +428,7 @@ function onKeydown(event: KeyboardEvent) {
     @include mediaMinWidth('md') {
       margin-inline: var(--st-global-distance-space-inset-xl);
 
-      border-radius: var(--st-global-radius-2xl);
+      border-radius: var(--st-global-radius-md);
 
       .cc3-map__tile {
         filter: saturate(0.4) brightness(1.04);

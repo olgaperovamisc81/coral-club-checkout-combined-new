@@ -668,7 +668,7 @@ function onKeydown(event: KeyboardEvent) {
     @include mediaMinWidth('md') {
       margin: 0 var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-xl);
 
-      border-radius: var(--st-global-radius-2xl);
+      border-radius: var(--st-global-radius-md);
       overflow: hidden;
     }
   }

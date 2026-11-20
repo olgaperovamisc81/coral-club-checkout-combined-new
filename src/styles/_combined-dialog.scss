@@ -30,10 +30,17 @@
     width: min(686px, calc(100% - 48px));
     height: min(708px, calc(100dvh - 48px));
 
-    // Скругление одно на все окна версии: правится здесь, а не в каждом окне.
-    border-radius: var(--st-global-distance-space-inset-6xl);
+    // Скругление, тень и затемнение — по макету попапа в Figma («Components
+    // (Beta)», Popup): радиус 2xl, тень elevation/onLight/down/xl, затемнение
+    // токеном neutral/mute. Одно на все окна версии: правится здесь, а не в
+    // каждом окне. Затемнение — тень в весь экран, она идёт последней, под
+    // тенью окна.
+    border-radius: var(--st-global-radius-2xl);
     overflow: hidden;
-    box-shadow: 0 0 0 100vmax rgb(4 51 103 / 48%);
+    box-shadow:
+      0 16px 24px -4px rgb(4 8 13 / 12%),
+      0 4px 8px -2px rgb(4 8 13 / 12%),
+      0 0 0 100vmax var(--st-content-background-color-neutral-mute);
 
     &::before {
       content: '';
