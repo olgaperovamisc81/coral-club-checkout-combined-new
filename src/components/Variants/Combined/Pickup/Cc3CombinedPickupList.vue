@@ -216,9 +216,10 @@ const text = computed(() => ({
 
     @include font('label-sm');
 
-    color: var(--st-action-foreground-color-onprimary-normal);
-    background-color: var(--st-action-background-color-positive-normal);
-    border: none;
+    // Вторичная кнопка: тёмный текст на белом, контурная обводка.
+    color: var(--st-action-foreground-color-neutral-normal);
+    background-color: var(--st-content-background-color-default-solid-normal);
+    border: 1px solid var(--st-action-border-color-neutral-subtle-normal);
     border-radius: var(--st-global-radius-pill);
     cursor: pointer;
   }
