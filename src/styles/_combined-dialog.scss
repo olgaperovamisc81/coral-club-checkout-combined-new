@@ -30,7 +30,9 @@
     width: min(686px, calc(100% - 48px));
     height: min(708px, calc(100dvh - 48px));
 
-    border-radius: var(--st-global-radius-xl);
+    // Скругление одно на все окна версии: правится здесь, а не в каждом окне.
+    border-radius: var(--st-global-distance-space-inset-6xl);
+    overflow: hidden;
     box-shadow: 0 0 0 100vmax rgb(4 51 103 / 48%);
 
     &::before {

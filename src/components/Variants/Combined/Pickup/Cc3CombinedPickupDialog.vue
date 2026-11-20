@@ -587,13 +587,6 @@ function onKeydown(event: KeyboardEvent) {
 
   background-color: var(--st-content-background-color-default-solid-normal);
 
-  // Окно с большим скруглением, как у окна карты курьера: карта доходит до
-  // его краёв, и острые углы рядом с ней читались бы как обрезанный экран.
-  @include mediaMinWidth('md') {
-    border-radius: var(--st-global-distance-space-inset-6xl);
-    overflow: hidden;
-  }
-
   // Заголовок слева, круглая кнопка закрытия справа, без линии под шапкой:
   // карта начинается сразу под ней. Тот же вид, что у окна карты курьера.
   &__header {

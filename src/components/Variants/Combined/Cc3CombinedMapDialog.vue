@@ -311,13 +311,6 @@ function onKeydown(event: KeyboardEvent) {
   background-color: var(--st-content-background-color-default-solid-normal);
   outline: none;
 
-  // Окно карты с большим скруглением: карта доходит до его краёв, и острые
-  // углы рядом с ней читались бы как обрезанный экран.
-  @include mediaMinWidth('md') {
-    border-radius: var(--st-global-distance-space-inset-6xl);
-    overflow: hidden;
-  }
-
   // Заголовок слева, круглая кнопка закрытия справа, без линии под шапкой:
   // карта начинается сразу под ней.
   &__header {
