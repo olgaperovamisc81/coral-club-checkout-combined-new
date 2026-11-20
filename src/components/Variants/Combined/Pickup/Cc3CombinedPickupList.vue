@@ -125,6 +125,8 @@ const text = computed(() => ({
 
   // Пункты — строки списка с тонким разделителем между ними, без рамок.
   &__item {
+    position: relative;
+
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
@@ -139,8 +141,18 @@ const text = computed(() => ({
     border: none;
     cursor: pointer;
 
-    & + & {
-      border-top: 1px solid var(--st-content-border-color-neutral-implicit);
+    // Разделитель между пунктами не доходит до краёв окна: по 16px с каждой
+    // стороны, как поля у текста.
+    & + &::before {
+      content: '';
+
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline: var(--st-global-distance-space-inset-2xl);
+
+      height: 1px;
+
+      background-color: var(--st-content-border-color-neutral-implicit);
     }
 
     &--selected {
