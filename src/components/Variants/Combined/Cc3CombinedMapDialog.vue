@@ -417,6 +417,33 @@ function onKeydown(event: KeyboardEvent) {
       border: none;
       border-radius: 0;
     }
+
+    // На десктопе карта лежит в окне закруглённой плиткой с полями, а не
+    // упирается в его края; тайлы приглушены, чтобы метка и зелёный цвет
+    // версии были единственным акцентом на карте.
+    @include mediaMinWidth('md') {
+      margin-inline: var(--st-global-distance-space-inset-xl);
+
+      border-radius: var(--st-global-radius-2xl);
+
+      .cc3-map__tile {
+        filter: saturate(0.4) brightness(1.04);
+      }
+
+      .cc3-map__zoom {
+        gap: var(--st-global-distance-space-inset-sm);
+
+        inset-inline-end: var(--st-global-distance-space-inset-xl);
+        inset-block-end: var(--st-global-distance-space-inset-xl);
+      }
+
+      .cc3-map__zoom-button {
+        width: 32px;
+        height: 32px;
+
+        border-radius: var(--st-global-radius-md);
+      }
+    }
   }
 
   // Метка накладкой по центру, а не маркером карты: маркер уезжал бы вместе
@@ -429,6 +456,29 @@ function onKeydown(event: KeyboardEvent) {
 
     pointer-events: none;
     transform: translate(-50%, -100%);
+
+    // Мягкий круг под остриём метки: показывает, куда она встанет.
+    @include mediaMinWidth('md') {
+      &::after {
+        content: '';
+
+        position: absolute;
+        left: 50%;
+        bottom: 0;
+        z-index: -1;
+
+        width: 64px;
+        height: 64px;
+
+        background-color: color-mix(
+          in srgb,
+          var(--st-action-background-color-positive-normal) 12%,
+          transparent
+        );
+        border-radius: var(--st-global-radius-pill);
+        transform: translate(-50%, 50%);
+      }
+    }
   }
 
   &__controls {
