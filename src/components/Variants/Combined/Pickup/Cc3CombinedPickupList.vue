@@ -112,46 +112,45 @@ const text = computed(() => ({
   }
 
   // Список прокручивается сам, а окно остаётся на месте — кнопка внизу всегда видна.
-  // Пункты — отдельные карточки с зазором, как адреса в адресной книге.
   &__items {
     display: flex;
     flex: 1;
     flex-direction: column;
-    gap: var(--st-global-distance-space-inset-md);
 
-    padding: 0 var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-2xl);
     min-height: 0;
 
     overflow-y: auto;
     overscroll-behavior: contain;
   }
 
-  // Карточка пункта: рамка, скругление и выделение выбранной те же, что у
-  // карточки адреса в адресной книге.
+  // Пункты — строки списка с тонким разделителем между ними, без рамок.
   &__item {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
 
-    padding: var(--st-global-distance-space-inset-2xl);
+    padding: var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-2xl);
     width: 100%;
 
     font-family: inherit;
     text-align: start;
 
-    background-color: var(--st-content-background-color-default-solid-normal);
-    border: 1.5px solid var(--st-content-border-color-neutral-implicit);
-    border-radius: var(--st-global-radius-xl);
+    background: none;
+    border: none;
     cursor: pointer;
 
+    & + & {
+      border-top: 1px solid var(--st-content-border-color-neutral-implicit);
+    }
+
     &--selected {
-      background-color: var(--st-content-background-color-neutral-subtle);
-      border-color: var(--st-action-background-color-positive-normal);
+      background-color: var(--st-content-background-color-neutral-onsubtle);
     }
   }
 
-  // Шрифты и цвета строк как в карточке адреса: название зелёным обычным,
-  // адрес и часы серым, а срок и цена — основным цветом средним начертанием.
+  // Шрифты и цвета строк как в карточке адреса в адресной книге: название
+  // зелёным обычным, адрес и часы серым, а срок и цена — основным цветом
+  // средним начертанием.
   &__name {
     @include font('body-md');
 
