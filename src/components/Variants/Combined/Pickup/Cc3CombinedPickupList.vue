@@ -112,47 +112,56 @@ const text = computed(() => ({
   }
 
   // Список прокручивается сам, а окно остаётся на месте — кнопка внизу всегда видна.
+  // Пункты — отдельные карточки с зазором, как адреса в адресной книге.
   &__items {
     display: flex;
     flex: 1;
     flex-direction: column;
+    gap: var(--st-global-distance-space-inset-md);
 
+    padding: 0 var(--st-global-distance-space-inset-2xl) var(--st-global-distance-space-inset-2xl);
     min-height: 0;
 
     overflow-y: auto;
     overscroll-behavior: contain;
   }
 
+  // Карточка пункта: рамка, скругление и выделение выбранной те же, что у
+  // карточки адреса в адресной книге.
   &__item {
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
 
-    padding: var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-2xl);
+    padding: var(--st-global-distance-space-inset-2xl);
     width: 100%;
 
     font-family: inherit;
     text-align: start;
 
-    background: none;
-    border: none;
+    background-color: var(--st-content-background-color-default-solid-normal);
+    border: 1.5px solid var(--st-content-border-color-neutral-implicit);
+    border-radius: var(--st-global-radius-xl);
     cursor: pointer;
 
     &--selected {
-      background-color: var(--st-content-background-color-neutral-onsubtle);
+      background-color: var(--st-content-background-color-neutral-subtle);
+      border-color: var(--st-action-background-color-positive-normal);
     }
   }
 
+  // Шрифты и цвета строк как в карточке адреса: название зелёным обычным,
+  // адрес и часы серым, а срок и цена — основным цветом средним начертанием.
   &__name {
-    @include font('label-lg');
-    font-weight: 700;
+    @include font('body-md');
 
-    color: var(--st-content-foreground-color-neutral-primary);
+    color: var(--st-content-foreground-color-positive-secondary);
   }
 
   &__address {
     @include font('body-md');
 
-    color: var(--st-content-foreground-color-neutral-primary);
+    color: var(--st-content-foreground-color-neutral-secondary);
 
     &--closed {
       color: var(--st-content-foreground-color-negative-primary);
@@ -160,9 +169,9 @@ const text = computed(() => ({
   }
 
   &__meta {
-    @include font('body-md');
+    @include font('label-md');
 
-    color: var(--st-content-foreground-color-positive-primary);
+    color: var(--st-content-foreground-color-neutral-primary);
   }
 }
 </style>
