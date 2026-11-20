@@ -121,9 +121,9 @@ const text = computed(() => ({
     min-width: 0;
   }
 
-  // Название применённого кода тем же шрифтом, что строки сумм.
+  // Название применённого кода тем же шрифтом, что названия способов доставки и оплаты.
   &__name {
-    @include font('body-md');
+    @include font('label-sm');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
@@ -148,6 +148,9 @@ const text = computed(() => ({
 
   &__link-text {
     @include cc3-combined-link;
+
+    // Шрифт как у названий способов доставки и оплаты, а не общий для ссылок.
+    @include font('label-sm');
   }
 
   &__applied {
@@ -161,6 +164,7 @@ const text = computed(() => ({
     flex-shrink: 0;
 
     @include cc3-combined-link;
+    @include font('label-sm');
   }
 }
 </style>

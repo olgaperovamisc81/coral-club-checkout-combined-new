@@ -84,7 +84,7 @@ const model = defineModel<boolean>({ default: false })
     align-items: center;
     gap: var(--st-global-distance-space-inset-md);
 
-    @include font('body-md');
+    @include font('label-sm');
 
     color: var(--st-content-foreground-color-neutral-primary);
   }
