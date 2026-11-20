@@ -17,7 +17,8 @@ type PickupListItem = {
   id: string
   name: string
   address: string
-  meta: string
+  /** Цена доставки в пункт: «Бесплатно» или сумма. */
+  price: string
   closed?: boolean
 }
 
@@ -30,7 +31,6 @@ type PickupFilter = {
 defineProps<{
   points: PickupListItem[]
   filters: PickupFilter[]
-  selectedId?: string
   /** Адрес, выбранный в поиске; пока не выбран — поле пустое. */
   address: string
   /** Пояснение под фильтрами: рядом с адресом пунктов нет. */
@@ -51,8 +51,8 @@ const { t } = useStand()
 const isSearching = ref(false)
 
 const text = computed(() => ({
-  openUntil: t('pickup.openUntil'),
   closedNow: t('pickup.closedNow'),
+  select: t('common.select'),
 }))
 </script>
 
@@ -76,24 +76,21 @@ const text = computed(() => ({
     </Cc3CombinedNotice>
 
     <div v-if="points.length > 0" class="cc3-combined-pickup-list__items">
-      <button
-        v-for="point in points"
-        :key="point.id"
-        type="button"
-        class="cc3-combined-pickup-list__item"
-        :class="{ 'cc3-combined-pickup-list__item--selected': point.id === selectedId }"
-        @click="emit('select', point.id)"
-      >
-        <span class="cc3-combined-pickup-list__name">{{ point.name }}</span>
-        <span class="cc3-combined-pickup-list__address">{{ point.address }}</span>
-        <span
-          class="cc3-combined-pickup-list__address"
-          :class="{ 'cc3-combined-pickup-list__address--closed': point.closed }"
-        >
-          {{ point.closed ? text.closedNow : text.openUntil }}
-        </span>
-        <span class="cc3-combined-pickup-list__meta">{{ point.meta }}</span>
-      </button>
+      <div v-for="point in points" :key="point.id" class="cc3-combined-pickup-list__item">
+        <button type="button" class="cc3-combined-pickup-list__info" @click="emit('select', point.id)">
+          <span class="cc3-combined-pickup-list__name">{{ point.name }}</span>
+          <span class="cc3-combined-pickup-list__address">{{ point.address }}</span>
+          <span v-if="point.closed" class="cc3-combined-pickup-list__closed">
+            {{ text.closedNow }}
+          </span>
+        </button>
+
+        <span class="cc3-combined-pickup-list__price">{{ point.price }}</span>
+
+        <button type="button" class="cc3-combined-pickup-list__choose" @click="emit('select', point.id)">
+          {{ text.select }}
+        </button>
+      </div>
     </div>
 
   </div>
@@ -123,23 +120,19 @@ const text = computed(() => ({
     overscroll-behavior: contain;
   }
 
-  // Пункты — строки списка с тонким разделителем между ними, без рамок.
+  // Пункт по макету Figma: слева название и адрес, справа цена и кнопка
+  // «Выбрать». На телефоне цена и кнопка уходят отдельной строкой под текст.
   &__item {
     position: relative;
 
     display: flex;
-    flex-direction: column;
     flex-shrink: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-2xl);
 
     padding: var(--st-global-distance-space-inset-xl) var(--st-global-distance-space-inset-2xl);
     width: 100%;
-
-    font-family: inherit;
-    text-align: start;
-
-    background: none;
-    border: none;
-    cursor: pointer;
 
     // Разделитель между пунктами не доходит до краёв окна: по 16px с каждой
     // стороны, как поля у текста.
@@ -152,37 +145,82 @@ const text = computed(() => ({
 
       height: 1px;
 
-      background-color: var(--st-content-border-color-neutral-implicit);
+      background-color: var(--st-content-border-color-neutral-onsubtle);
     }
 
-    &--selected {
-      background-color: var(--st-content-background-color-neutral-onsubtle);
+    @include mediaMinWidth('md') {
+      flex-wrap: nowrap;
+
+      padding-block: var(--st-global-distance-space-inset-2xl);
     }
   }
 
-  // Шрифты и цвета строк как в карточке адреса в адресной книге: название
-  // зелёным обычным, адрес и часы серым, а срок и цена — основным цветом
-  // средним начертанием.
+  // Текстовая часть пункта нажимается так же, как кнопка «Выбрать».
+  &__info {
+    display: flex;
+    flex: 1 0 100%;
+    flex-direction: column;
+
+    padding: 0;
+    min-width: 0;
+
+    font-family: inherit;
+    text-align: start;
+
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    @include mediaMinWidth('md') {
+      flex: 1;
+    }
+  }
+
   &__name {
     @include font('body-md');
 
-    color: var(--st-content-foreground-color-positive-secondary);
+    color: var(--st-content-foreground-color-neutral-primary);
   }
 
   &__address {
-    @include font('body-md');
+    @include font('body-sm');
 
     color: var(--st-content-foreground-color-neutral-secondary);
+  }
 
-    &--closed {
-      color: var(--st-content-foreground-color-negative-primary);
+  &__closed {
+    @include font('body-sm');
+
+    color: var(--st-content-foreground-color-negative-primary);
+  }
+
+  &__price {
+    flex: 1;
+
+    @include font('body-md');
+
+    color: var(--st-content-foreground-color-neutral-primary);
+
+    @include mediaMinWidth('md') {
+      flex: none;
     }
   }
 
-  &__meta {
-    @include font('label-md');
+  &__choose {
+    flex-shrink: 0;
 
-    color: var(--st-content-foreground-color-neutral-primary);
+    padding: 0 var(--st-global-distance-space-inset-2xl);
+    height: 40px;
+
+    font-family: inherit;
+
+    @include font('label-sm');
+
+    color: var(--st-action-foreground-color-onprimary-normal);
+    background-color: var(--st-action-background-color-positive-normal);
+    border: none;
+    border-radius: var(--st-global-radius-pill);
+    cursor: pointer;
   }
 }
 </style>

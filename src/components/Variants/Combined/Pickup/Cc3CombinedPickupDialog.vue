@@ -180,7 +180,7 @@ const listItems = computed(() =>
     id: point.id,
     name: point.name,
     address: point.address,
-    meta: metaOf(point),
+    price: point.priceFormat,
     closed: isPointClosed(point.id),
   })),
 )
@@ -512,7 +512,6 @@ function onKeydown(event: KeyboardEvent) {
             <Cc3CombinedPickupList
               :points="listItems"
               :filters="providerFilters"
-              :selected-id="selectedId"
               :address="address"
               :notice="nearbyNotice"
               @select="onListPick"
