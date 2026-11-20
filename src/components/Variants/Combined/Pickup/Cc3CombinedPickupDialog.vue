@@ -692,8 +692,19 @@ function onKeydown(event: KeyboardEvent) {
 
       background: none;
 
-      .cc3-input-field {
+      .cc3-combined-input {
         box-shadow: 0 2px 8px 0 rgb(4 51 103 / 16%);
+
+        // Фон поля при наведении и вводе почти прозрачный: на карте сквозь него
+        // видны тайлы. Оставляем белую подложку, а лёгкий оттенок кладём поверх.
+        &:hover,
+        &:focus-within {
+          background-image: linear-gradient(
+            var(--st-content-background-color-neutral-subtle),
+            var(--st-content-background-color-neutral-subtle)
+          );
+          background-color: var(--st-content-background-color-default-solid-normal);
+        }
       }
     }
   }

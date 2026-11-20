@@ -390,6 +390,17 @@ function onKeydown(event: KeyboardEvent) {
 
     border-radius: var(--st-global-radius-md);
     box-shadow: 0 2px 8px 0 rgb(4 51 103 / 16%);
+
+    // Фон поля при наведении почти прозрачный: на карте сквозь него видны
+    // тайлы. Оставляем белую подложку, а лёгкий оттенок кладём поверх.
+    .cc3-combined-input:hover,
+    .cc3-combined-input:focus-within {
+      background-image: linear-gradient(
+        var(--st-content-background-color-neutral-subtle),
+        var(--st-content-background-color-neutral-subtle)
+      );
+      background-color: var(--st-content-background-color-default-solid-normal);
+    }
   }
 
   // Контейнер растягивается на весь остаток экрана, карта лежит в нём
