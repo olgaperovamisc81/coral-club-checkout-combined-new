@@ -397,6 +397,9 @@ function onKeydown(event: KeyboardEvent) {
 
     @include cc3-combined-link;
 
+    // Мельче общих ссылок версии: в карточке это второстепенное действие.
+    @include font('body-sm');
+
     padding: var(--st-global-distance-space-inset-sm) var(--st-global-distance-space-inset-2xl)
       var(--st-global-distance-space-inset-2xl);
   }
